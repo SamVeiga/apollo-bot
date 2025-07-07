@@ -11,49 +11,33 @@ TOKEN = '7559286879:AAFSeGER9vX0Yav0l5L0s7fzz3OvVVOhZPg'
 bot = telebot.TeleBot(TOKEN)
 app = Flask(__name__)
 
-DONO_USERNAME = "samuel_gpm"
-
+# Arquivo com histórico de frases usadas
 HISTORICO_PATH = "frases_usadas.json"
 
-FRASES_DEBOCHADAS = [
-    "Essa lógica aí é compatível com magia caótica.",
-    "Argumentou bonito, pena que era errado.",
-    "O silêncio também responde. Melhor que você, inclusive.",
-    "O sarcasmo é meu modo economia de paciência.",
-    "Nietzsche teria um infarto lendo essa conversa.",
-    "Discussão boa é aquela que termina com piada.",
-    "Nem Hegel entenderia esse raciocínio reverso.",
+# Frases base do Apolo
+TODAS_AS_FRASES = [
     "Ironia é quando a inteligência resolve brincar.",
+    "Nem toda resposta precisa de uma pergunta sensata.",
     "Até Platão sairia do grupo com essa conversa.",
-    "Se pensa, incomoda. Se cala, concorda?"
-]
+    "Essa frase foi trazida por Hermes, o deus das indiretas.",
+    "Se for pra causar, que seja com argumento.",
+    "A mente voa. Pena que o Wi-Fi não acompanha.",
+    "Nietzsche teria um infarto lendo essa conversa.",
+    "Confuso? Calma, é só a realidade passando sem aviso.",
+    "Mais perdido que Descartes em aula de zumba.",
+    "Ideia brilhante... pena que não foi a sua.",
+    "Quem tem cérebro, pensa. Quem tem estilo, debocha.",
+    "Se a ideia é ruim, pelo menos que seja estilosa.",
+    "Essa lógica aí é compatível com magia caótica.",
+    "Dúvidas são bem-vindas. As suas, eu ignoro.",
+    "O grupo é livre. As ideias, nem tanto.",
+    "Paradoxo do dia: estou online, mas indisponível.",
+    "Sócrates perguntou. Eu respondi com meme.",
+    "O sarcasmo é meu idioma secundário. O primário é genialidade.",
+    "Rindo alto igual filósofo bêbado.",
+] + [f"Frase número {i+81}, sem sentido, porém com estilo." for i in range(70)]
 
-FRASES_ROMANTICAS = [
-    "Se beleza fosse argumento, você ganhava qualquer debate.",
-    "Seu nome devia ser poema, porque rima com tudo que é bom.",
-    "Você é a exceção até nas minhas regras de lógica.",
-    "Se o grupo é um caos, você é a arte no meio dele.",
-    "Já filosofei sobre tudo, menos sobre como resistir a você.",
-    "Você apareceu e minha ironia virou poesia.",
-    "Me chama de Apolo e me deixa orbitar sua atenção.",
-    "Tô pronto pra debater... contanto que seja sobre nós dois.",
-    "Se eu fosse verso, você era a minha rima rara.",
-    "Esquece Platão, me explica você o que é amor ideal."
-]
-
-FRASES_PARA_DONO = [
-    "Fala, mestre @samuel_gpm. Tudo em ordem, ou quer que eu derrube alguém com argumentos?",
-    "@samuel_gpm chegou. Agora o grupo tem autoridade e beleza intelectual.",
-    "Com licença, o dono do meu coração e do grupo apareceu: @samuel_gpm",
-    "Se o grupo fosse um livro, @samuel_gpm seria a dedicatória.",
-    "Respeitem, o homem que me criou chegou. O resto é plateia."
-]
-
-# Frases do dia únicas por 3 dias
-TODAS_AS_FRASES = FRASES_DEBOCHADAS + FRASES_ROMANTICAS + FRASES_PARA_DONO + [
-    f"Frase número {i+1}, com estilo, charme e um toque de sabedoria." for i in range(60)
-]
-
+# Garante que arquivo de histórico existe
 if not os.path.exists(HISTORICO_PATH):
     with open(HISTORICO_PATH, "w") as f:
         json.dump({}, f)
@@ -67,10 +51,10 @@ def salvar_historico(data):
         json.dump(data, f)
 
 def gerar_frases_do_dia():
-    hoje = datetime.utcnow().date().isoformat()
+    hoje = datetime.now().date().isoformat()
     historico = carregar_historico()
 
-    dias_validos = [(datetime.utcnow() - timedelta(days=i)).date().isoformat() for i in range(1, 4)]
+    dias_validos = [(datetime.now() - timedelta(days=i)).date().isoformat() for i in range(1, 4)]
     usadas_recentemente = set()
     for dia in dias_validos:
         usadas_recentemente.update(historico.get(dia, []))
@@ -87,20 +71,16 @@ FRASES_HOJE = gerar_frases_do_dia()
 FRASE_INDEX = 0
 
 def responder_com_delay(mensagem, texto):
-    def esperar():
+    def esperar_e_responder():
         time.sleep(30)
         bot.reply_to(mensagem, texto)
-    threading.Thread(target=esperar).start()
+    threading.Thread(target=esperar_e_responder).start()
 
 def is_saudacao(texto):
     return any(p in texto for p in ['bom dia', 'boa tarde', 'boa noite', 'boa madrugada'])
 
 def is_risada(texto):
     return any(p in texto for p in ['kkk', 'rs', 'haha', 'heue'])
-
-def is_mulher(nome):
-    nome = nome.lower()
-    return nome.endswith("a") or nome in ["vanessa", "juliana", "adriana", "patricia", "mariana"]
 
 @app.route(f"/{TOKEN}", methods=['POST'])
 def webhook():
@@ -109,49 +89,34 @@ def webhook():
     bot.process_new_updates([update])
     return "ok", 200
 
-@app.before_first_request
-def configurar_webhook():
-    bot.remove_webhook()
-    bot.set_webhook(url=f"https://apollo-bot.onrender.com/{TOKEN}")
-
 @app.route("/")
 def index():
-    return "Apolo está no ar, com charme, lógica e zoeira 😎", 200
+    return "Apolo está vivo e debochado 😎", 200
 
 @bot.message_handler(func=lambda m: True)
 def responder(mensagem):
     global FRASE_INDEX
-
     texto = mensagem.text.lower()
-    nome = mensagem.from_user.first_name
     citado = (mensagem.chat.type != "private") and (bot.get_me().username.lower() in texto or 'apolo' in texto)
-    eh_dono = mensagem.from_user.username == DONO_USERNAME
 
     if is_saudacao(texto):
         if FRASE_INDEX < len(FRASES_HOJE):
-            responder_com_delay(mensagem, f"{nome}, {FRASES_HOJE[FRASE_INDEX]}")
+            responder_com_delay(mensagem, FRASES_HOJE[FRASE_INDEX])
             FRASE_INDEX += 1
-
     elif mensagem.new_chat_members:
-        novo = mensagem.new_chat_members[0].first_name
-        if is_mulher(novo):
-            responder_com_delay(mensagem, f"Seja bem-vinda, {novo}. Sua presença deixou esse grupo 200% mais interessante 😏")
-        else:
-            responder_com_delay(mensagem, f"E aí, {novo}. Só não bagunça muito, porque quem brilha aqui sou eu 😎")
-
+        nome = mensagem.new_chat_members[0].first_name
+        responder_com_delay(mensagem, f"Bem-vindo ao caos, {nome}. Sinta-se ignorado com classe.")
     elif is_risada(texto):
         responder_com_delay(mensagem, random.choice([
-            "kkkkkk", "rachei aqui", "essa foi digna de uma tese de humor", "rindo alto igual filósofo bêbado"
+            "kkkkkk", "rachei aqui", "hahaha", "essa foi digna de uma tese de humor", "rindo alto igual filósofo bêbado"
         ]))
-
     elif citado:
-        if eh_dono:
-            resposta = random.choice(FRASES_PARA_DONO)
-        elif is_mulher(nome):
-            resposta = random.choice(FRASES_ROMANTICAS)
-        else:
-            resposta = random.choice(FRASES_DEBOCHADAS)
-        responder_com_delay(mensagem, f"{nome}, {resposta}")
+        if FRASE_INDEX < len(FRASES_HOJE):
+            responder_com_delay(mensagem, FRASES_HOJE[FRASE_INDEX])
+            FRASE_INDEX += 1
 
 if __name__ == "__main__":
+    with app.app_context():
+        bot.remove_webhook()
+        bot.set_webhook(url=f"https://apollo-bot.onrender.com/{TOKEN}")
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
