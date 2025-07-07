@@ -7,7 +7,7 @@ import json
 import os
 from datetime import datetime, timedelta
 
-TOKEN = 'SEU_TOKEN_DO_BOT_AQUI'
+TOKEN = '7559286879:AAFSeGER9vX0Yav0l5L0s7fzz3OvVVOhZPg'
 bot = telebot.TeleBot(TOKEN)
 app = Flask(__name__)
 
