@@ -60,7 +60,7 @@ async def responder(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             await update.message.reply_text(random.choice(FRASES_PIADAS))
 
-# === INICIAR O BOT ===
+# === FUNÇÃO PARA INICIAR O BOT ===
 def iniciar_bot():
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
@@ -75,34 +75,10 @@ def iniciar_bot():
 web_app = Flask(__name__)
 
 @web_app.route("/")
-def index():
-    return "Apolo está vivo! 💙", 200
+def home():
+    return "Apolo está online 24h! 💙", 200
 
+# === EXECUÇÃO PRINCIPAL ===
 if __name__ == "__main__":
     threading.Thread(target=iniciar_bot).start()
-    web_app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
-
-from flask import Flask
-import threading
-
-app = Flask(__name__)
-
-@app.route('/')
-def home():
-    return "Apolo online 24h!"
-
-def iniciar_flask():
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
-
-if __name__ == "__main__":
-    threading.Thread(target=iniciar_flask).start()
-    app = ApplicationBuilder().token(TOKEN).build()
-
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("cantada", cantada))
-    app.add_handler(CommandHandler("piada", piada))
-    app.add_handler(MessageHandler(filters.StatusUpdate.NEW_CHAT_MEMBERS, boas_vindas))
-    app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), responder))
-
-    print("🤖 Apolo iniciado...")
-    app.run_polling()
+    web_app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
