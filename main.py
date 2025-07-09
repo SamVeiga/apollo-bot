@@ -1,6 +1,7 @@
 import random
 import os
-from telegram import Update, ChatType
+from telegram import Update
+from telegram.constants import ChatType
 from telegram.ext import (
     ApplicationBuilder,
     CommandHandler,
