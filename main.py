@@ -1,92 +1,75 @@
-import logging
+import asyncio
 from telegram import Update
-from telegram.constants import ChatType
-from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
+import random
+import os
 
-# Token e dono
-TOKEN = "7559286879:AAFSeGER9vX0Yav0l5L0s7fzz3OvVVOhZPg"
-DONO_ID = 1481389775
+TOKEN = '7559286879:AAFSeGER9vX0Yav0l5L0s7fzz3OvVVOhZPg'
+DONO_ID = 1481389775  # ID do dono @samuel_gpm
 
-# Configura log
-logging.basicConfig(level=logging.INFO)
-
-# Lista de cantadas (apenas para mulheres)
-CANTADAS = [
-    "Se beleza fosse crime, você já tava presa, gata. 😏",
-    "Com esse charme todo, você devia ser patrimônio cultural.",
-    "Me chama de teoria que eu tento te provar.",
-    "Se você fosse um bug, eu deixava acontecer todo dia. 😎",
+# Frases
+FRASES_CANTADAS = [
+    "Oi, você caiu do céu? Porque sua presença é divina.",
+    "Seu nome é Wi-Fi? Porque eu tô sentindo uma conexão aqui.",
+    "Você tem um mapa? Me perdi no brilho dos seus olhos.",
 ]
 
-# Piadas genéricas
-PIADAS = [
-    "Por que o programador foi ao médico? Porque ele tinha um loop infinito de dor. 😂",
-    "Sabe por que o Java nunca é convidado pra festas? Porque ele demora pra começar!",
-    "O que um bit disse pro outro? Nos vemos no bus. 🤓",
+FRASES_PIADAS = [
+    "Por que o lápis foi ao médico? Porque estava sem ponta!",
+    "O que o zero disse para o oito? Belo cinto!",
+    "Sabe por que o livro foi ao hospital? Porque ele tinha muitas páginas em branco.",
 ]
 
-# Bajulações só pro dono
-BAJULACOES = [
-    "Samuel chegou, agora sim o grupo tem liderança. 👑",
-    "Tudo que o Samuel fala devia virar mandamento.",
-    "Senhoras e senhores, o dono da moral entrou em cena.",
+FRASES_BAJULACAO = [
+    "Quando o Samuel fala, todos se calam... pura sabedoria.",
+    "Samuel é tipo Wi-Fi potente: conecta tudo e comanda geral.",
+    "Samuel entrou no chat, a moral subiu junto.",
 ]
 
-# Comando /start
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(f"E aí, {update.effective_user.first_name}? O Apolo tá online e preparado pra dar close. 😎")
-
-# Mensagem de boas-vindas
 async def boas_vindas(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    for member in update.message.new_chat_members:
-        await update.message.reply_text(f"Salve, {member.first_name}! Seja bem-vindo(a) ao grupo. Agora segura a zoeira. 😏")
+    for membro in update.message.new_chat_members:
+        await update.message.reply_text(
+            f"Bem-vindo ao grupo, {membro.first_name}! Já chega fazendo meme, hein?"
+        )
 
-# Comando /cantada
 async def cantada(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = update.effective_user
-    if user.username and user.username.endswith('a'):
-        frase = CANTADAS.pop(0)
-        CANTADAS.append(frase)
-        await update.message.reply_text(f"{user.first_name}, {frase}")
-    else:
-        await update.message.reply_text("Cantada é só pras damas, meu parceiro. 😅")
-
-# Comando /piada
-async def piada(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    frase = PIADAS.pop(0)
-    PIADAS.append(frase)
+    frase = random.choice(FRASES_CANTADAS)
     await update.message.reply_text(frase)
 
-# Resposta inteligente e personalizada
+async def piada(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    frase = random.choice(FRASES_PIADAS)
+    await update.message.reply_text(frase)
+
 async def responder(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    mensagem = update.message
-    user = mensagem.from_user
-    texto = mensagem.text.lower()
-    citado = context.bot.username.lower() in texto or 'apolo' in texto
+    texto = update.message.text.lower()
+    nome = update.message.from_user.first_name
+    usuario_id = update.message.from_user.id
+    citado = "apolo" in texto or "@apolo_8bp_bot" in texto
 
     if not citado:
         return
 
-    if user.id == DONO_ID:
-        frase = BAJULACOES.pop(0)
-        BAJULACOES.append(frase)
-        await mensagem.reply_text(f"{user.first_name}, {frase}")
-    elif user.username and user.username.endswith("a"):
-        frase = CANTADAS[0]
-        await mensagem.reply_text(f"{user.first_name}, {frase}")
-    else:
-        await mensagem.reply_text(f"{user.first_name}, tu fala umas que parece piada... mas tamo junto 😂")
+    # Bajular o dono
+    if usuario_id == DONO_ID:
+        frase = random.choice(FRASES_BAJULACAO)
+        await update.message.reply_text(frase)
+        return
 
-# Função principal
+    # Cantada se for mulher (simples heurística: nome termina com 'a')
+    if nome.lower().endswith("a"):
+        frase = random.choice(FRASES_CANTADAS)
+    else:
+        frase = random.choice(FRASES_PIADAS)
+
+    await update.message.reply_text(frase)
+
 if __name__ == '__main__':
     app = ApplicationBuilder().token(TOKEN).build()
 
-    # Handlers
-    app.add_handler(CommandHandler("start", start))
+    app.add_handler(MessageHandler(filters.StatusUpdate.NEW_CHAT_MEMBERS, boas_vindas))
     app.add_handler(CommandHandler("cantada", cantada))
     app.add_handler(CommandHandler("piada", piada))
-    app.add_handler(MessageHandler(filters.StatusUpdate.NEW_CHAT_MEMBERS, boas_vindas))
     app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), responder))
 
-    print("Bot Apolo rodando... 🚀")
+    print("Apolo está vivo 🔥")
     app.run_polling()
