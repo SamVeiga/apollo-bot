@@ -1,3 +1,8 @@
+import asyncio
+import threading
+import random
+import os
+from flask import Flask
 from telegram import Update
 from telegram.ext import (
     ApplicationBuilder,
@@ -6,10 +11,6 @@ from telegram.ext import (
     ContextTypes,
     filters,
 )
-from flask import Flask
-import random
-import os
-import threading
 
 # === BOT ===
 TOKEN = os.getenv("BOT_TOKEN", "7559286879:AAFSeGER9vX0Yav0l5L0s7fzz3OvVVOhZPg")
@@ -60,8 +61,18 @@ async def responder(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             await update.message.reply_text(random.choice(FRASES_PIADAS))
 
-# === FUNÇÃO PARA INICIAR O BOT ===
-def iniciar_bot():
+# === FLASK PARA MANTER VIVO NO RENDER ===
+web_app = Flask(__name__)
+
+@web_app.route("/")
+def home():
+    return "Apolo está online 24h! 💙", 200
+
+# === EXECUÇÃO ===
+def iniciar_flask():
+    web_app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+
+async def iniciar_bot():
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("cantada", cantada))
@@ -69,16 +80,8 @@ def iniciar_bot():
     app.add_handler(MessageHandler(filters.StatusUpdate.NEW_CHAT_MEMBERS, boas_vindas))
     app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), responder))
     print("🤖 Apolo iniciado...")
-    app.run_polling()
+    await app.run_polling()
 
-# === FLASK PARA MANTER ONLINE ===
-web_app = Flask(__name__)
-
-@web_app.route("/")
-def home():
-    return "Apolo está online 24h! 💙", 200
-
-# === EXECUÇÃO PRINCIPAL ===
 if __name__ == "__main__":
-    threading.Thread(target=iniciar_bot).start()
-    web_app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+    threading.Thread(target=iniciar_flask).start()
+    asyncio.run(iniciar_bot())
