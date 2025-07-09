@@ -84,12 +84,14 @@ def responder(msg):
             bot.reply_to(msg, f"{novo}, entra direito e respeita o caos. 😏", parse_mode="Markdown")
         return
 
-    # ✅ Ignorar se não mencionar o bot
-    bot_username = context.bot.username.lower()
-mencao_direta = "apolo" in texto or f"@{bot_username}" in texto
-resposta_para_apolo = message.reply_to_message and message.reply_to_message.from_user.username == bot_username
+    # ✅ Verifica se foi mencionado diretamente ou se alguém respondeu a ele
+    bot_username = bot.get_me().username.lower()
+    mencionou_apolo = "apolo" in texto or f"@{bot_username}" in texto
+    respondeu_apolo = msg.reply_to_message and \
+                      msg.reply_to_message.from_user.username and \
+                      msg.reply_to_message.from_user.username.lower() == bot_username
 
-if mencao_direta or resposta_para_apolo:
+    if not (mencionou_apolo or respondeu_apolo):
         return
 
     # ✅ Submissão ao dono
@@ -98,19 +100,19 @@ if mencao_direta or resposta_para_apolo:
         bot.reply_to(msg, random.choice(respostas_submisso_dono), parse_mode="Markdown")
         return
 
-    # ✅ Se responder o Apolo, ele rebate também
-    if msg.reply_to_message and msg.reply_to_message.from_user.username == bot.get_me().username:
+    # ✅ Se alguém respondeu o Apolo
+    if respondeu_apolo:
         time.sleep(25)
         bot.reply_to(msg, f"{nome}, {random.choice(insultos_gerais)}", parse_mode="Markdown")
         return
 
-    # ✅ Xavecos para mulheres
+    # ✅ Se for mulher, xaveco
     if is_mulher:
         time.sleep(25)
         bot.reply_to(msg, f"{nome}, {random.choice(xavecos_para_mulheres)}", parse_mode="Markdown")
         return
 
-    # ✅ Cortadas nos caras
+    # ✅ Se for homem, corte
     if is_homem:
         time.sleep(25)
         bot.reply_to(msg, f"{nome}, {random.choice(insultos_gerais)}", parse_mode="Markdown")
