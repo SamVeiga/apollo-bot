@@ -1,24 +1,20 @@
-from flask import Flask, request
-from telegram import Update, Bot
+from telegram import Update
 from telegram.ext import (
     ApplicationBuilder,
     CommandHandler,
     MessageHandler,
     ContextTypes,
     filters,
-    Dispatcher,
 )
-import os
+from flask import Flask
 import random
+import os
+import threading
 
+# === BOT ===
 TOKEN = os.getenv("BOT_TOKEN", "7559286879:AAFSeGER9vX0Yav0l5L0s7fzz3OvVVOhZPg")
-RENDER_URL = os.getenv("RENDER_EXTERNAL_URL", "")
 DONO_ID = 1481389775
 
-bot = Bot(token=TOKEN)
-app = Flask(__name__)
-
-# Frases
 FRASES_CANTADAS = [
     "Você tem um mapa? Me perdi no brilho dos seus olhos.",
     "Seu nome é Google? Porque tem tudo que eu procuro.",
@@ -37,7 +33,7 @@ FRASES_BAJULACAO = [
     "Samuel é o dono do grupo e da razão.",
 ]
 
-# Handlers
+# === COMANDOS ===
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Olá! Sou o Apolo 🤖")
 
@@ -64,26 +60,24 @@ async def responder(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             await update.message.reply_text(random.choice(FRASES_PIADAS))
 
-# Inicialização do bot + webhook
-application = ApplicationBuilder().token(TOKEN).build()
+# === INICIAR O BOT ===
+def iniciar_bot():
+    app = ApplicationBuilder().token(TOKEN).build()
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("cantada", cantada))
+    app.add_handler(CommandHandler("piada", piada))
+    app.add_handler(MessageHandler(filters.StatusUpdate.NEW_CHAT_MEMBERS, boas_vindas))
+    app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), responder))
+    print("🤖 Apolo iniciado...")
+    app.run_polling()
 
-application.add_handler(CommandHandler("start", start))
-application.add_handler(CommandHandler("cantada", cantada))
-application.add_handler(CommandHandler("piada", piada))
-application.add_handler(MessageHandler(filters.StatusUpdate.NEW_CHAT_MEMBERS, boas_vindas))
-application.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), responder))
+# === FLASK PARA MANTER ONLINE ===
+web_app = Flask(__name__)
 
-@app.route(f"/{TOKEN}", methods=["POST"])
-def webhook():
-    update = Update.de_json(request.get_json(force=True), bot)
-    application.update_queue.put_nowait(update)
-    return "ok"
-
-@app.route("/", methods=["GET"])
-async def set_webhook():
-    webhook_url = f"{RENDER_URL}/{TOKEN}"
-    await bot.set_webhook(url=webhook_url)
-    return "🚀 Webhook do Apolo configurado com sucesso!", 200
+@web_app.route("/")
+def index():
+    return "Apolo está vivo! 💙", 200
 
 if __name__ == "__main__":
-    app.run(port=int(os.environ.get("PORT", 5000)), host="0.0.0.0")
+    threading.Thread(target=iniciar_bot).start()
+    web_app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
