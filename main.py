@@ -85,7 +85,11 @@ def responder(msg):
         return
 
     # ✅ Ignorar se não mencionar o bot
-    if "apolo" not in texto and f"@{bot.get_me().username.lower()}" not in texto:
+    bot_username = context.bot.username.lower()
+mencao_direta = "apolo" in texto or f"@{bot_username}" in texto
+resposta_para_apolo = message.reply_to_message and message.reply_to_message.from_user.username == bot_username
+
+if mencao_direta or resposta_para_apolo:
         return
 
     # ✅ Submissão ao dono
