@@ -98,7 +98,7 @@ frases_contra_madonna = [
 ]
 
 DONO_ID = 1481389775
-ID_GRUPO = -1002363575666  # ID do grupo onde Apolo vai provocar Madonna a cada 20 horas
+ID_GRUPO = -1002363575666  # ID do grupo onde Apolo vai provocar Madonna a cada 1 hora
 
 @app.route(f"/{TOKEN}", methods=["POST"])
 def receber_update():
@@ -182,14 +182,14 @@ def manter_vivo():
             pass
         time.sleep(600)
 
-def iniciar_briga_automatica():
+def brigar_com_apolo():
     while True:
         try:
-            frase = frase_contra_madonna(frases_contra_madonna)
-            bot.send_message(ID_GRUPO, f"Madonna... {frase}")
+            time.sleep(72000)  # Espera 20 horas antes de provocar de novo
+            frase = random.choice(respostas_para_apolo)
+            bot.send_message(GRUPO_ID, f"@apolo_8bp_bot {frase}")
         except Exception as e:
-            print("Erro ao iniciar briga automática:", e)
-        time.sleep(72000)  # A cada 20 horas
+            print(f"Erro ao brigar com Apolo: {e}")
 
 if __name__ == "__main__":
     threading.Thread(target=manter_vivo).start()
