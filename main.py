@@ -98,6 +98,7 @@ frases_contra_madonna = [
 ]
 
 DONO_ID = 1481389775
+ID_GRUPO = -1002363575666  # ID do grupo onde Apolo vai provocar Madonna a cada 1 hora
 
 @app.route(f"/{TOKEN}", methods=["POST"])
 def receber_update():
@@ -145,7 +146,6 @@ def responder(msg):
                       msg.reply_to_message.from_user.username and \
                       msg.reply_to_message.from_user.username.lower() == bot_username
 
-    # 🔥 Se mencionou Madonna ou marcou ela
     if "madonna" in texto or "@madonna_debochada_bot" in texto:
         time.sleep(25)
         bot.reply_to(msg, f"{nome}, {frase_contra_madonna(frases_contra_madonna)}", parse_mode="Markdown")
@@ -182,6 +182,16 @@ def manter_vivo():
             pass
         time.sleep(600)
 
+def iniciar_briga_automatica():
+    while True:
+        try:
+            frase = frase_contra_madonna(frases_contra_madonna)
+            bot.send_message(ID_GRUPO, f"Madonna... {frase}")
+        except Exception as e:
+            print("Erro ao iniciar briga automática:", e)
+        time.sleep(3600)  # A cada 1 hora
+
 if __name__ == "__main__":
     threading.Thread(target=manter_vivo).start()
+    threading.Thread(target=iniciar_briga_automatica).start()
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
