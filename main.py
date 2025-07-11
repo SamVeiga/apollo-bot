@@ -199,5 +199,5 @@ def brigar_com_apolo():
 
 if __name__ == "__main__":
     threading.Thread(target=manter_vivo).start()
-    threading.Thread(target=iniciar_briga_automatica).start()
+    threading.Thread(target=brigar_com_apolo).start()
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
