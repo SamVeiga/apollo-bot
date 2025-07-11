@@ -185,11 +185,17 @@ def manter_vivo():
 def brigar_com_apolo():
     while True:
         try:
-            time.sleep(72000)  # Espera 20 horas antes de provocar de novo
-            frase = random.choice(respostas_para_apolo)
-            bot.send_message(GRUPO_ID, f"@apolo_8bp_bot {frase}")
+            agora = time.time()
+            ultima = historico.get("ultima_provocacao", 0)
+            if agora - ultima >= 72000:  # 20 horas = 72000 segundos
+                frase = random.choice(frases_contra_madonna)
+                bot.send_message(ID_GRUPO, f"@madonna_debochada_bot {frase}")
+                historico["ultima_provocacao"] = agora
+                salvar_historico()
+            time.sleep(600)  # Verifica a cada 10 minutos se já passou o tempo
         except Exception as e:
-            print(f"Erro ao brigar com Apolo: {e}")
+            print(f"Erro ao provocar a Madonna: {e}")
+            time.sleep(60)
 
 if __name__ == "__main__":
     threading.Thread(target=manter_vivo).start()
