@@ -98,7 +98,7 @@ frases_contra_madonna = [
 ]
 
 DONO_ID = 1481389775
-ID_GRUPO = -1002363575666  # ID do grupo onde Apolo vai provocar Madonna a cada 1 hora
+ID_GRUPO = -1002363575666  # ID do grupo onde Apolo vai provocar Madonna a cada 20 horas
 
 @app.route(f"/{TOKEN}", methods=["POST"])
 def receber_update():
