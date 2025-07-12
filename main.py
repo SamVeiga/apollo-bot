@@ -158,7 +158,7 @@ def responder(msg):
             novo = f"[{m.first_name}](tg://user?id={m.id})"
             time.sleep(20)
             bot.reply_to(msg, f"{novo}, entra direito e respeita o caos. 😏", parse_mode="Markdown")
-        return
+            return
 
     if msg.from_user.id == DONO_ID:
         time.sleep(20)
