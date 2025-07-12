@@ -161,9 +161,18 @@ def responder(msg):
         return
 
     if msg.from_user.id == DONO_ID:
+    bot_foi_mentionado = False
+    if msg.entities:
+        for entity in msg.entities:
+            if entity.type == "mention":
+                texto_entidade = msg.text[entity.offset:entity.offset + entity.length]
+                if texto_entidade.lower() == f"@{bot.get_me().username.lower()}":
+                    bot_foi_mentionado = True
+                    break
+    if bot_foi_mentionado:
         time.sleep(20)
         bot.reply_to(msg, random.choice(respostas_submisso_dono), parse_mode="Markdown")
-        return
+    return
 
     if username in MULHERES:
         time.sleep(20)
