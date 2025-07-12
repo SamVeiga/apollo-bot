@@ -165,7 +165,7 @@ if msg.from_user.id == DONO_ID:
     bot.reply_to(msg, random.choice(respostas_submisso_dono), parse_mode="Markdown")
     return
 
-    if username in MULHERES:
+if username in MULHERES:
     time.sleep(20)
     frase = random.choice(xavecos_para_mulheres)
     if username not in historico["frases_mulheres"]:
