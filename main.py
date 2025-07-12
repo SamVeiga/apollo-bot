@@ -24,7 +24,7 @@ except:
 # === CONFIGURAVEIS ===
 DONO_ID = 1481389775
 ID_GRUPO = -1002363575666
-MULHERES = ["@KarolinneDiass", "@FernandaCarvalho16"]  # Substitua pelos @ reais das mulheres
+MULHERES = ["@KarolinneDiass", "@FernandaCarvalho16", "@tainaranordi"]  # Substitua pelos @ reais das mulheres
 HOMENS = ["@Rafaael80", "@Diegomota0"]  # Substitua pelos @ reais dos homens
 
 # === FRASES ===
