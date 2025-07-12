@@ -161,9 +161,9 @@ def responder(msg):
             return
 
     if msg.from_user.id == DONO_ID:
-        time.sleep(20)
-        bot.reply_to(msg, random.choice(respostas_submisso_dono), parse_mode="Markdown")
-        return
+    time.sleep(20)
+    bot.reply_to(msg, random.choice(respostas_submisso_dono), parse_mode="Markdown")
+    return
 
     if username in MULHERES:
     time.sleep(20)
