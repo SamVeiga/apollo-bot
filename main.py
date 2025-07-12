@@ -160,7 +160,7 @@ def responder(msg):
             bot.reply_to(msg, f"{novo}, entra direito e respeita o caos. 😏", parse_mode="Markdown")
         return
 
-    if msg.from_user.id == DONO_ID:
+if msg.from_user.id == DONO_ID:
     bot_foi_mentionado = False
     if msg.entities:
         for entity in msg.entities:
