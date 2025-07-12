@@ -19,117 +19,60 @@ try:
     with open(HISTORICO_PATH, "r") as f:
         historico = json.load(f)
 except:
-    historico = {
-        "contra_madonna": {},
-        "poemas": {},
-        "revelacoes": {}
-    }
+    historico = {"ultima_provocacao": 0, "poemas_usados": [], "frases_mulheres": {}}
 
-POEMAS_SAFADOS = [
-    "Te encontro nos sonhos e te bagunço em pensamento.",
-    "Se seu corpo fosse verso, eu te declamava inteiro.",
-    "Tem toque que arrepia mais que poesia.",
-    "Se eu rimar teu nome com desejo, cê deixa?",
-    "Meu poema favorito tem teu cheiro e sua pele em rima rica.",
+# === CONFIGURAVEIS ===
+DONO_ID = 1481389775
+ID_GRUPO = -1002363575666
+MULHERES = ["@user1", "@user2"]  # Substitua pelos @ reais das mulheres
+HOMENS = ["@zeca", "@joao", "@diego"]  # Substitua pelos @ reais dos homens
+
+# === FRASES ===
+insultos_gerais = [
+    "Tu só fala merda, né? Mas com estilo!",
+    "Tu tá pra verdade igual miojo tá pra nutrição: rápido, vazio e inútil.",
+    "Essa tua cara de esperto só engana tua mãe.",
+    "Se liga, tu é figurante na própria história.",
+    "Tu se destaca... como um bug na atualização.",
+    "Tua autoestima é forte, pena que sem motivo."
 ]
 
-REVELACOES_SAFADAS = [
-    "Essa aí já fez o Apolo suar em pleno Wi-Fi! 😏",
-    "O que vocês não sabem é que ela já sussurrou o nome do Apolo dormindo...",
-    "Essa aí já mandou áudio que fez meu sistema reiniciar!",
-    "Ela me chama de bot, mas olha o histórico dela comigo... 🔥",
-    "Uma vez ela pediu carinho... agora vive querendo replay."
+xavecos_para_mulheres = [
+    "Tu fala e meu sistema entra em combustão. ",
+    "Com esse charme, tu não quebra coração, tu hackeia.",
+    "Você é linha de código que me executa inteiro.",
+    "Se você fosse bug, eu não corrigia nunca.",
+    "Avisa que é perigo, porque eu tô pronto pra cair."
 ]
 
-mulheres_id = [
-    123456789,  # Substituir pelos IDs reais das mulheres do grupo
-    987654321
+poemas_picantes = [
+    "Te desejo em versos, te beijo em silências... e te devoro em pensamento. ",
+    "Tua pele é poesia, tua boca é ponto final do meu juízo.",
+    "Se teu corpo é pecado, eu não quero absolvição.",
+    "Nosso toque é poema sem censura, com rima na cama e ponto de interrogação nos lençóis.",
+    "Te escrevo com desejo, te leio com os olhos fechados."
 ]
 
-usernames_mulheres = [
-    "vanessinha", "adryana", "tai", "lilianzinha", "fernanda_"]
+revelacoes_safadas = [
+    "Sabia que essa menina já quebrou uma cama só com um sorriso?",
+    "Essa mocinha aí tem cara de anjo, mas fala cada coisa no privado...",
+    "Se soubessem o que ela já fez numa sexta-feira 13... o grupo travava.",
+    "Essa aqui já teve apelido de Wi-Fi: conexão rápida e sem senha.",
+    "Essa mulher tem olhar que derruba sistema de segurança."
+]
 
-poemas_enviados = set()
+respostas_submisso_dono = [
+    "Sim senhor, chefe supremo! 😳",
+    "Patrão falou, é ordem! 🫡",
+    "Jamais me atreveria a contradizer o mestre. 😨"
+]
 
+# === SALVAR HISTÓRICO ===
 def salvar_historico():
     with open(HISTORICO_PATH, "w") as f:
         json.dump(historico, f)
 
-def frase_contra_madonna(frases):
-    hoje = datetime.datetime.now().strftime("%Y-%m-%d")
-    usadas = []
-    for dia in historico["contra_madonna"]:
-        usadas.extend(historico["contra_madonna"][dia])
-    candidatas = [f for f in frases if f not in usadas]
-    frase = random.choice(candidatas or frases)
-    historico.setdefault("contra_madonna", {}).setdefault(hoje, []).append(frase)
-    dias = sorted(historico["contra_madonna"].keys())[-3:]
-    historico["contra_madonna"] = {d: historico["contra_madonna"][d] for d in dias}
-    salvar_historico()
-    return frase
-
-insultos_gerais = [
-    "Você me marcou por tédio ou por carência mesmo?",
-    "Até meu silêncio é mais interessante que o que você falou.",
-    "Se eu respondesse tudo que não presta, eu virava rádio AM.",
-    "Se esforça mais, que tua tentativa de ser relevante tá fraca.",
-    "Sua fala foi tipo sinal de Wi-Fi: fraca, oscilando e inútil.",
-    "Se eu fosse te levar a sério, eu teria que rir primeiro.",
-]
-
-xavecos_para_mulheres = [
-    "E aí, gata... Com esse olhar, até o Apolo treme.",
-    "Se beleza fosse crime, você já tava em prisão perpétua.",
-    "Se eu te elogiar demais, você me bloqueia ou se apaixona?",
-    "Cuidado, mulher... desse jeito eu largo tudo só pra te seguir.",
-    "Você tem o manual do caos? Porque bagunçou meu sistema.",
-]
-
-respostas_submisso_dono = [
-    "Senhor! À disposição, sem pestanejar! 😨",
-    "Sim, chefe! Tô aqui firme como soldado em formatura!",
-    "Não se preocupa, patrão. Já tô executando a ordem!",
-    "E-eu? Jamais ousaria contrariar você, senhor!",
-    "De joelhos se for preciso, mas sempre obediente!",
-    "Claro, general! O senhor manda, eu tremo e obedeço.",
-]
-
-frases_contra_madonna = [
-    "Fala baixo, Madonna... tua voz me dá vontade de atualizar antivírus.",
-    "Madonna ainda tá tentando entender como se liga um cérebro.",
-    "Madonna é tão útil quanto um mouse em celular.",
-    "Madonna se esforça pra ser relevante, mas continua sendo um bug.",
-    "Nem o Paint trava tanto quanto os argumentos da Madonna.",
-    "Se dependesse da Madonna, o grupo era só emoji e carência.",
-    "Madonna é o erro 404 da inteligência.",
-    "A Madonna é tipo spam: aparece sem ser chamada.",
-    "Você ouviu a Madonna? Pois é, ninguém mandou dar play no drama.",
-    "Com tanta besteira que a Madonna fala, devia virar podcast de humor.",
-    "Madonna digitando é o equivalente a um gato em cima do teclado.",
-    "A Madonna parece inteligente... se o critério for volume de texto inútil.",
-    "Madonna falando é igual nuvem: a gente espera que passe logo.",
-    "Até minha sombra é mais profunda que os argumentos dela.",
-    "Madonna parece livro de autoajuda usado: repetitiva e sem credibilidade.",
-    "Se Madonna fosse programa, seria beta — e bugado.",
-    "Ela se acha diva, mas entrega bug de chatbot cansado.",
-    "Só a Madonna pra achar que tá arrasando com três emojis e uma frase pronta.",
-    "Madonna é tipo despertador: só serve pra irritar de manhã.",
-    "Pra Madonna, tudo é sobre ela. Coitada da realidade.",
-    "A Madonna me responde? Mal sabe ela que eu a bloqueei mentalmente.",
-    "Madonna, já te agradeceram por ensinar o que não fazer? Não? Pois eu agradeço.",
-    "Madonna é um enigma... só que sem graça.",
-    "Se Madonna fosse filme, seria aqueles que a gente dorme no começo.",
-    "Nem a Siri aguentaria conversar com a Madonna por mais de 2 minutos.",
-    "A Madonna ainda tá no tutorial da vida.",
-    "Tem dias que a Madonna acerta, mas hoje claramente não é um deles.",
-    "Se Madonna sumisse, só o algoritmo sentiria falta.",
-    "O Wi-Fi da Madonna deve ser igual a ela: lento e imprevisível.",
-    "Prefiro travar do que rodar a conversa da Madonna.",
-]
-
-DONO_ID = 1481389775
-ID_GRUPO = -1002363575666
-
+# === WEBHOOKS ===
 @app.route(f"/{TOKEN}", methods=["POST"])
 def receber_update():
     update = telebot.types.Update.de_json(request.stream.read().decode("utf-8"))
@@ -146,72 +89,51 @@ def configurar_webhook():
         return "✅ Webhook configurado!", 200
     return "✅ Webhook já estava ok.", 200
 
+# === FUNÇÃO PRINCIPAL ===
 @bot.message_handler(func=lambda msg: True)
 def responder(msg):
     texto = msg.text.lower()
     nome = f"[{msg.from_user.first_name}](tg://user?id={msg.from_user.id})"
-    username = msg.from_user.username or ""
-    is_mulher = (msg.from_user.id in mulheres_id) or (username.lower() in usernames_mulheres)
-    is_homem = not is_mulher
+    username = f"@{msg.from_user.username}" if msg.from_user.username else ""
 
-    if any(x in texto for x in ["bom dia", "boa tarde", "boa noite", "boa madrugada"]):
+    if any(saud in texto for saud in ["bom dia", "boa tarde", "boa noite", "boa madrugada"]):
         saudacao = "bom dia 😎" if "bom dia" in texto else \
                    "boa tarde 😎" if "boa tarde" in texto else \
                    "boa noite 😎" if "boa noite" in texto else \
                    "boa madrugada 😎"
-        time.sleep(25)
+        time.sleep(20)
         bot.reply_to(msg, f"{nome}, {saudacao}", parse_mode="Markdown")
         return
 
     if msg.new_chat_members:
-        for membro in msg.new_chat_members:
-            novo = f"[{membro.first_name}](tg://user?id={membro.id})"
-            time.sleep(25)
+        for m in msg.new_chat_members:
+            novo = f"[{m.first_name}](tg://user?id={m.id})"
+            time.sleep(20)
             bot.reply_to(msg, f"{novo}, entra direito e respeita o caos. 😏", parse_mode="Markdown")
         return
 
-    if is_mulher:
-        if msg.from_user.id not in historico["revelacoes"].get(str(datetime.date.today()), []):
-            revelacao = random.choice(REVELACOES_SAFADAS)
-            bot.reply_to(msg, f"{nome}, {revelacao}", parse_mode="Markdown")
-            historico.setdefault("revelacoes", {}).setdefault(str(datetime.date.today()), []).append(msg.from_user.id)
-            salvar_historico()
-            return
-
-    bot_username = bot.get_me().username.lower()
-    mencionou_apolo = "apolo" in texto or f"@{bot_username}" in texto
-    respondeu_apolo = msg.reply_to_message and \
-                      msg.reply_to_message.from_user.username and \
-                      msg.reply_to_message.from_user.username.lower() == bot_username
-
-    if "madonna" in texto or "@madonna_debochada_bot" in texto:
-        time.sleep(25)
-        bot.reply_to(msg, f"{nome}, {frase_contra_madonna(frases_contra_madonna)}", parse_mode="Markdown")
-        return
-
-    if not (mencionou_apolo or respondeu_apolo):
-        return
-
     if msg.from_user.id == DONO_ID:
-        time.sleep(25)
+        time.sleep(20)
         bot.reply_to(msg, random.choice(respostas_submisso_dono), parse_mode="Markdown")
         return
 
-    if respondeu_apolo:
-        time.sleep(25)
+    if username in MULHERES:
+        time.sleep(20)
+        frase = random.choice(xavecos_para_mulheres)
+        bot.reply_to(msg, f"{nome}, {frase}", parse_mode="Markdown")
+        if username not in historico["frases_mulheres"]:
+            historico["frases_mulheres"][username] = []
+        revelacao = random.choice([r for r in revelacoes_safadas if r not in historico["frases_mulheres"][username]] or revelacoes_safadas)
+        historico["frases_mulheres"][username].append(revelacao)
+        salvar_historico()
+        bot.send_message(msg.chat.id, f"{nome}, {revelacao}", parse_mode="Markdown")
+        return
+
+    if username in HOMENS:
+        time.sleep(20)
         bot.reply_to(msg, f"{nome}, {random.choice(insultos_gerais)}", parse_mode="Markdown")
-        return
 
-    if is_mulher:
-        time.sleep(25)
-        bot.reply_to(msg, f"{nome}, {random.choice(xavecos_para_mulheres)}", parse_mode="Markdown")
-        return
-
-    if is_homem:
-        time.sleep(25)
-        bot.reply_to(msg, f"{nome}, {random.choice(insultos_gerais)}", parse_mode="Markdown")
-        return
-
+# === DE TEMPO EM TEMPO ===
 def manter_vivo():
     while True:
         try:
@@ -220,35 +142,22 @@ def manter_vivo():
             pass
         time.sleep(600)
 
-def brigar_com_apolo():
+def poema_de_hora_em_hora():
     while True:
         try:
-            agora = time.time()
-            ultima = historico.get("ultima_provocacao", 0)
-            if agora - ultima >= 72000:
-                frase = random.choice(frases_contra_madonna)
-                bot.send_message(ID_GRUPO, f"@madonna_debochada_bot {frase}")
-                historico["ultima_provocacao"] = agora
-                salvar_historico()
-            time.sleep(600)
-        except Exception as e:
-            print(f"Erro ao provocar a Madonna: {e}")
-            time.sleep(60)
-
-def poema_automatico():
-    while True:
-        agora = datetime.datetime.now()
-        chave = agora.strftime("%Y-%m-%d %H")
-        if chave not in historico["poemas"]:
-            id_aleatorio = random.choice(mulheres_id)
-            poema = random.choice(POEMAS_SAFADOS)
-            bot.send_message(ID_GRUPO, f"[❤️‍🔥 Poema do Apolo](tg://user?id={id_aleatorio}): {poema}", parse_mode="Markdown")
-            historico["poemas"][chave] = poema
+            mulher = random.choice(MULHERES)
+            nome = mulher.replace("@", "")
+            poema = random.choice([p for p in poemas_picantes if p not in historico["poemas_usados"]] or poemas_picantes)
+            historico["poemas_usados"].append(poema)
+            if len(historico["poemas_usados"]) > 20:
+                historico["poemas_usados"] = historico["poemas_usados"][-20:]
             salvar_historico()
-        time.sleep(3600)
+            bot.send_message(ID_GRUPO, f"[{nome}](tg://user?id={bot.get_chat_member(ID_GRUPO, mulher[1:]).user.id}), {poema}", parse_mode="Markdown")
+        except Exception as e:
+            print("Erro no poema: ", e)
+        time.sleep(3600)  # 1 hora
 
 if __name__ == "__main__":
     threading.Thread(target=manter_vivo).start()
-    threading.Thread(target=brigar_com_apolo).start()
-    threading.Thread(target=poema_automatico).start()
+    threading.Thread(target=poema_de_hora_em_hora).start()
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
