@@ -158,30 +158,31 @@ def responder(msg):
             novo = f"[{m.first_name}](tg://user?id={m.id})"
             time.sleep(20)
             bot.reply_to(msg, f"{novo}, entra direito e respeita o caos. 😏", parse_mode="Markdown")
-            return
+        return
 
-if msg.from_user.id == DONO_ID:
-    time.sleep(20)
-    bot.reply_to(msg, random.choice(respostas_submisso_dono), parse_mode="Markdown")
-    return
+    if msg.from_user.id == DONO_ID:
+        time.sleep(20)
+        bot.reply_to(msg, random.choice(respostas_submisso_dono), parse_mode="Markdown")
+        return
 
-if username in MULHERES:
-    time.sleep(20)
-    frase = random.choice(xavecos_para_mulheres)
-    if username not in historico["frases_mulheres"]:
-        historico["frases_mulheres"][username] = []
-    revelacao = random.choice(
-        [r for r in revelacoes_safadas if r not in historico["frases_mulheres"][username]]
-        or revelacoes_safadas
-    )
-    historico["frases_mulheres"][username].append(revelacao)
-    salvar_historico()
-    bot.reply_to(msg, f"{nome}, {frase} {revelacao}", parse_mode="Markdown")
-    return
+    if username in MULHERES:
+        time.sleep(20)
+        frase = random.choice(xavecos_para_mulheres)
+        if username not in historico["frases_mulheres"]:
+            historico["frases_mulheres"][username] = []
+        revelacao = random.choice(
+            [r for r in revelacoes_safadas if r not in historico["frases_mulheres"][username]]
+            or revelacoes_safadas
+        )
+        historico["frases_mulheres"][username].append(revelacao)
+        salvar_historico()
+        bot.reply_to(msg, f"{nome}, {frase} {revelacao}", parse_mode="Markdown")
+        return
 
     if username in HOMENS:
         time.sleep(20)
         bot.reply_to(msg, f"{nome}, {random.choice(insultos_gerais)}", parse_mode="Markdown")
+        return
 
 # === DE TEMPO EM TEMPO ===
 def manter_vivo():
