@@ -166,16 +166,18 @@ def responder(msg):
         return
 
     if username in MULHERES:
-        time.sleep(20)
-        frase = random.choice(xavecos_para_mulheres)
-        bot.reply_to(msg, f"{nome}, {frase}", parse_mode="Markdown")
-        if username not in historico["frases_mulheres"]:
-            historico["frases_mulheres"][username] = []
-        revelacao = random.choice([r for r in revelacoes_safadas if r not in historico["frases_mulheres"][username]] or revelacoes_safadas)
-        historico["frases_mulheres"][username].append(revelacao)
-        salvar_historico()
-        bot.send_message(msg.chat.id, f"{nome}, {revelacao}", parse_mode="Markdown")
-        return
+    time.sleep(20)
+    frase = random.choice(xavecos_para_mulheres)
+    if username not in historico["frases_mulheres"]:
+        historico["frases_mulheres"][username] = []
+    revelacao = random.choice(
+        [r for r in revelacoes_safadas if r not in historico["frases_mulheres"][username]]
+        or revelacoes_safadas
+    )
+    historico["frases_mulheres"][username].append(revelacao)
+    salvar_historico()
+    bot.reply_to(msg, f"{nome}, {frase} {revelacao}", parse_mode="Markdown")
+    return
 
     if username in HOMENS:
         time.sleep(20)
