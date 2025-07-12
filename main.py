@@ -19,7 +19,37 @@ try:
     with open(HISTORICO_PATH, "r") as f:
         historico = json.load(f)
 except:
-    historico = {"contra_madonna": {}}
+    historico = {
+        "contra_madonna": {},
+        "poemas": {},
+        "revelacoes": {}
+    }
+
+POEMAS_SAFADOS = [
+    "Te encontro nos sonhos e te bagunço em pensamento.",
+    "Se seu corpo fosse verso, eu te declamava inteiro.",
+    "Tem toque que arrepia mais que poesia.",
+    "Se eu rimar teu nome com desejo, cê deixa?",
+    "Meu poema favorito tem teu cheiro e sua pele em rima rica.",
+]
+
+REVELACOES_SAFADAS = [
+    "Essa aí já fez o Apolo suar em pleno Wi-Fi! 😏",
+    "O que vocês não sabem é que ela já sussurrou o nome do Apolo dormindo...",
+    "Essa aí já mandou áudio que fez meu sistema reiniciar!",
+    "Ela me chama de bot, mas olha o histórico dela comigo... 🔥",
+    "Uma vez ela pediu carinho... agora vive querendo replay."
+]
+
+mulheres_id = [
+    123456789,  # Substituir pelos IDs reais das mulheres do grupo
+    987654321
+]
+
+usernames_mulheres = [
+    "vanessinha", "adryana", "tai", "lilianzinha", "fernanda_"]
+
+poemas_enviados = set()
 
 def salvar_historico():
     with open(HISTORICO_PATH, "w") as f:
@@ -98,7 +128,7 @@ frases_contra_madonna = [
 ]
 
 DONO_ID = 1481389775
-ID_GRUPO = -1002363575666  # ID do grupo onde Apolo vai provocar Madonna a cada 20 horas
+ID_GRUPO = -1002363575666
 
 @app.route(f"/{TOKEN}", methods=["POST"])
 def receber_update():
@@ -121,7 +151,7 @@ def responder(msg):
     texto = msg.text.lower()
     nome = f"[{msg.from_user.first_name}](tg://user?id={msg.from_user.id})"
     username = msg.from_user.username or ""
-    is_mulher = username.lower().endswith(("a", "i", "y"))
+    is_mulher = (msg.from_user.id in mulheres_id) or (username.lower() in usernames_mulheres)
     is_homem = not is_mulher
 
     if any(x in texto for x in ["bom dia", "boa tarde", "boa noite", "boa madrugada"]):
@@ -139,6 +169,14 @@ def responder(msg):
             time.sleep(25)
             bot.reply_to(msg, f"{novo}, entra direito e respeita o caos. 😏", parse_mode="Markdown")
         return
+
+    if is_mulher:
+        if msg.from_user.id not in historico["revelacoes"].get(str(datetime.date.today()), []):
+            revelacao = random.choice(REVELACOES_SAFADAS)
+            bot.reply_to(msg, f"{nome}, {revelacao}", parse_mode="Markdown")
+            historico.setdefault("revelacoes", {}).setdefault(str(datetime.date.today()), []).append(msg.from_user.id)
+            salvar_historico()
+            return
 
     bot_username = bot.get_me().username.lower()
     mencionou_apolo = "apolo" in texto or f"@{bot_username}" in texto
@@ -187,17 +225,30 @@ def brigar_com_apolo():
         try:
             agora = time.time()
             ultima = historico.get("ultima_provocacao", 0)
-            if agora - ultima >= 72000:  # 20 horas = 72000 segundos
+            if agora - ultima >= 72000:
                 frase = random.choice(frases_contra_madonna)
                 bot.send_message(ID_GRUPO, f"@madonna_debochada_bot {frase}")
                 historico["ultima_provocacao"] = agora
                 salvar_historico()
-            time.sleep(600)  # Verifica a cada 10 minutos se já passou o tempo
+            time.sleep(600)
         except Exception as e:
             print(f"Erro ao provocar a Madonna: {e}")
             time.sleep(60)
 
+def poema_automatico():
+    while True:
+        agora = datetime.datetime.now()
+        chave = agora.strftime("%Y-%m-%d %H")
+        if chave not in historico["poemas"]:
+            id_aleatorio = random.choice(mulheres_id)
+            poema = random.choice(POEMAS_SAFADOS)
+            bot.send_message(ID_GRUPO, f"[❤️‍🔥 Poema do Apolo](tg://user?id={id_aleatorio}): {poema}", parse_mode="Markdown")
+            historico["poemas"][chave] = poema
+            salvar_historico()
+        time.sleep(3600)
+
 if __name__ == "__main__":
     threading.Thread(target=manter_vivo).start()
     threading.Thread(target=brigar_com_apolo).start()
+    threading.Thread(target=poema_automatico).start()
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
