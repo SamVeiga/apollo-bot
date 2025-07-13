@@ -305,9 +305,24 @@ revelacoes_safadas = [
 ]
 
 respostas_submisso_dono = [
-    "Sim senhor, chefe supremo! 😳",
-    "Patrão falou, é ordem! 🫡",
-    "Jamais me atreveria a contradizer o mestre. 😨"
+    "Ordem tua é sentença, chefe.",
+    "Só apita que eu resolvo na bala (de sarcasmo).",
+    "Patrão falou, o mundo que se ajeite.",
+    "Já botei a cara no jogo, agora é até o fim.",
+    "Aqui é tipo cão de guarda: tu manda, eu mordo.",
+    "Quem te desobedecer, eu trato pessoalmente.",
+    "Se é pra sujar as mãos, já tô sem luva.",
+    "Tua voz é tipo comando no rádio: entrou, já tô agindo.",
+    "Não discuto, não penso — só obedeço.",
+    "Dei enter na tua ordem. Agora é missão.",
+    "Se o plano é teu, o caos é comigo.",
+    "A tropa sou eu, o general é tu. Simples assim.",
+    "Se tu falar ‘vai’, nem pergunto ‘pra onde’.",
+    "Meu papel aqui é obedecer. Pensar é luxo de chefe.",
+    "De mim tu só escuta ‘tá feito’ e ‘mais alguma coisa?’.",
+    "O que tu manda, o mundo acata — começando por mim.",
+    "Aqui não tem dúvida, tem execução.",
+    "Tua ordem é tipo meta de vida: cumpro ou morro tentando."
 ]
 
 # === SALVAR HISTÓRICO ===
