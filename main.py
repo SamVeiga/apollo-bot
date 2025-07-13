@@ -224,45 +224,45 @@ def registrar_insulto(usuario):
     salvar_historico()
 
 
-if username in HOMENS:
-    username_bot = f"@{bot.get_me().username.lower()}"
-    texto_minusculo = msg.text.lower()
-    mencionou_bot = False
+    if username in HOMENS:
+        username_bot = f"@{bot.get_me().username.lower()}"
+        texto_minusculo = msg.text.lower()
+        mencionou_bot = False
 
-    if msg.entities:
-        for entity in msg.entities:
-            if entity.type == "mention":
-                texto_entidade = msg.text[entity.offset:entity.offset + entity.length].lower()
-                if texto_entidade == username_bot:
-                    mencionou_bot = True
-                    break
+        if msg.entities:
+            for entity in msg.entities:
+                if entity.type == "mention":
+                    texto_entidade = msg.text[entity.offset:entity.offset + entity.length].lower()
+                    if texto_entidade == username_bot:
+                        mencionou_bot = True
+                        break
 
-    if not mencionou_bot and "apollo" in texto_minusculo:
-        mencionou_bot = True
+        if not mencionou_bot and "apollo" in texto_minusculo:
+            mencionou_bot = True
 
-    if mencionou_bot:
-        # Responde insultando SEM limite se mencionou o bot
-        time.sleep(20)
-        bot.reply_to(msg, f"{nome}, {random.choice(insultos_gerais)}", parse_mode="Markdown")
-    else:
-        # Responde insultando no máximo 2x por dia se não mencionar
-        if pode_insultar_hoje(username):
-            frase = random.choice([
-                i for i in insultos_gerais
-                if i not in historico.get("insultos_usados", [])
-            ] or insultos_gerais)
+        if mencionou_bot:
+            # Responde insultando SEM limite se mencionou o bot
+            time.sleep(20)
+            bot.reply_to(msg, f"{nome}, {random.choice(insultos_gerais)}", parse_mode="Markdown")
+        else:
+            # Responde insultando no máximo 2x por dia se não mencionar
+            if pode_insultar_hoje(username):
+                frase = random.choice([
+                    i for i in insultos_gerais
+                    if i not in historico.get("insultos_usados", [])
+                ] or insultos_gerais)
 
-            if "insultos_usados" not in historico:
-                historico["insultos_usados"] = []
-            historico["insultos_usados"].append(frase)
-            # mantém últimos 20 para evitar repetição próxima
-            historico["insultos_usados"] = historico["insultos_usados"][-20:]
+                if "insultos_usados" not in historico:
+                    historico["insultos_usados"] = []
+                historico["insultos_usados"].append(frase)
+                # mantém últimos 20 para evitar repetição próxima
+                historico["insultos_usados"] = historico["insultos_usados"][-20:]
 
-            bot.reply_to(msg, f"{nome}, {frase}", parse_mode="Markdown")
-            registrar_insulto(username)
+                bot.reply_to(msg, f"{nome}, {frase}", parse_mode="Markdown")
+                registrar_insulto(username)
 
-    salvar_historico()
-    return
+        salvar_historico()
+        return
 
 # === DE TEMPO EM TEMPO ===
 def manter_vivo():
