@@ -452,6 +452,7 @@ def responder(msg):
 
 from datetime import date
 
+username = msg.from_user.username if msg.from_user.username else str(msg.from_user.id)
 if username in MULHERES:
     hoje = date.today().isoformat()
     if "respostas_mulheres" not in historico:
