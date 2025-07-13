@@ -196,10 +196,77 @@ def responder(msg):
         bot.reply_to(msg, f"{nome}, {frase} {revelacao}", parse_mode="Markdown")
         return
 
-    if username in HOMENS:
+from datetime import date, timedelta
+
+# Função auxiliar para verificar se insulto pode ser enviado hoje
+def pode_insultar_hoje(usuario):
+    hoje = date.today().isoformat()
+    tres_dias_atras = (date.today() - timedelta(days=2)).isoformat()
+
+    # inicializa se não existir
+    if "insultos_homens" not in historico:
+        historico["insultos_homens"] = {}
+
+    if usuario not in historico["insultos_homens"]:
+        historico["insultos_homens"][usuario] = []
+
+    # filtra insultos dos últimos 3 dias
+    historico["insultos_homens"][usuario] = [
+        data for data in historico["insultos_homens"][usuario]
+        if data >= tres_dias_atras
+    ]
+
+    # permite até 2 insultos por período de 3 dias (inclui hoje)
+    return len(historico["insultos_homens"][usuario]) < 2
+
+# Função para registrar insulto aplicado hoje para o usuário
+def registrar_insulto(usuario):
+    hoje = date.today().isoformat()
+    historico["insultos_homens"][usuario].append(hoje)
+    salvar_historico()
+
+
+if username in HOMENS:
+    # Verifica se mencionou o bot (@ ou "apollo")
+    username_bot = f"@{bot.get_me().username.lower()}"
+    texto_minusculo = msg.text.lower()
+    mencionou_bot = False
+
+    if msg.entities:
+        for entity in msg.entities:
+            if entity.type == "mention":
+                texto_entidade = msg.text[entity.offset:entity.offset + entity.length].lower()
+                if texto_entidade == username_bot:
+                    mencionou_bot = True
+                    break
+
+    if not mencionou_bot and "apollo" in texto_minusculo:
+        mencionou_bot = True
+
+    if mencionou_bot:
+        # Responde insultando sempre que for mencionado
         time.sleep(20)
         bot.reply_to(msg, f"{nome}, {random.choice(insultos_gerais)}", parse_mode="Markdown")
-        return
+    else:
+        # Responde insultando apenas até 2 vezes por 3 dias sem mencionar o bot
+        if pode_insultar_hoje(username):
+            frase = random.choice([
+                i for i in insultos_gerais
+                if i not in historico.get("insultos_usados", [])
+            ] or insultos_gerais)
+
+            # Atualiza insultos usados global para não repetir na sessão 3 dias
+            if "insultos_usados" not in historico:
+                historico["insultos_usados"] = []
+            historico["insultos_usados"].append(frase)
+            # mantém só últimos 20 insultos para controle
+            historico["insultos_usados"] = historico["insultos_usados"][-20:]
+
+            bot.reply_to(msg, f"{nome}, {frase}", parse_mode="Markdown")
+            registrar_insulto(username)
+            salvar_historico()
+
+    return
 
 # === DE TEMPO EM TEMPO ===
 def manter_vivo():
