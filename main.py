@@ -450,8 +450,38 @@ def responder(msg):
             bot.reply_to(msg, random.choice(respostas_submisso_dono), parse_mode="Markdown")
         return
 
-    if username in MULHERES:
-        time.sleep(20)
+from datetime import date
+
+if username in MULHERES:
+    hoje = date.today().isoformat()
+    if "respostas_mulheres" not in historico:
+        historico["respostas_mulheres"] = {}
+    if username not in historico["respostas_mulheres"]:
+        historico["respostas_mulheres"][username] = []
+
+    # Remove registros antigos, deixa só os do dia
+    historico["respostas_mulheres"][username] = [
+        data for data in historico["respostas_mulheres"][username]
+        if data == hoje
+    ]
+
+    # Detectar se houve menção direta ao Apolo
+    username_bot = f"@{bot.get_me().username.lower()}"
+    mencionou_bot = False
+
+    if msg.entities:
+        for entity in msg.entities:
+            if entity.type == "mention":
+                texto_entidade = msg.text[entity.offset:entity.offset + entity.length]
+                if texto_entidade.lower() == username_bot:
+                    mencionou_bot = True
+                    break
+
+    if not mencionou_bot and "apollo" in msg.text.lower():
+        mencionou_bot = True
+
+    # Se mencionou, responde SEM limite
+    if mencionou_bot or len(historico["respostas_mulheres"][username]) < 2:
         frase = random.choice(xavecos_para_mulheres)
         if username not in historico["frases_mulheres"]:
             historico["frases_mulheres"][username] = []
@@ -460,9 +490,11 @@ def responder(msg):
             or revelacoes_safadas
         )
         historico["frases_mulheres"][username].append(revelacao)
+        historico["respostas_mulheres"][username].append(hoje)
         salvar_historico()
+        time.sleep(20)
         bot.reply_to(msg, f"{nome}, {frase} {revelacao}", parse_mode="Markdown")
-        return
+    return
 
 from datetime import date, timedelta
 
