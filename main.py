@@ -496,7 +496,7 @@ def responder(msg):
             mencionou_bot = True
 
         # Se mencionou, ou se ainda pode responder hoje
-        if mencionou_bot or len(historico["respostas_mulheres"][id_unico]) < 2:
+        if mencionou_bot or len(historico["respostas_mulheres"][id_unico]) < 5:
             frase = random.choice(xavecos_para_mulheres)
             if id_unico not in historico["frases_mulheres"]:
                 historico["frases_mulheres"][id_unico] = []
@@ -514,7 +514,7 @@ def responder(msg):
     if any(saud in texto for saud in ["bom dia", "boa tarde", "boa noite", "boa madrugada"]):
         saudacao = "bom dia 😎" if "bom dia" in texto else \
                    "boa tarde 😎" if "boa tarde" in texto else \
-                   "boa noite 😎" if "boa noite" in texto else \
+                   "boa noite, tou carentee 🥺" if "boa noite" in texto else \
                    "boa madrugada 😎"
         time.sleep(20)
         bot.reply_to(msg, f"{nome}, {saudacao}", parse_mode="Markdown")
@@ -568,7 +568,7 @@ def pode_insultar_hoje(usuario):
     ]
 
     # permite até 2 insultos por dia
-    return len(historico["insultos_homens"][usuario]) < 2
+    return len(historico["insultos_homens"][usuario]) < 3
 
 # Função para registrar insulto aplicado hoje para o usuário
 def registrar_insulto(usuario):
@@ -624,7 +624,7 @@ def manter_vivo():
             requests.get(RENDER_URL)
         except:
             pass
-        time.sleep(600)
+        time.sleep(200)
 
 def poema_de_hora_em_hora():
     while True:
@@ -633,7 +633,7 @@ def poema_de_hora_em_hora():
             nome = mulher.replace("@", "")
             poema = random.choice([p for p in poemas_picantes if p not in historico["poemas_usados"]] or poemas_picantes)
             historico["poemas_usados"].append(poema)
-            if len(historico["poemas_usados"]) > 20:
+            if len(historico["poemas_usados"]) > 30:
                 historico["poemas_usados"] = historico["poemas_usados"][-20:]
             salvar_historico()
             bot.send_message(ID_GRUPO, f"[{nome}](tg://user?id={bot.get_chat_member(ID_GRUPO, mulher[1:]).user.id}), {poema}", parse_mode="Markdown")
