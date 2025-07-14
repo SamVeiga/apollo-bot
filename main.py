@@ -526,27 +526,26 @@ def responder(msg):
             time.sleep(20)
             bot.reply_to(msg, f"{novo}, entra direito e respeita o caos. 😏", parse_mode="Markdown")
         return
+        
+# Verificação final: submissão ao dono
+if msg.from_user.id == DONO_ID:
+    username_bot = f"@{bot.get_me().username.lower()}"
+    mencionou_bot = False
 
-    if msg.from_user.id == DONO_ID:
-        username_bot = f"@{bot.get_me().username.lower()}"
-        mencionou_bot = False
+    if msg.entities:
+        for entity in msg.entities:
+            if entity.type == "mention":
+                texto_entidade = msg.text[entity.offset:entity.offset + entity.length]
+                if texto_entidade.lower() == username_bot:
+                    mencionou_bot = True
+                    break
 
-        # Verifica se houve menção com @
-        if msg.entities:
-            for entity in msg.entities:
-                if entity.type == "mention":
-                    texto_entidade = msg.text[entity.offset:entity.offset + entity.length]
-                    if texto_entidade.lower() == username_bot:
-                        mencionou_bot = True
-                        break
+    if not mencionou_bot and "apollo" in msg.text.lower():
+        mencionou_bot = True
 
-        # Ou se escreveu o nome "apollo" (sem @), em qualquer lugar do texto
-        if not mencionou_bot and "apollo" in msg.text.lower():
-            mencionou_bot = True
-
-        if mencionou_bot:
-            time.sleep(20)
-            bot.reply_to(msg, random.choice(respostas_submisso_dono), parse_mode="Markdown")
+    if mencionou_bot:
+        time.sleep(20)
+        bot.reply_to(msg, random.choice(respostas_submisso_dono), parse_mode="Markdown")
         return
 
 from datetime import date, timedelta
