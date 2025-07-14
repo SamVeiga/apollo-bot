@@ -546,7 +546,6 @@ if msg.from_user.id == DONO_ID:
     if mencionou_bot:
         time.sleep(20)
         bot.reply_to(msg, random.choice(respostas_submisso_dono), parse_mode="Markdown")
-        return
 
 from datetime import date, timedelta
 
