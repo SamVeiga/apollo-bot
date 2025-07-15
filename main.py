@@ -182,3 +182,31 @@ if RENDER_URL:
 else:
     bot.remove_webhook()
     bot.polling(none_stop=True)
+
+# === INICIAR BOT ===
+
+def manter_vivo():
+    while True:
+        try:
+            time.sleep(60)
+        except Exception as e:
+            print(f"Erro em manter_vivo: {e}")
+
+def replicar_aprendizado():
+    while True:
+        try:
+            agora = datetime.datetime.now()
+            with open("historico_apolo.json", "r", encoding="utf-8") as f:
+                historico = json.load(f)
+            if historico:
+                frase = random.choice(historico)
+                bot.send_message(GRUPO_ID, frase)
+            time.sleep(14400)  # 4 horas
+        except Exception as e:
+            print(f"Erro ao replicar aprendizado: {e}")
+            time.sleep(60)
+
+if __name__ == "__main__":
+    threading.Thread(target=manter_vivo).start()
+    threading.Thread(target=replicar_aprendizado).start()
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
