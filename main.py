@@ -84,7 +84,7 @@ def aprender_frase(msg):
             historico["frases_grupo"] = historico["frases_grupo"][-200:]
             salvar_historico()
 
-# === REPLICAR APRENDIZADO A CADA 4H ===
+# === REPLICAR APRENDIZADO A CADA 4 HORAS ===
 
 def repetir_frases():
     while True:
@@ -98,8 +98,6 @@ def repetir_frases():
             salvar_historico()
         time.sleep(3600)
 
-threading.Thread(target=repetir_frases, daemon=True).start()
-
 # === BOAS-VINDAS ===
 
 @bot.message_handler(content_types=["new_chat_members"])
@@ -108,7 +106,7 @@ def boas_vindas(mensagem):
         nome = f"@{membro.username}" if membro.username else membro.first_name
         bot.reply_to(mensagem, texto_boas_vindas.replace("{nome}", nome))
 
-# === RESPOSTAS ===
+# === RESPOSTAS INTELIGENTES ===
 
 @bot.message_handler(func=lambda msg: True, content_types=["text", "audio", "voice", "photo", "sticker"])
 def responder(msg):
@@ -126,6 +124,7 @@ def responder(msg):
         bot.reply_to(msg, resposta)
         return
 
+    # Xavecar mulher uma vez por dia
     if nome.lower() in [m.lower() for m in MULHERES]:
         ultima = historico["frases_mulheres_hoje"].get(str(usuario.id))
         if ultima != hoje:
@@ -135,6 +134,7 @@ def responder(msg):
             bot.reply_to(msg, resposta)
             return
 
+    # Debochar de homem uma vez por dia
     if nome.lower() in [h.lower() for h in HOMENS]:
         ultima = historico["respostas_homens_hoje"].get(str(usuario.id))
         if ultima != hoje:
@@ -157,35 +157,27 @@ def responder(msg):
                 resposta = random.choice(deboches_homens)
         bot.reply_to(msg, resposta)
 
-# === FLASK ===
+# === FLASK E THREADS ===
 
 @app.route("/")
 def home():
-    return "Apolo está rodando."
+    return "Apolo está vivo."
 
 @app.route("/" + TOKEN, methods=["POST"])
 def webhook():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
     return "OK"
 
-# === ATIVAR WEBHOOK OU POLLING ===
-
-if RENDER_URL:
-    bot.remove_webhook()
-    bot.set_webhook(url=f"{RENDER_URL}/{TOKEN}")
-else:
-    bot.remove_webhook()
-    bot.polling(none_stop=True)
-
-# === MANTER VIVO ===
-
 def manter_vivo():
     while True:
         try:
             time.sleep(60)
         except Exception as e:
-            print(f"[ERRO] manter_vivo: {e}")
+            print(f"[ERRO manter_vivo]: {e}")
+
+# === INICIALIZAÇÃO ===
 
 if __name__ == "__main__":
     threading.Thread(target=manter_vivo).start()
+    threading.Thread(target=repetir_frases, daemon=True).start()
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
