@@ -415,6 +415,45 @@ def poema_de_hora_em_hora():
             print("Erro no poema: ", e)
         time.sleep(3600)  # 1 hora
 
+# === REPLICADOR DE MÍDIA (ESTILO MADONNA) ===
+def repetir_mensagem(msg):
+    try:
+        tempo = random.randint(60, 120)
+        time.sleep(tempo)
+
+        nome = f"[{msg.from_user.first_name}](tg://user?id={msg.from_user.id})"
+
+        if msg.content_type == "text":
+            bot.send_message(ID_GRUPO, f"{nome} disse:\n{msg.text}", parse_mode="Markdown")
+        elif msg.content_type == "photo":
+            file_id = msg.photo[-1].file_id
+            bot.send_photo(ID_GRUPO, file_id, caption=f"{nome} mandou essa foto 👀", parse_mode="Markdown")
+        elif msg.content_type == "sticker":
+            bot.send_sticker(ID_GRUPO, msg.sticker.file_id)
+        elif msg.content_type == "voice":
+            bot.send_voice(ID_GRUPO, msg.voice.file_id)
+        elif msg.content_type == "audio":
+            bot.send_audio(ID_GRUPO, msg.audio.file_id)
+        elif msg.content_type == "document":
+            bot.send_document(ID_GRUPO, msg.document.file_id)
+        elif msg.content_type == "video":
+            bot.send_video(ID_GRUPO, msg.video.file_id)
+        elif msg.content_type == "animation":
+            bot.send_animation(ID_GRUPO, msg.animation.file_id)
+    except Exception as e:
+        print(f"Erro ao repetir mensagem: {e}")
+
+# Captura todos os tipos de mensagem
+@bot.message_handler(content_types=[
+    "text", "photo", "sticker", "voice", "audio", "document", "video", "animation"
+])
+def repetir_conteudo(msg):
+    if msg.from_user.id == bot.get_me().id:
+        return  # Não responde a si mesmo
+
+    # Cria uma thread separada para não travar o bot
+    threading.Thread(target=repetir_mensagem, args=(msg,)).start()
+
 if __name__ == "__main__":
     threading.Thread(target=manter_vivo).start()
     threading.Thread(target=poema_de_hora_em_hora).start()
