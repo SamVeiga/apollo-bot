@@ -418,7 +418,7 @@ def poema_de_hora_em_hora():
 # === REPLICADOR DE MÍDIA (ESTILO MADONNA) ===
 def repetir_mensagem(msg):
     try:
-        tempo = random.randint(60, 120)
+        tempo = random.randint(3000, 4000)
         time.sleep(tempo)
 
         nome = f"[{msg.from_user.first_name}](tg://user?id={msg.from_user.id})"
