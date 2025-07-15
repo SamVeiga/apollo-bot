@@ -309,19 +309,35 @@ def responder(msg):
             bot.reply_to(msg, random.choice(respostas_submisso_dono), parse_mode="Markdown")
         return
 
-    if username in MULHERES:
-        time.sleep(20)
-        frase = random.choice(xavecos_para_mulheres)
-        if username not in historico["frases_mulheres"]:
-            historico["frases_mulheres"][username] = []
-        revelacao = random.choice(
-            [r for r in revelacoes_safadas if r not in historico["frases_mulheres"][username]]
-            or revelacoes_safadas
-        )
-        historico["frases_mulheres"][username].append(revelacao)
-        salvar_historico()
-        bot.reply_to(msg, f"{nome}, {frase} {revelacao}", parse_mode="Markdown")
-        return
+    from datetime import datetime, timedelta
+
+if username in MULHERES:
+    time.sleep(20)
+
+    hoje = datetime.today().date().isoformat()
+    if username not in historico["frases_mulheres"]:
+        historico["frases_mulheres"][username] = []
+
+    # Limpa frases com mais de 3 dias
+    historico["frases_mulheres"][username] = [
+        item for item in historico["frases_mulheres"][username]
+        if item.get("data") and datetime.fromisoformat(item["data"]).date() >= datetime.today().date() - timedelta(days=3)
+    ]
+
+    usadas = [item["frase"] for item in historico["frases_mulheres"][username]]
+
+    frase = random.choice(
+        [f for f in xavecos_para_mulheres if f not in usadas] or xavecos_para_mulheres
+    )
+
+    historico["frases_mulheres"][username].append({
+        "frase": frase,
+        "data": hoje
+    })
+
+    salvar_historico()
+    bot.reply_to(msg, f"{nome}, {frase}", parse_mode="Markdown")
+    return
 
 from datetime import date, timedelta
 
