@@ -283,7 +283,6 @@ poemas_picantes = [
 ]
 
 revelacoes_safadas = [
-    "revelacoes_apolo = [
     "Essa aí já fez boy gaguejar só com um 'oi' bem dado.",
     "Se eu contar o que ela fez no último rolê... o grupo silencia.",
     "Essa menina já virou assunto até de reunião de condomínio.",
