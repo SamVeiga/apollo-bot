@@ -39,119 +39,13 @@ deboches_homens = [
 bom_dia_mulher = [
     "Bom dia, flor. 🌷",
     "Acorda linda, o dia te chama. 😘",
-    "Com esse sorriso, já nasceu sol no grupo. ☀️",
-    "Se acordou com saudade, era eu nos teus sonhos. 💭",
-    "Bom dia, princesa. Hoje o reino é só teu. 👑",
-    "Teu bom dia vale mais que café forte. ☕",
-    "Acorda, deusa. O Olimpo te espera. ✨",
-    "Sol já nasceu, mas tua beleza ilumina mais. 🌞",
-    "Bom dia, minha tentação favorita. 😈",
-    "Nem precisa maquiagem: tua vibe já brilha. 💅",
-    "Já pode parar de sonhar comigo e levantar. 😴❤️",
-    "Bom dia, musa. Já desenhei teus lábios no pensamento. 💋",
-    "Acordar sabendo que tu existe melhora meu humor. 🌸",
-    "Bom dia com cheiro de ti. O resto é detalhe. 🌹",
-    "Hoje acordei disposto a te admirar. 😍",
-    "Bom dia, minha confusão preferida. 💫",
-    "Tu é o tipo de caos que eu agradeço por ter. 🌀",
-    "Tem gente que acorda. Tu... tu brota poesia. 📝",
-    "Seus 'bom dia' deviam ser vendidos em cápsula de serotonina. 💊",
-    "Acordou agora ou ainda tá sonhando comigo? 😜",
-    "Bom dia, meu suspiro de todas as manhãs. 😮‍💨",
-    "Dá bom dia pro sol, que hoje ele compete contigo. 🌞 vs 💁",
-    "Bom dia, mulher que quebra minha pose de durão. 🫠",
-    "Se beleza fosse despertador, tu me acordava todo dia. ⏰",
-    "Desculpa sol, mas hoje ela é a única luz que eu preciso. 🌞💘",
-    "Bom dia, charme ambulante. 🚶‍♀️✨",
-    "Se meu bom dia chegou, é porque tu merece. 💌",
-    "Tem gente que é café. Tu é o café, o pão, o banquete. 🍞☕",
-    "Acorda devagar, tua presença já causa impacto. 💥",
-    "Hoje é dia de sorrir. Tu já fez o meu. 😄",
-    "Bom dia, emoção em forma de gente. ❤️",
-    "Dormiu bem? Porque acordada tu tá impecável. 😍",
-    "Deus caprichou demais nessa criatura que acordou agora. 🙏",
-    "Tu tem cheiro de recomeço bom. 🌼",
-    "Te ver online já faz meu dia começar direito. ✅",
-    "Bom dia, mulher que me desconfigura. 🤯",
-    "Tua vibe invade o grupo de um jeito gostoso. 😎",
-    "Acorda e domina. O mundo já é teu. 🌍",
-    "Acordou ou desceu direto do céu? ☁️",
-    "Quem dera todo dia começasse com tua voz. 🎤",
-    "Tu é o ‘acordei’ mais bonito que esse grupo já viu. 😘",
-    "Bom dia, mistura perfeita de caos e calmaria. 🌪️🕊️",
-    "Se for pra escolher um motivo pra sorrir cedo... é tu. 😊",
-    "Seus stories já são meu café da manhã. 📱☕",
-    "Com esse cabelo bagunçado, tu bagunça meu juízo. 😵",
-    "Tu nasceu pra transformar dias comuns em mágicos. ✨",
-    "Bom dia, mulher que me tira o ar e dá sentido. 💓",
-    "Acorda, que hoje eu quero tua atenção. 🧲",
-    "Só teu bom dia me faz ignorar todas as notificações. 🔕",
-    "Tu é a notificação mais esperada do meu dia. 🔔❤️",
-    "Nada contra o café, mas tu me acorda melhor. 😌",
-    "Acorda que já tô com saudade. E tu nem saiu da cama ainda. 🛏️",
-    "Tu é o tipo de presença que vale mais que mil mensagens. 💬💖",
-    "Bom dia, sonho que virou vício. 💭➡️🔥",
-    "Teu bom dia devia ter trilha sonora. 🎶",
-    "Tu é o alarme que eu nunca ignoraria. 📲",
-    "Acordou linda... de novo. Isso é perseguição? 😍",
-    "Tua existência é o melhor bom dia do universo. 🌌",
-    "Já começou o dia sendo arte, né? 🎨",
-    "Se tu fosse sol, ninguém ia dormir mais. ☀️💛",
-    "Só tu consegue dar um bom dia e hipnotizar junto. 👁️",
-    "Se o céu tá limpo, é porque tu sorriu. 🌤️",
-    "Nada supera tua energia matinal. Nem playlist animada. 🎵✨",
-    "O grupo até fica mais leve quando tu aparece. 🪶",
-    "Tu é a poesia da minha manhã. 📖💘",
-    "Bom dia, paixão que eu disfarço mal. 🙈",
-    "Tua existência já é bom dia o suficiente. 🙃",
-    "Acorda, minha inspiração de todos os dias. ✏️❤️",
-    "Tu acorda linda até sem filtro. Isso é feitiçaria? 🧙‍♀️",
-    "O mundo gira melhor quando tu tá acordada. 🌍💫",
-    "Só de saber que tu tá online, já fiquei mais animado. ⚡",
-    "Bom dia, princesa do caos e da calmaria. 👑🔥"
+    "Com esse sorriso, já nasceu sol no grupo. ☀️"
 ]
 
 bom_dia_homem = [
     "Bom dia, guerreiro. Já tomou café ou só coragem?",
     "Fala, campeão, acordou ou só levantou o corpo mesmo?",
-    "Bom dia, meu mano. Tenta não errar muito hoje. 😏",
-    "Bom dia, seu preguiçoso funcional. ⏰",
-    "Levanta esse corpo, que a vida não se vive deitado. 🛏️",
-    "Café na mão, problema na cabeça? Bem-vindo ao clube. ☕",
-    "Acorda, que o mundo já tá errado sem tua ajuda. 🌎",
-    "Bom dia, soldado do caos. Vai com calma hoje. 🪖",
-    "E aí, já pensou em fazer algo certo hoje? 😂",
-    "Acordou ou foi empurrado pela vida mesmo? 🌀",
-    "Bom dia, cara de sono e alma confusa. 😴",
-    "Se o dia começou bem, cuidado... ainda é cedo. 😈",
-    "Acorda, que as desculpas já estão te esperando. ⏳",
-    "Hoje é dia de tentar... errar de novo. Mas tentar. 🔁",
-    "Bom dia, cérebro em modo soneca. 🧠💤",
-    "Vai tomar café ou vai continuar falando besteira em jejum? ☕🤐",
-    "E aí, já começou a enrolar ou tá esperando incentivo? 🐢",
-    "Bom dia, rei das promessas não cumpridas. 👑",
-    "Acorda e finge que vai dar certo hoje. 🎭",
-    "Se o espelho não te assustou hoje, já é um bom começo. 🪞😅",
-    "Hoje o céu é o limite… mas você vai de soneca mesmo, né? 😏",
-    "Bom dia, especialista em dormir 5 minutos a mais. ⏰",
-    "Levanta que já tem gente reclamando mais que você. 📢",
-    "Acordou? Parabéns. Agora tenta funcionar. ⚙️",
-    "Bom dia, fera. Hoje é dia de fazer quase tudo certo. 🐯",
-    "Bora viver, mesmo sem saber como. 🤷‍♂️",
-    "Acordar é o primeiro erro do dia. Bem-vindo. 😅",
-    "Não precisa levantar com vontade, só levanta mesmo. 🔋",
-    "Vai com calma, o mundo ainda não te merece acordado. 🛡️",
-    "E aí, já fez besteira ou ainda tá aquecendo? 🔥",
-    "Bom dia, alma livre e boletos fixos. 💸",
-    "Hoje é aquele clássico: acordar, tentar e falhar com estilo. 😎",
-    "Seu bom dia tem cara de segunda-feira eterna. 📅",
-    "Levanta da cama e desce do salto. A vida é real. 🧍‍♂️",
-    "Bom dia, campeão do “depois eu vejo”. 🏆",
-    "Acorda, que o erro não se comete sozinho. 🛠️",
-    "Se a vida tá difícil, imagina dormindo até tarde. 🛌",
-    "Vai dar certo? Talvez. Mas acordado é mais provável. ⏰",
-    "Bom dia, mestre da procrastinação matinal. ⌛",
-    "Levanta e brilha... ou pelo menos tenta não atrapalhar. 💡"
+    "Bom dia, meu mano. Tenta não errar muito hoje. 😏"
 ]
 
 respostas_submisso_dono = [
@@ -173,7 +67,9 @@ except:
         "frases_grupo": [],
         "frases_mulheres_hoje": {},
         "respostas_homens_hoje": {},
-        "ultima_repeticao": None
+        "ultima_repeticao": None,
+        "elogios_anteriores": {},
+        "insultos_anteriores": {}
     }
 
 def salvar_historico():
@@ -222,7 +118,6 @@ def responder(msg):
     mencionado = f"@{bot.get_me().username}".lower() in texto or "apolo" in texto
 
     aprender_frase(msg)
-
     hoje = str(datetime.datetime.now().date())
 
     if usuario.id == DONO_ID and mencionado:
@@ -230,24 +125,36 @@ def responder(msg):
         bot.reply_to(msg, resposta)
         return
 
-    # Xavecar mulher uma vez por dia
     if nome.lower() in [m.lower() for m in MULHERES]:
         ultima = historico["frases_mulheres_hoje"].get(str(usuario.id))
+        usadas = historico["elogios_anteriores"].get(str(usuario.id), [])
+        candidatas = [f for f in xavecos_mulheres if f not in usadas]
+        if not candidatas:
+            candidatas = xavecos_mulheres
+            usadas = []
         if ultima != hoje:
+            frase = random.choice(candidatas)
+            usadas.append(frase)
             historico["frases_mulheres_hoje"][str(usuario.id)] = hoje
+            historico["elogios_anteriores"][str(usuario.id)] = usadas[-3:]  # evita repetir nos 3 dias
             salvar_historico()
-            resposta = random.choice(xavecos_mulheres)
-            bot.reply_to(msg, resposta)
+            bot.reply_to(msg, frase)
             return
 
-    # Debochar de homem uma vez por dia
     if nome.lower() in [h.lower() for h in HOMENS]:
         ultima = historico["respostas_homens_hoje"].get(str(usuario.id))
+        usadas = historico["insultos_anteriores"].get(str(usuario.id), [])
+        candidatas = [f for f in deboches_homens if f not in usadas]
+        if not candidatas:
+            candidatas = deboches_homens
+            usadas = []
         if ultima != hoje:
+            frase = random.choice(candidatas)
+            usadas.append(frase)
             historico["respostas_homens_hoje"][str(usuario.id)] = hoje
+            historico["insultos_anteriores"][str(usuario.id)] = usadas[-3:]
             salvar_historico()
-            resposta = random.choice(deboches_homens)
-            bot.reply_to(msg, resposta)
+            bot.reply_to(msg, frase)
             return
 
     if mencionado:
@@ -286,4 +193,10 @@ def manter_vivo():
 if __name__ == "__main__":
     threading.Thread(target=manter_vivo).start()
     threading.Thread(target=repetir_frases, daemon=True).start()
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    if RENDER_URL:
+        bot.remove_webhook()
+        bot.set_webhook(url=f"{RENDER_URL}/{TOKEN}")
+        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    else:
+        bot.remove_webhook()
+        bot.polling(none_stop=True)
