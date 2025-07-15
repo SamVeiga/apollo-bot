@@ -330,7 +330,6 @@ if username in MULHERES:
     if username not in historico["frases_mulheres"]:
         historico["frases_mulheres"][username] = []
 
-    # Limpa frases com mais de 3 dias
     historico["frases_mulheres"][username] = [
         item for item in historico["frases_mulheres"][username]
         if item.get("data") and datetime.fromisoformat(item["data"]).date() >= datetime.today().date() - timedelta(days=3)
