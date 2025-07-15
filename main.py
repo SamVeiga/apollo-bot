@@ -19,8 +19,8 @@ ID_GRUPO = -1002363575666
 
 # === LISTAS DE USUÁRIOS ===
 
-MULHERES = ["@mariazinha", "@angelbaby", "@julia"]
-HOMENS = ["@lucao", "@marcos", "@pedrinho"]
+MULHERES = ["@FernandaCarvalho16", "@KarolinneDiass", "@Adriannaleal", "@gabrielyandrad", "@vanessapraado", "@tainaranordi"]
+HOMENS = ["@MatheusMatano", "@Tomazitc", "@Diegomota0", "@Rafaael80"]
 
 # === FRASES EDITÁVEIS ===
 
