@@ -19,7 +19,7 @@ ID_GRUPO = -1002363575666
 
 # === LISTAS DE USUÁRIOS ===
 
-MULHERES = ["@FernandaCarvalho16", "@KarolinneDiass", "@Adriannaleal", "@gabrielyandrad", "@vanessapraado", "@tainaranordi"]
+MULHERES = ["@FernandaCarvalho16", "@KarolinneDiass", "@Adriannaleal", "@gabrielyandrad", "@vanessapraado", "@tainaranordi", "@sj_photographia"]
 HOMENS = ["@MatheusMatano", "@Tomazitc", "@Diegomota0", "@Rafaael80"]
 
 # === FRASES EDITÁVEIS ===
