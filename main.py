@@ -348,7 +348,6 @@ if username in MULHERES:
 
     salvar_historico()
     bot.reply_to(msg, f"{nome}, {frase}", parse_mode="Markdown")
-    return
 
 from datetime import date, timedelta
 
