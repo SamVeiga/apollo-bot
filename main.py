@@ -280,7 +280,7 @@ def configurar_webhook():
 @bot.message_handler(func=lambda msg: True)
 def responder(msg):
     texto = msg.text.lower()
-    nome = f"[{msg.from_user.first_name}](tg://user?id={msg.from_user.id})"
+    nome = ""  # não queremos exibir nome
     username = f"@{msg.from_user.username}" if msg.from_user.username else ""
 
     if any(saud in texto for saud in ["bom dia", "boa tarde", "boa noite", "boa madrugada"]):
