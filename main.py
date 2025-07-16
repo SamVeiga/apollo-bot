@@ -423,7 +423,7 @@ def poema_de_hora_em_hora():
             bot.send_message(ID_GRUPO, f"[{nome}](tg://user?id={bot.get_chat_member(ID_GRUPO, mulher[1:]).user.id}), {poema}", parse_mode="Markdown")
         except Exception as e:
             print("Erro no poema: ", e)
-        time.sleep(3600)  # 1 hora
+        time.sleep(10800)  # 3 horas
 
 # === REPLICADOR DE MÍDIA (ESTILO MADONNA) ===
 def repetir_mensagem(msg):
