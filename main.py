@@ -411,7 +411,7 @@ def registrar_insulto(usuario):
                 # mantém últimos 20 para evitar repetição próxima
                 historico["insultos_usados"] = historico["insultos_usados"][-20:]
 
-                bot.reply_to(msg, f"{nome}, {frase}", parse_mode="Markdown")
+                bot.reply_to(msg, frase, parse_mode="Markdown")
                 registrar_insulto(username)
 
         salvar_historico()
@@ -447,7 +447,7 @@ def repetir_mensagem(msg):
         tempo = random.randint(3000, 4000)
         time.sleep(tempo)
 
-        nome = f"[{msg.from_user.first_name}](tg://user?id={msg.from_user.id})"
+        nome = ""  # não queremos exibir nome
 
         if msg.content_type == "text":
             bot.send_message(ID_GRUPO, f"{nome} disse:\n{msg.text}", parse_mode="Markdown")
