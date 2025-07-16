@@ -350,32 +350,7 @@ def responder(msg):
         bot.reply_to(msg, frase, parse_mode="Markdown")
         return
 
-from datetime import date, timedelta
-
-# Função auxiliar para verificar se pode insultar hoje (máx 2x por dia)
-def pode_insultar_hoje(usuario):
-    hoje = date.today().isoformat()
-
-    if "insultos_homens" not in historico:
-        historico["insultos_homens"] = {}
-
-    if usuario not in historico["insultos_homens"]:
-        historico["insultos_homens"][usuario] = []
-
-    # filtra só os registros do dia atual
-    historico["insultos_homens"][usuario] = [
-        data for data in historico["insultos_homens"][usuario]
-        if data == hoje
-    ]
-
-    # permite até 2 insultos por dia
-    return len(historico["insultos_homens"][usuario]) < 2
-
-# Função para registrar insulto aplicado hoje para o usuário
-def registrar_insulto(usuario):
-    hoje = date.today().isoformat()
-    historico["insultos_homens"][usuario].append(hoje)
-    salvar_historico()
+    from datetime import date
 
     if username in HOMENS:
         username_bot = f"@{bot.get_me().username.lower()}"
@@ -394,12 +369,23 @@ def registrar_insulto(usuario):
             mencionou_bot = True
 
         if mencionou_bot:
-            # Responde insultando SEM limite se mencionou o bot
             time.sleep(20)
             bot.reply_to(msg, random.choice(insultos_gerais), parse_mode="Markdown")
         else:
-            # Responde insultando no máximo 2x por dia se não mencionar
-            if pode_insultar_hoje(username):
+            hoje = date.today().isoformat()
+
+            if "insultos_homens" not in historico:
+                historico["insultos_homens"] = {}
+
+            if username not in historico["insultos_homens"]:
+                historico["insultos_homens"][username] = []
+
+            historico["insultos_homens"][username] = [
+                data for data in historico["insultos_homens"][username]
+                if data == hoje
+            ]
+
+            if len(historico["insultos_homens"][username]) < 2:
                 frase = random.choice([
                     i for i in insultos_gerais
                     if i not in historico.get("insultos_usados", [])
@@ -408,13 +394,11 @@ def registrar_insulto(usuario):
                 if "insultos_usados" not in historico:
                     historico["insultos_usados"] = []
                 historico["insultos_usados"].append(frase)
-                # mantém últimos 20 para evitar repetição próxima
                 historico["insultos_usados"] = historico["insultos_usados"][-20:]
 
                 bot.reply_to(msg, frase, parse_mode="Markdown")
-                registrar_insulto(username)
-
-        salvar_historico()
+                historico["insultos_homens"][username].append(hoje)
+                salvar_historico()
         return
 
 # === DE TEMPO EM TEMPO ===
