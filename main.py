@@ -436,8 +436,10 @@ def repetir_mensagem(msg):
         if msg.content_type == "text":
             bot.send_message(ID_GRUPO, f"{nome} disse:\n{msg.text}", parse_mode="Markdown")
         elif msg.content_type == "photo":
-            file_id = msg.photo[-1].file_id
-            bot.send_photo(ID_GRUPO, file_id, caption=f"{nome} mandou essa foto 👀", parse_mode="Markdown")
+           file_id = msg.photo[-1].file_id
+           nome = msg.from_user.first_name  # pega só o primeiro nome da pessoa
+           bot.send_photo(ID_GRUPO, file_id, caption=f"Essa aqui foi enviada por {nome}, e eu nunca esqueci 👀")
+
         elif msg.content_type == "sticker":
             bot.send_sticker(ID_GRUPO, msg.sticker.file_id)
         elif msg.content_type == "voice":
