@@ -323,31 +323,32 @@ def responder(msg):
 
     from datetime import datetime, timedelta
 
-if username in MULHERES:
-    time.sleep(20)
+    if username in MULHERES:
+        time.sleep(20)
+        hoje = datetime.today().date().isoformat()
 
-    hoje = datetime.today().date().isoformat()
-    if username not in historico["frases_mulheres"]:
-        historico["frases_mulheres"][username] = []
+        if username not in historico["frases_mulheres"]:
+            historico["frases_mulheres"][username] = []
 
-    historico["frases_mulheres"][username] = [
-        item for item in historico["frases_mulheres"][username]
-        if item.get("data") and datetime.fromisoformat(item["data"]).date() >= datetime.today().date() - timedelta(days=3)
-    ]
+        historico["frases_mulheres"][username] = [
+            item for item in historico["frases_mulheres"][username]
+            if item.get("data") and datetime.fromisoformat(item["data"]).date() >= datetime.today().date() - timedelta(days=3)
+        ]
 
-    usadas = [item["frase"] for item in historico["frases_mulheres"][username]]
+        usadas = [item["frase"] for item in historico["frases_mulheres"][username]]
 
-    frase = random.choice(
-        [f for f in xavecos_para_mulheres if f not in usadas] or xavecos_para_mulheres
-    )
+        frase = random.choice(
+            [f for f in xavecos_para_mulheres if f not in usadas] or xavecos_para_mulheres
+        )
 
-    historico["frases_mulheres"][username].append({
-        "frase": frase,
-        "data": hoje
-    })
+        historico["frases_mulheres"][username].append({
+            "frase": frase,
+            "data": hoje
+        })
 
-    salvar_historico()
-    bot.reply_to(msg, f"{nome}, {frase}", parse_mode="Markdown")
+        salvar_historico()
+        bot.reply_to(msg, f"*{nome}*, {frase}", parse_mode="Markdown")
+        return
 
 from datetime import date, timedelta
 
@@ -375,7 +376,6 @@ def registrar_insulto(usuario):
     hoje = date.today().isoformat()
     historico["insultos_homens"][usuario].append(hoje)
     salvar_historico()
-
 
     if username in HOMENS:
         username_bot = f"@{bot.get_me().username.lower()}"
