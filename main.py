@@ -289,7 +289,7 @@ def responder(msg):
                    "boa noite 😎" if "boa noite" in texto else \
                    "boa madrugada 😎"
         time.sleep(20)
-        bot.reply_to(msg, f"{nome}, {saudacao}", parse_mode="Markdown")
+        bot.reply_to(msg, saudacao, parse_mode="Markdown")
         return
 
     if msg.new_chat_members:
@@ -347,7 +347,7 @@ def responder(msg):
         })
 
         salvar_historico()
-        bot.reply_to(msg, f"*{nome}*, {frase}", parse_mode="Markdown")
+        bot.reply_to(msg, frase, parse_mode="Markdown")
         return
 
 from datetime import date, timedelta
@@ -396,7 +396,7 @@ def registrar_insulto(usuario):
         if mencionou_bot:
             # Responde insultando SEM limite se mencionou o bot
             time.sleep(20)
-            bot.reply_to(msg, f"{nome}, {random.choice(insultos_gerais)}", parse_mode="Markdown")
+            bot.reply_to(msg, random.choice(insultos_gerais), parse_mode="Markdown")
         else:
             # Responde insultando no máximo 2x por dia se não mencionar
             if pode_insultar_hoje(username):
