@@ -254,6 +254,76 @@ respostas_submisso_dono = [
     "Fidelidade operacional. Você manda. Eu destravo. 🗝️"
 ]
 
+# ------------------------------------------------------------------
+# === MEMÓRIA DE MENSAGENS E MÍDIAS ===
+# Armazenamos aqui e só depois soltamos de forma aleatória
+# ------------------------------------------------------------------
+mensagens_salvas = []      # lista viva em RAM
+
+def salvar_mensagem_recebida(msg):
+    """Guarda os dados essenciais de cada conteúdo que o grupo manda."""
+    try:
+        # TEXTO -----------------------------------------------------
+        if msg.content_type == "text":
+            mensagens_salvas.append({
+                "tipo": "text",
+                "texto": msg.text,
+                "data": time.time()
+            })
+
+        # FOTO ------------------------------------------------------
+        elif msg.content_type == "photo":
+            mensagens_salvas.append({
+                "tipo": "photo",
+                "file_id": msg.photo[-1].file_id,
+                "caption": msg.caption,
+                "data": time.time()
+            })
+
+        # FIGURINHA / STICKER --------------------------------------
+        elif msg.content_type == "sticker":
+            mensagens_salvas.append({
+                "tipo": "sticker",
+                "file_id": msg.sticker.file_id,
+                "data": time.time()
+            })
+
+        # VOZ -------------------------------------------------------
+        elif msg.content_type == "voice":
+            mensagens_salvas.append({
+                "tipo": "voice",
+                "file_id": msg.voice.file_id,
+                "data": time.time()
+            })
+
+        # ÁUDIO / MP3 ----------------------------------------------
+        elif msg.content_type == "audio":
+            mensagens_salvas.append({
+                "tipo": "audio",
+                "file_id": msg.audio.file_id,
+                "data": time.time()
+            })
+
+        # VÍDEO -----------------------------------------------------
+        elif msg.content_type == "video":
+            mensagens_salvas.append({
+                "tipo": "video",
+                "file_id": msg.video.file_id,
+                "caption": msg.caption,
+                "data": time.time()
+            })
+
+        # GIF / ANIMAÇÃO -------------------------------------------
+        elif msg.content_type == "animation":
+            mensagens_salvas.append({
+                "tipo": "animation",
+                "file_id": msg.animation.file_id,
+                "data": time.time()
+            })
+
+    except Exception as e:
+        print(f"[ERRO] salvar_mensagem_recebida: {e}")
+
 # === SALVAR HISTÓRICO ===
 def salvar_historico():
     with open(HISTORICO_PATH, "w") as f:
@@ -426,47 +496,95 @@ def poema_de_hora_em_hora():
         time.sleep(10800)  # 3 horas
 
 # === REPLICADOR DE MÍDIA (ESTILO MADONNA) ===
-def repetir_mensagem(msg):
-    try:
-        tempo = random.randint(3000, 4000)
-        time.sleep(tempo)
-
-        nome = ""  # não queremos exibir nome
-
-        if msg.content_type == "text":
-            bot.send_message(ID_GRUPO, f"{nome} disse:\n{msg.text}", parse_mode="Markdown")
-        elif msg.content_type == "photo":
-           file_id = msg.photo[-1].file_id
-           nome = msg.from_user.first_name  # pega só o primeiro nome da pessoa
-           bot.send_photo(ID_GRUPO, file_id, caption=f"Essa aqui foi enviada por {nome}, e eu nunca esqueci 👀")
-
-        elif msg.content_type == "sticker":
-            bot.send_sticker(ID_GRUPO, msg.sticker.file_id)
-        elif msg.content_type == "voice":
-            bot.send_voice(ID_GRUPO, msg.voice.file_id)
-        elif msg.content_type == "audio":
-            bot.send_audio(ID_GRUPO, msg.audio.file_id)
-        elif msg.content_type == "document":
-            bot.send_document(ID_GRUPO, msg.document.file_id)
-        elif msg.content_type == "video":
-            bot.send_video(ID_GRUPO, msg.video.file_id)
-        elif msg.content_type == "animation":
-            bot.send_animation(ID_GRUPO, msg.animation.file_id)
-    except Exception as e:
-        print(f"Erro ao repetir mensagem: {e}")
-
-# Captura todos os tipos de mensagem
+# ------------------------------------------------------------------
+# === CAPTURA de todas as mensagens para a memória ===
+# ------------------------------------------------------------------
 @bot.message_handler(content_types=[
-    "text", "photo", "sticker", "voice", "audio", "document", "video", "animation"
+    "text", "photo", "sticker", "voice",
+    "audio", "document", "video", "animation"
 ])
-def repetir_conteudo(msg):
+def armazenar_conteudo(msg):
+    # Nunca salva conteúdo do próprio bot
     if msg.from_user.id == bot.get_me().id:
-        return  # Não responde a si mesmo
+        return
+    salvar_mensagem_recebida(msg)
 
-    # Cria uma thread separada para não travar o bot
-    threading.Thread(target=repetir_mensagem, args=(msg,)).start()
+# ------------------------------------------------------------------
+# === BROADCAST ALEATÓRIO: solta memes, áudios, textos antigos etc.
+# ------------------------------------------------------------------
+def mandar_conteudo_aleatorio():
+    enviados_recentemente = []             # evita repeteco muito rápido
+
+    while True:
+        try:
+            candidatas = [m for m in mensagens_salvas
+                          if m not in enviados_recentemente]
+
+            if not candidatas:
+                time.sleep(300)            # Ainda não temos material? Espera.
+                continue
+
+            conteudo = random.choice(candidatas)
+            tipo     = conteudo["tipo"]
+
+            # ---- TEXTOS -----------------
+            if tipo == "text":
+                intro = random.choice([
+                    "_Flashback do Apolo:_",
+                    "_Lembrança aleatória:_",
+                    "_Isso aqui foi bom, né?_"
+                ])
+                bot.send_message(
+                    ID_GRUPO,
+                    f"{intro}\n\n{conteudo['texto']}",
+                    parse_mode="Markdown"
+                )
+
+            # ---- FOTOS ------------------
+            elif tipo == "photo":
+                bot.send_photo(
+                    ID_GRUPO,
+                    conteudo["file_id"],
+                    caption=conteudo.get("caption", "")
+                )
+
+            # ---- STICKERS --------------
+            elif tipo == "sticker":
+                bot.send_sticker(ID_GRUPO, conteudo["file_id"])
+
+            # ---- VOZ --------------------
+            elif tipo == "voice":
+                bot.send_voice(ID_GRUPO, conteudo["file_id"])
+
+            # ---- ÁUDIO ------------------
+            elif tipo == "audio":
+                bot.send_audio(ID_GRUPO, conteudo["file_id"])
+
+            # ---- VÍDEO ------------------
+            elif tipo == "video":
+                bot.send_video(
+                    ID_GRUPO,
+                    conteudo["file_id"],
+                    caption=conteudo.get("caption", "")
+                )
+
+            # ---- GIF / ANIMAÇÃO ---------
+            elif tipo == "animation":
+                bot.send_animation(ID_GRUPO, conteudo["file_id"])
+
+            # Marca para não repetir logo
+            enviados_recentemente.append(conteudo)
+            if len(enviados_recentemente) > 120:
+                enviados_recentemente = enviados_recentemente[-60:]
+
+        except Exception as e:
+            print("[ERRO] mandar_conteudo_aleatorio:", e)
+
+        # Espera entre 60 e 120 min para mandar o próximo
+        time.sleep(random.randint(3600, 7200))
 
 if __name__ == "__main__":
     threading.Thread(target=manter_vivo).start()
     threading.Thread(target=poema_de_hora_em_hora).start()
+    threading.Thread(target=mandar_conteudo_aleatorio).start()
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
