@@ -1,55 +1,420 @@
 {
   "cafe": [
-    "Café é aquela poção preta que convence o cérebro a fingir que tá tudo bem às 7 da manhã.",
-    "Pretinho básico que faz o despertador parecer menos cruel."
+    "Café ☕ é a poção mágica dos adultos. Acorda, consola e dá motivo pra viver antes das 8h."
+  ],
+  "amizade": [
+    "Amizade 💙 é quando a pessoa sabe dos seus podres e mesmo assim continua te zoando com carinho."
+  ],
+  "amor": [
+    "Amor ❤️ é aquela coisa confusa que faz o coração bater e a cabeça desligar."
   ],
   "internet": [
-    "Terra de ninguém onde seu tio acredita em tudo e você perde horas vendo gatinhos.",
-    "Lugar mágico onde a gente discute sério se o vestido era azul ou dourado."
+    "Internet 🌐: terra sem lei onde memes mandam mais que políticos."
   ],
-  "wifi": [
-    "Oxigênio do século 21. Quando cai, o mundo parece 1997 de novo.",
-    "Sinal invisível que decide seu humor mais que terapia."
+  "memes": [
+    "Memes 😂: arte digital moderna que resume sentimentos que o português não dá conta."
   ],
-  "crush": [
-    "Ser humaninho que faz o coração travar e o dedo tremer na hora de mandar mensagem.",
-    "Pessoa perfeita… até responder 'blz' depois de duas horas."
+  "whatsapp": [
+    "WhatsApp 💬: lugar onde você ignora e é ignorado com elegância."
   ],
-  "bug": [
-    "Funcionalidade secreta que o programador chama de defeito.",
-    "Erro que aparece só quando o chefe tá olhando."
-  ],
-  "meme": [
-    "A linguagem oficial da internet. Expressa emoções que o português desistiu de tentar.",
-    "Arte digital de alto nível usada pra procrastinar com estilo."
-  ],
-  "spoiler": [
-    "Corte cirúrgico na sua emoção antes de ver o filme.",
-    "Atalho involuntário para o fim da graça."
-  ],
-  "emoji": [
-    "Hieróglifo moderno pra dizer 'tô rindo' sem rir de verdade.",
-    "Carinha amarela que evita textão – ou piora o textão."
-  ],
-  "pixel": [
-    "Ponto minúsculo que resolve sua vida… ou estraga a foto inteira.",
-    "Bloco de Lego da tela: sozinho é feio, junto vira Netflix."
-  ],
-  "netflix": [
-    "Academia de sofá: onde você maratona séries e exercícios de estender a mão pro balde de pipoca.",
-    "Plataforma que pergunta se você ainda tá vivo depois de 8 episódios."
+  "tiktok": [
+    "TikTok 🎵: fábrica de dancinhas, tendências e vício instantâneo."
   ],
   "ansiedade": [
-    "App interno que manda notificação de problema que nem existe ainda.",
-    "Spoiler dos seus próprios pensamentos."
+    "Ansiedade 😬 é sofrer por algo que nem aconteceu ainda, mas sua mente decidiu que sim."
   ],
-  "boleto": [
-    "Carta de amor do banco dizendo que você é lembrado todo mês.",
-    "Tapa financeiro que vence dia 5 mas dói o mês inteiro."
+  "felicidade": [
+    "Felicidade 😄 é aquele momento raro entre um boleto e outro."
   ],
-  "tpm": [
-    "Apocalipse emocional com data marcada. Ofereça chocolate e saia devagar.",
-    "Modo turbo dos sentimentos: riso, choro e raiva em 15 min."
+  "tristeza": [
+    "Tristeza 😔 é quando nem meme anima e nem comida resolve."
   ],
-  "...": ["... continua até 200 verbetes ..."]
+  "bolacha": [
+    "Bolacha 🍪 é biscoito com atitude, simples assim."
+  ],
+  "biscoito": [
+    "Biscoito 🍪 é bolacha com autoestima."
+  ],
+  "preguiça": [
+    "Preguiça 🛋️ é o talento de adiar tudo com maestria."
+  ],
+  "segunda": [
+    "Segunda-feira 😵: o castigo semanal pelo pecado do descanso."
+  ],
+  "sextou": [
+    "Sextou 🍻: quando a alma começa a sorrir antes do corpo perceber."
+  ],
+  "feriado": [
+    "Feriado 🎉: benção que Deus envia pra dizer 'aguenta mais um pouco'."
+  ],
+  "estudar": [
+    "Estudar 📚 é fingir que vai abrir o livro e acabar vendo vídeo no YouTube."
+  ],
+  "trabalho": [
+    "Trabalho 💼: local onde você troca sua paz por boletos pagos."
+  ],
+  "boletos": [
+    "Boletos 📄: lembretes mensais de que nada é realmente seu."
+  ],
+  "crush": [
+    "Crush 💘 é aquela criatura que bagunça o coração e ignora o WhatsApp."
+  ],
+  "ficante": [
+    "Ficante 😏 é tipo teste grátis com data de validade."
+  ],
+  "namorado": [
+    "Namorado 🧔: versão oficial do ficante com contrato social e ciúmes incluso."
+  ],
+  "namorada": [
+    "Namorada 💁‍♀️: CEO da sua rotina e gerente de crises emocionais."
+  ],
+  "traição": [
+    "Traição 💔: plot twist que ninguém pediu."
+  ],
+  "ex": [
+    "Ex 😒: história antiga que ainda rende bloqueios e indiretas."
+  ],
+  "cinema": [
+    "Cinema 🎬 é onde você finge ver o filme e na verdade tá rindo dos trailers."
+  ],
+  "série": [
+    "Série 📺 é aquela maratona emocional que te destrói por dentro e te vicia por fora."
+  ],
+  "netflix": [
+    "Netflix 🍿: academia do sofá onde seu cardio é levantar pra pegar pipoca."
+  ],
+  "chá": [
+    "Chá 🍵 é água com personalidade e vaidade."
+  ],
+  "água": [
+    "Água 💧: a bebida menos valorizada e mais essencial da vida."
+  ],
+  "reclamar": [
+    "Reclamar 😤 é o esporte nacional praticado com maestria desde 1500."
+  ],
+  "fofoca": [
+    "Fofoca 👂: ciência social que mantém grupos unidos desde o Orkut."
+  ],
+  "inveja": [
+    "Inveja 👀 é quando o recalque não cabe e transborda nos stories."
+  ],
+  "influencer": [
+    "Influencer 📸: pessoa que recebe pra viver o que você finge nas redes."
+  ],
+  "gym": [
+    "Academia 🏋️: lugar que você paga pra não ir e se sentir culpado."
+  ],
+  "coração": [
+    "Coração ❤️: órgão vital que insiste em tomar decisões erradas por impulso emocional."
+  ],
+  "cabeça": [
+    "Cabeça 🧠: processador potente que trava quando você mais precisa."
+  ],
+  "sono atrasado": [
+    "Sono atrasado 💤: dívida emocional acumulada de todas as madrugadas em claro."
+  ],
+  "férias": [
+    "Férias 🏖️: aquela lenda urbana que às vezes vira realidade."
+  ],
+  "tempo": [
+    "Tempo ⏳: aquilo que voa quando você tá feliz e se arrasta quando tá no trabalho."
+  ],
+  "tempo ruim": [
+    "Tempo ruim 🌧️ é o universo dizendo 'volta pra cama'."
+  ],
+  "chuva": [
+    "Chuva ☔: convite universal ao cobertor e série nova."
+  ],
+  "sol": [
+    "Sol 🌞 é aquele calor abusivo que você reclama quando tem e sente falta quando some."
+  ],
+  "lua": [
+    "Lua 🌙 é a fofoca silenciosa do céu vigiando seus surtos noturnos."
+  ],
+  "instagram": [
+    "Instagram 📷: reality show da vida perfeita que ninguém vive."
+  ],
+  "facebook": [
+    "Facebook 🧓: museu digital onde sua tia curte post de 2015."
+  ],
+  "twitter": [
+    "Twitter 🐦: onde o caos ganha voz e o meme é rei."
+  ],
+  "roupa": [
+    "Roupa 👕: armadura de humor. Tá confortável? Então você venceu na vida."
+  ],
+  "música": [
+    "Música 🎶 é o remédio da alma com playlist personalizada pro coração partido."
+  ],
+  "almoço": [
+    "Almoço 🍛 é aquela hora do dia em que a felicidade cabe num prato."
+  ],
+  "jantinha": [
+    "Janta 🍽️ é o carinho da noite em forma de comida gordurosa."
+  ],
+  "lanche": [
+    "Lanche 🥪 é aquele desvio emocional entre refeições importantes."
+  ],
+  "hambúrguer": [
+    "Hambúrguer 🍔: obra-prima da gula moderna."
+  ],
+  "pizza": [
+    "Pizza 🍕 é redonda, quente e aceita todos os seus problemas com queijo extra."
+  ],
+  "domingo": [
+    "Domingo 🛌 é pré-luto da segunda-feira."
+  ],
+  "roupa de sair": [
+    "Roupa de sair 👗: traje de guerra contra a preguiça social."
+  ],
+  "resenha": [
+    "Resenha 🎉: evento entre amigos onde o papo vale mais que o rango."
+  ],
+  "curtir": [
+    "Curtir 😎 é quando a alma dança mesmo sem música."
+  ],
+  "like": [
+    "Like 👍: moeda social da aprovação digital."
+  ],
+  "fama": [
+    "Fama 🌟: aquele brilho que dura até o próximo cancelamento."
+  ],
+"energia": ["Energia ⚡ é aquilo que some misteriosamente depois do café da manhã."],
+"sono eterno": ["Sono eterno 😴💀... opa, melhor não desejar tanto assim."],
+"coceira": ["Coceira 🤨: a notificação física de que seu corpo quer atenção."],
+"alergia": ["Alergia 🤧: seu corpo dizendo 'isso aqui eu não aceito, não'. "],
+"barulho": ["Barulho 🔊: som irritante que sempre aparece quando você quer silêncio."],
+"silêncio": ["Silêncio 🤫: o som favorito de quem mora com gente barulhenta."],
+"zumbido": ["Zumbido 🐝: o som do tédio auditivo ou do mosquito te testando."],
+"mosquito": ["Mosquito 🦟: inimigo público nº1 das noites de calor."],
+"vergonha": ["Vergonha 😳: emoção padrão ao lembrar da sua adolescência."],
+"ódio": ["Ódio 😡: aquele sentimento que aparece quando a internet cai no final do filme."],
+"paciência": ["Paciência 🧘: habilidade lendária de quem trabalha com atendimento ao público."],
+"educação": ["Educação 🎓: coisa que muita gente esquece quando tá online."],
+"lealdade": ["Lealdade 🐶: qualidade rara, tipo Wi-Fi rápido em lugar público."],
+"fé": ["Fé 🙏: quando tudo dá errado, mas você acredita que vai dar certo mesmo assim."],
+"esperança": ["Esperança 🌈: combustível emocional que mantém o brasileiro de pé."],
+"teimosia": ["Teimosia 🐐: insistência teimosa com charme de quem nunca desiste."],
+"confiança": ["Confiança 💪: construir é difícil, quebrar é rapidinho."],
+"mentira": ["Mentira 🤥: verdade maquiada com intenções duvidosas."],
+"verdade": ["Verdade 🕵️‍♂️: aquilo que todo mundo quer, mas nem sempre aguenta ouvir."],
+"compromisso": ["Compromisso 📅: agendamento de dores de cabeça futuras."],
+"liberdade": ["Liberdade 🕊️: fazer o que quiser, desde que não envolva boletos."],
+"libra": ["Libra ⚖️: signo do equilíbrio... mas indeciso até pra escolher emoji."],
+"escorpião": ["Escorpião 🦂: signo intenso que ama e surta com a mesma força."],
+"áries": ["Áries 🔥: impaciente profissional e briguento por esporte."],
+"peixes": ["Peixes 🌊: sonhador nível 'eu ouvi a Lua falando comigo'."],
+"gêmeos": ["Gêmeos 💬: dois em um. Às vezes, três ou quatro."],
+"touro": ["Touro 🐂: come, dorme e se estressa com estilo."],
+"sagitario": ["Sagitário 🏹: sinceridade em forma de míssil."],
+"leão": ["Leão 🦁: autoestima no talo e brilho próprio na bio do Instagram."],
+"virgem": ["Virgem 📐: organiza até os sentimentos alheios."],
+"capricórnio": ["Capricórnio 💼: ambição em forma de ser humano com planilha."],
+"aquário": ["Aquário 🚀: vive no futuro e esquece de responder no presente."],
+"câncer": ["Câncer 🦀: emoções à flor da pele e carência em forma de signo."],
+"agenda": ["Agenda 📖: lista de promessas que você vai adiar."],
+"compra": ["Compra 💸: decisão emocional com justificativa racional."],
+"venda": ["Venda 🤑: arte de convencer alguém a gastar com o que não precisa."],
+"desconto": ["Desconto 🏷️: armadilha emocional em formato de porcentagem."],
+"pix": ["Pix 💰: milagre moderno que tira dinheiro com um clique e sem arrependimento."],
+"dinheiro": ["Dinheiro 🧾: papel que comanda emoções e causa gastrite."],
+"cartão": ["Cartão 💳: mágico na hora de passar, trágico na fatura."],
+"salário": ["Salário 💼: entra sorrindo, sai chorando."],
+"investimento": ["Investimento 📈: promessa de futuro que você tenta entender no YouTube."],
+"economia": ["Economia 💸: ato de resistir à promoção do mês."],
+"consumo": ["Consumo 🛍️: o que você chama de necessidade depois do terceiro Pix."],
+"viagem": ["Viagem ✈️: fuga autorizada da realidade com direito a fotos."],
+"praia": ["Praia 🏖️: lugar onde o corpo bronzeia e a autoestima derrete."],
+"campo": ["Campo 🌾: cenário de paz ou de picadas de mosquito, depende do humor da natureza."],
+"montanha": ["Montanha 🏔️: beleza fria com cheiro de aventura (e dor nas pernas)."],
+"trânsito": ["Trânsito 🚗: curso obrigatório de paciência urbana."],
+"ônibus": ["Ônibus 🚌: onde você aprende a arte do equilíbrio e da lotação afetiva."],
+"uber": ["Uber 🚘: loteria moderna entre motorista filósofo e DJ de pancadão."],
+"caminhão": ["Caminhão 🚛: gigante da estrada e vilão do seu retrovisor."],
+"moto": ["Moto 🏍️: adrenalina em duas rodas e buzina no ouvido."],
+"bicicleta": ["Bicicleta 🚴: transporte fitness que vira decoração depois de 2 semanas."],
+"chuveiro": ["Chuveiro 🚿: psicólogo não-oficial do Brasil."],
+"banheiro": ["Banheiro 🚽: o santuário das reflexões mais profundas."],
+"espelho": ["Espelho 🪞: onde o ego dança entre a ilusão e a realidade."],
+"roupa íntima": ["Roupa íntima 🩲: segredo guardado entre você e a cesta de roupa suja."],
+"perfume": ["Perfume 🌸: identidade líquida em forma de gota."],
+"shampoo": ["Shampoo 🧴: o primeiro passo pra uma autoestima que espuma."],
+"creme": ["Creme 🧴: o abraço químico da vaidade."],
+"desodorante": ["Desodorante 🕺: guardião do respeito alheio em dias quentes."],
+"panela": ["Panela 🍳: item mágico que transforma caos em comida."],
+"fogão": ["Fogão 🔥: campo de batalha onde o miojo vence quase sempre."],
+"geladeira": ["Geladeira 🧊: cofre dos desejos calóricos e esquecidos."],
+"microondas": ["Microondas 🚀: salvador de jantas e destruidor de plásticos."],
+"armário": ["Armário 🚪: esconderijo de pratos, mantimentos e Tupperwares órfãos."],
+"tupperware": ["Tupperware 🍱: espécie rara que some com comida e nunca volta."],
+"escola": ["Escola 🏫: onde você aprende tudo menos a lidar com a vida adulta."],
+"professor": ["Professor 👨‍🏫: herói cansado com vocação e Wi-Fi fraco."],
+"aluno": ["Aluno 👶: aquele ser que sonha com feriado e teme prova surpresa."],
+"lição": ["Lição 📘: castigo escolar disfarçado de aprendizado."],
+"prova": ["Prova ✍️: momento em que o branco mental reina soberano."],
+"nota": ["Nota 📊: julgamento numérico da sua memória temporária."],
+"formatura": ["Formatura 🎓: festa para comemorar o fim da tortura e o começo dos boletos sérios."],
+"psicólogo": ["Psicólogo 🛋️: tradutor oficial do caos mental."],
+"terapia": ["Terapia 💬: aula de autoconhecimento com pitadas de choro e cura."],
+"remédio": ["Remédio 💊: solução química para dores físicas e dramas existenciais."],
+"sono leve": ["Sono leve 💤: modo soneca do cérebro antes do travesseiro se acostumar."],
+"ronco": ["Ronco 😴🎶: trilha sonora involuntária das noites em casal."],
+"pesadelo": ["Pesadelo 👻: cinema de terror patrocinado pelo seu cérebro cansado."],
+"sonho bom": ["Sonho bom 🌠: trailer de uma vida que a realidade não entrega."],
+"tempo livre": ["Tempo livre 🕒: raridade moderna que você gasta scrollando o feed."],
+"relógio": ["Relógio ⌚: algema fashion do capitalismo moderno."],
+"celular": ["Celular 📱: seu melhor amigo, espião e ladrão de atenção ao mesmo tempo."],
+"teclado": ["Teclado ⌨️: onde nascem textos geniais e arrependimentos de madrugada."],
+"fones": ["Fones 🎧: escudo contra o mundo e passaporte pra outra dimensão."],
+"mouse": ["Mouse 🖱️: seu guia digital nas planilhas da vida."],
+"tela azul": ["Tela azul 💻💀: o grito de socorro silencioso do Windows."],
+"HD": ["HD 💾: lugar onde ficam salvos memes, traumas e boletos digitalizados."],
+  "fome": "É o corpo gritando que o estômago tá mais vazio que promessa de político. 🍽️",
+  "coração partido": "É quando você sente uma novela mexicana dentro do peito. 💔🎭",
+  "vida": "Esse jogo que ninguém pediu pra jogar, mas todo mundo tá jogando. 🎮",
+  "ansiedade": "É a mente acelerada e o corpo sem saber pra onde correr. 🧠💥",
+  "preguiça": "É o superpoder de fazer absolutamente nada com maestria. 😌🛋️",
+  "internet": "Lugar onde todo mundo vira especialista e filósofo. 🌐💡",
+  "recalque": "É o elogio disfarçado de veneno. 🐍✨",
+  "crush": "Aquela pessoa que faz até o Wi-Fi parecer rápido perto do coração. 💓📶",
+  "ciúmes": "É o amor misturado com medo e umas viagens da cabeça. 😒💭",
+  "sexta-feira": "É o feriado disfarçado de dia útil. 🎉🍻",
+  "domingo": "É o sábado triste com cara de segunda. 😩📆",
+  "amizade": "É quando até o silêncio entre vocês faz sentido. 🫶",
+  "inveja": "É querer o brilho do outro, mas sem disposição pra brilhar. 😤✨",
+  "chave": "Pequeno objeto que some quando você mais precisa. 🔑🕵️‍♂️",
+  "trabalho": "Onde você troca seu tempo por boleto pago. 💼📉",
+  "feriado": "Um abraço coletivo do universo. 🌈🛌",
+  "liberdade": "É quando você respira sem pedir permissão. 🕊️",
+  "segredo": "É aquela coisa que só dois sabem: você e a fofoca pronta pra sair. 🤫",
+  "problema": "Um desafio disfarçado de dor de cabeça. 😵",
+  "solteiro": "Estado civil ou desculpa pra dormir até mais tarde? 🤔😎",
+  "dinheiro": "Papel que compra tempo, mas nunca felicidade garantida. 💸⏳",
+  "música": "Remédio pra alma que não tem bula. 🎶💊",
+  "libra": "Signo que vive em dúvida até pra escolher emoji. ♎😬",
+  "inferno astral": "É o modo difícil da vida, ativado por padrão antes do aniversário. 🔥😖",
+  "trânsito": "Prova de paciência em tempo real. 🚗🕑",
+  "carência": "É o coração pedindo colo e o ego fingindo que tá tudo bem. 🧸",
+  "acordo": "Promessa que a gente finge que vai cumprir amanhã. 📝😅",
+  "sorte": "Quando o universo resolve te dar um respiro. 🍀🌬️",
+  "azar": "Quando você tropeça até em Wi-Fi. 😩📶",
+  "compromisso": "Aquilo que aparece justo no dia que você queria não fazer nada. 📅😴",
+  "gato": "Animal que acha que é dono da casa e talvez esteja certo. 🐱👑",
+  "cachorro": "Melhor amigo que te ama mais do que você mesmo. 🐶❤️",
+  "mentira": "É quando a verdade tira férias. 🙄🏖️",
+  "verdade": "Aquilo que dói, mas salva. 🧠⚖️",
+  "felicidade": "É aquele momento curto que vale por horas. 😄🎈",
+   "beijo": "Encontro de lábios e bagunça de sentimentos. 💋🌪️",
+  "abraço": "É quando dois corações se alinham por alguns segundos. 🤗💓",
+  "tempo": "Aquilo que escapa quando você decide viver. ⏳🚶",
+  "passado": "Lugar onde moram memórias e alguns arrependimentos. 🗂️😶",
+  "futuro": "O spoiler mais aguardado da vida. 🔮",
+  "presente": "É tudo o que realmente existe. E às vezes nem isso. 🎁⏱️",
+  "esperança": "A fé com roupa de gala. 🌟🙏",
+  "vontade": "O combustível da alma quando a preguiça não vence. 🔥💪",
+  "curiosidade": "O motor de todas as tretas e descobertas. 🤔🔍",
+  "dúvida": "A zona cinza entre o sim e o não. ⚫⚪",
+  "orgulho": "O escudo que às vezes impede o abraço. 🛡️😞",
+  "perdão": "É a chave que solta os dois: quem errou e quem carrega. 🔓🕊️",
+  {
+  "desculpa": "É o curativo que a gente tenta colar em cima do estrago. 🩹😬",
+  "namoro": "Contrato afetivo com cláusulas invisíveis e cobranças aleatórias. 💏📜",
+  "casamento": "Modo cooperativo da vida com DLC de desafios diários. 💍🎮",
+  "divórcio": "É o game over com final mais caro. 🧾💔",
+  "festa": "Momento em que o corpo dança e o juízo foge. 🎉🕺",
+  "traição": "É o atalho mais rápido pra um fim desnecessário. 🚨🔪",
+  "amizade colorida": "É a treta que começa divertida e termina confusa. 😏🎨",
+  "medo": "O alarme da alma tentando te proteger. 😨🔔",
+  "risada": "Explosão involuntária de felicidade. 😂💥",
+  "lágrima": "Palavra líquida que o coração não consegue esconder. 😢💧",
+  "insegurança": "É o espelho distorcido do que a gente é. 🪞💭",
+  "motivação": "Aquela faísca rara que move montanhas e e-mails. ⚡📈",
+  "desânimo": "O travesseiro emocional da preguiça. 🛌💤",
+  "rotina": "A repetição que a gente reclama, mas precisa. 🔁⏰",
+  "aventura": "Tudo que começa com 'e se' e termina em boas histórias. 🧭😎",
+  "mentoria": "Quando alguém mais rodado te dá os mapas sem os atalhos. 🧓🗺️",
+  "verdadeiro": "O que permanece quando o brilho apaga. 🌌✨",
+  "fake": "A embalagem bonita sem conteúdo. 📦🚫",
+  "respeito": "Limite invisível que todo mundo devia enxergar. ⚠️🙌",
+  "maturidade": "É quando o ego escuta antes de responder. 🎓🧘",
+  "fama": "É ser conhecido por muitos e entendido por poucos. 📸🔍",
+  "influencer": "Pessoa que grava o próprio café e chama de carreira. 📱☕",
+  "bug": "Erro técnico ou desculpa padrão do século. 💻❌",
+  "cringe": "Vergonha alheia com nome moderno. 🙈😬",
+  "vibe": "Clima invisível que define o rolê. 🎧🌈",
+  "rolezinho": "Pequena missão social com grandes chances de virar história. 🛵🔥",
+  "contatinho": "Pessoa que você responde com emojis e más intenções. 📲😉",
+  "aluguel": "Pagamento mensal pra morar onde nem é seu. 🏠💸",
+  "salário": "Dinheiro que entra sorrindo e sai correndo. 💰🏃‍♂️",
+  "boletos": "A vida adulta transformada em papel. 🧾😖",
+  "meme": "Forma moderna de terapia coletiva. 📲🤣",
+  "terapia": "Lugar onde a mente vai pra tomar banho. 🛁🧠",
+  "reunião": "Momento onde se fala muito e se decide pouco. 🧑‍💼🔄",
+  "criança": "Ser humano em sua versão mais sincera e caótica. 👶🎈",
+  "adolescente": "Furacão hormonal com acesso à internet. 🌪️📲",
+  "adulto": "Criança cansada com boletos e responsabilidade. 🧓📉",
+  "idoso": "Versão final da sabedoria com paciência desbloqueada. 👴📚",
+  "selfie": "Foto com filtro e uma pitada de autoestima. 🤳💅",
+  "tempo livre": "Minutos raros entre a correria e o sono. ⏰🫠",
+  "calor": "É quando o ar se recusa a circular. ☀️🥵",
+  "frio": "É quando o vento te faz repensar cada escolha de roupa. 🥶🧥",
+  "chuva": "Céu chorando por motivos que a gente nunca sabe. 🌧️😔",
+  "sol": "Aquecedor gratuito que também queima seu juízo. ☀️🧠",
+  "lua": "Luminária emocional do céu noturno. 🌙💫",
+  "estrela": "Fagulha de universo que piscou há milênios e só agora chegou. ✨🛸",
+  "universo": "Tudo que existe, inclusive suas dúvidas e crushes. 🌌💭",
+  "esperança": "É insistir mesmo quando tudo diz pra parar. 💚💪",
+  "meditação": "Quando o silêncio te abraça por dentro. 🧘‍♂️🌀",
+  "fé": "Certeza que nem sempre se explica, mas se sente. ✝️❤️",
+  "decepção": "Quando a expectativa cai de cara no chão. 🤕🪨",
+  {
+  "zueira": "O tempero da convivência moderna com risco de cancelamento. 😜🔥",
+  "recalque": "Admiração disfarçada de ranço. 😏🧂",
+  "ranço": "Antipatia que brota sem pedir licença. 🙄🦠",
+  "vontade": "Desejo com preguiça de agir. 🛋️😮‍💨",
+  "pressa": "Ansiedade com tênis nos pés. 🏃💨",
+  "sono": "Modo economia de energia ativado. 💤🔋",
+  "cansaço": "Corpo em greve com alma na fila. 😫🧾",
+  "paciência": "Superpoder em extinção. 🧘‍♀️🐢",
+  "falta de paciência": "O novo normal. 🧨🙅‍♂️",
+  "confiança": "É deixar alguém segurar teu segredo com luva de seda. 🤝🔐",
+  "ciúmes": "É o GPS emocional fora de rota. 📍💢",
+  "crush": "Pessoa que te faz sorrir com uma figurinha. 😍💬",
+  "ficante": "Um quase que quase vira nada ou tudo. 🔄💏",
+  "término": "Quando até as mensagens arquivadas doem. 📁💔",
+  "superação": "Deixar de stalkear e viver. 🧹📲",
+  "drama": "Exagero com trilha sonora interna. 🎭🎻",
+  "preguiça": "Paralisia temporária de qualquer função vital. 🐢🛋️",
+  "disciplina": "A chatice que constrói sonhos. 🧱🏗️",
+  "procrastinação": "Quando o depois é mais gostoso que o agora. 🕒🍿",
+  "plano": "Ideia que dorme na gaveta. 📋😅",
+  "meta": "Objetivo com salto alto. 🎯👠",
+  "sonho": "Filme pessoal com orçamento emocional. 🎬😴",
+  "pesadelo": "Filme de terror feito no seu HD interno. 😱🛌",
+  "futuro": "Terra de ninguém com parcelas em aberto. 🗓️💸",
+  "passado": "Lugar onde moram os 'e se'. ⏳📼",
+  "presente": "O tempo que foge quando a gente olha. ⏰👀",
+  "conhecimento": "Riqueza que ninguém te toma. 🧠🔓",
+  "sabedoria": "Conhecimento filtrado com calma. 📚🍃",
+  "curiosidade": "Fome de saber sem garantia de saciedade. 🤓🍽️",
+  "intuição": "Palpite do coração com Wi-Fi espiritual. 💓📶",
+  "destino": "História que a gente escreve junto com o acaso. ✍️🌌",
+  "azar": "Coincidência que tirou folga do bom senso. 🎲🪤",
+  "sorte": "Momento raro em que o universo te dá um like. 🍀👍",
+  "gentileza": "Toque leve no caos. 🤲🌷",
+  "gratidão": "É quando a alma diz 'valeu'. 🙏💖",
+  "felicidade": "Instante em que tudo parece encaixar. 😊🧩",
+  "saudade": "Presença de quem não está. 🥺💭",
+  "lembrança": "Arquivo vivo do que fez sentido. 📂💡",
+  "ressaca": "Punição líquida por exagero emocional. 🥴🍻",
+  "surto": "Pausa momentânea da sanidade. 🧠🚨",
+  "nervoso": "Alarme interno em modo terremoto. 😡🔔",
+  "culpa": "Peso invisível com nome. ⚖️🧳",
+  "perdão": "Alívio que solta correntes internas. 🔓🤍",
+  "ódio": "Raiva que fez academia. 💢🏋️‍♂️",
+  "alívio": "A respiração depois do susto. 😮‍💨💨",
+  "expectativa": "Cilada com glitter. 🎁💣",
+  "realidade": "Chave de fenda nos sonhos. 🛠️💤",
+  "paz": "Silêncio com sentido. ✌️🕊️",
+  "caos": "Quando tudo resolve acontecer ao mesmo tempo. 🌪️📉" 
 }
