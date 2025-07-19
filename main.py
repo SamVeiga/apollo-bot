@@ -271,7 +271,7 @@ def responder_dicionario(msg, termo):
     if chave in dicionario:
         resposta = random.choice(dicionario[chave])
     else:
-        resposta = f"Poxa, ainda não sei o que é *{termo}*. Mas já tô anotando pra estudar depois! 🤓"
+        resposta = f"Poxa, ainda não sei o que é *{termo}*. Mas já tô estudando pra te dizer depois! ✍🏻🤓"
 
     bot.reply_to(msg, resposta, parse_mode="Markdown")
 
