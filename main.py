@@ -261,18 +261,22 @@ respostas_submisso_dono = [
     "Fidelidade operacional. Você manda. Eu destravo. 🗝️"
 ]
 
+# === NOVA BUSCA INTELIGENTE POR TERMOS COMPOSTOS ===
+
+def buscar_termo_no_dicionario(texto_original):
+    termo_normalizado = texto_original.lower().strip()
+
+    # Ordena as chaves do dicionário da mais longa para a mais curta
+    chaves_ordenadas = sorted(dicionario.keys(), key=lambda x: -len(x))
+
+    for chave in chaves_ordenadas:
+        if chave in termo_normalizado:
+            return random.choice(dicionario[chave])
+
+    return f"Poxa, ainda não sei o que é *{texto_original}*. Mas já tô estudando pra te dizer depois! ✍🏻🤓"
+
 def responder_dicionario(msg, termo):
-    """
-    Procura 'termo' no dicionário (chave minúscula, sem acentos).
-    Se achar, devolve resposta aleatória. Se não, avisa que não sabe.
-    """
-    chave = re.sub(r"[^a-z0-9]", "", termo.lower())
-
-    if chave in dicionario:
-        resposta = random.choice(dicionario[chave])
-    else:
-        resposta = f"Poxa, ainda não sei o que é *{termo}*. Mas já tô estudando pra te dizer depois! ✍🏻🤓"
-
+    resposta = buscar_termo_no_dicionario(termo)
     bot.reply_to(msg, resposta, parse_mode="Markdown")
 
 # ------------------------------------------------------------------
