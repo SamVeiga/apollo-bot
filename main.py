@@ -9,6 +9,8 @@ import datetime
 import json
 import re                    # para capturar “o que é?”
 
+SAUDACOES_ATIVADAS = False      # deixe False para não responder saudações
+
 from datetime import datetime
 
 def apolo_ativo():
@@ -399,7 +401,7 @@ def responder(msg):
         responder_dicionario(msg, termo)
         return
 
-    if any(saud in texto for saud in ["bom dia", "boa tarde", "boa noite", "boa madrugada"]):
+    if SAUDACOES_ATIVADAS and any(saud in texto for saud in ["bom dia", "boa tarde", "boa noite", "boa madrugada"]):
         saudacao = "bom dia 😎" if "bom dia" in texto else \
                    "boa tarde 😎" if "boa tarde" in texto else \
                    "boa noite 😎" if "boa noite" in texto else \
