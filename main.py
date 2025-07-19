@@ -577,25 +577,30 @@ def armazenar_conteudo(msg):
 # === BROADCAST ALEATÓRIO: solta memes, áudios, textos antigos etc.
 # ------------------------------------------------------------------
 def mandar_conteudo_aleatorio():
-    enviados_recentemente = []             # evita repeteco muito rápido
+    enviados_recentemente = []  # evita repetir logo
 
     while True:
         if not apolo_ativo():
-            time.sleep(300)  # Dorme 5 minutos e tenta de novo
+            time.sleep(300)  # Dorme 5 minutos
             continue
 
         try:
-            candidatas = [m for m in mensagens_salvas
-                          if m not in enviados_recentemente]
+            agora = time.time()
+            limite_tempo = agora - 86400  # 24 horas atrás
+
+            # Seleciona apenas mensagens com mais de 1 dia
+            candidatas = [
+                m for m in mensagens_salvas
+                if m.get("data", 0) < limite_tempo and m not in enviados_recentemente
+            ]
 
             if not candidatas:
-                time.sleep(300)            # Ainda não temos material? Espera.
+                time.sleep(600)  # Espera mais se não tiver conteúdo antigo suficiente
                 continue
 
             conteudo = random.choice(candidatas)
-            tipo     = conteudo["tipo"]
+            tipo = conteudo["tipo"]
 
-            # ---- TEXTOS -----------------
             if tipo == "text":
                 intro = random.choice([
                     "_Flashback do Apolo:_",
@@ -608,39 +613,25 @@ def mandar_conteudo_aleatorio():
                     parse_mode="Markdown"
                 )
 
-            # ---- FOTOS ------------------
             elif tipo == "photo":
-                bot.send_photo(
-                    ID_GRUPO,
-                    conteudo["file_id"],
-                    caption=conteudo.get("caption", "")
-                )
+                bot.send_photo(ID_GRUPO, conteudo["file_id"], caption=conteudo.get("caption", ""))
 
-            # ---- STICKERS --------------
             elif tipo == "sticker":
                 bot.send_sticker(ID_GRUPO, conteudo["file_id"])
 
-            # ---- VOZ --------------------
             elif tipo == "voice":
                 bot.send_voice(ID_GRUPO, conteudo["file_id"])
 
-            # ---- ÁUDIO ------------------
             elif tipo == "audio":
                 bot.send_audio(ID_GRUPO, conteudo["file_id"])
 
-            # ---- VÍDEO ------------------
             elif tipo == "video":
-                bot.send_video(
-                    ID_GRUPO,
-                    conteudo["file_id"],
-                    caption=conteudo.get("caption", "")
-                )
+                bot.send_video(ID_GRUPO, conteudo["file_id"], caption=conteudo.get("caption", ""))
 
-            # ---- GIF / ANIMAÇÃO ---------
             elif tipo == "animation":
                 bot.send_animation(ID_GRUPO, conteudo["file_id"])
 
-            # Marca para não repetir logo
+            # Adiciona à lista dos enviados recentemente
             enviados_recentemente.append(conteudo)
             if len(enviados_recentemente) > 120:
                 enviados_recentemente = enviados_recentemente[-60:]
@@ -648,7 +639,7 @@ def mandar_conteudo_aleatorio():
         except Exception as e:
             print("[ERRO] mandar_conteudo_aleatorio:", e)
 
-        # Espera entre 60 e 120 min para mandar o próximo
+        # Espera entre 1h e 2h
         time.sleep(random.randint(3600, 7200))
 
 if __name__ == "__main__":
