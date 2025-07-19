@@ -503,7 +503,7 @@ def responder(msg):
                 if data == hoje
             ]
 
-            if len(historico["insultos_homens"][username]) < 2:
+            if len(historico["insultos_homens"][username]) < 1:
                 frase = random.choice([
                     i for i in insultos_gerais
                     if i not in historico.get("insultos_usados", [])
