@@ -7,6 +7,7 @@ import threading
 import requests
 import datetime
 import json
+import re                    # para capturar “o que é?”
 
 from datetime import datetime
 
@@ -260,6 +261,20 @@ respostas_submisso_dono = [
     "Fidelidade operacional. Você manda. Eu destravo. 🗝️"
 ]
 
+def responder_dicionario(msg, termo):
+    """
+    Procura 'termo' no dicionário (chave minúscula, sem acentos).
+    Se achar, devolve resposta aleatória. Se não, avisa que não sabe.
+    """
+    chave = re.sub(r"[^a-z0-9]", "", termo.lower())
+
+    if chave in dicionario:
+        resposta = random.choice(dicionario[chave])
+    else:
+        resposta = f"Poxa, ainda não sei o que é *{termo}*. Mas já tô anotando pra estudar depois! 🤓"
+
+    bot.reply_to(msg, resposta, parse_mode="Markdown")
+
 # ------------------------------------------------------------------
 # === MEMÓRIA DE MENSAGENS E MÍDIAS ===
 # Armazenamos aqui e só depois soltamos de forma aleatória
@@ -335,6 +350,15 @@ def salvar_historico():
     with open(HISTORICO_PATH, "w") as f:
         json.dump(historico, f)
 
+# ----- DICIONÁRIO DO APOLO -----
+DIC_PATH = "dicionario_apollo.json"
+
+try:
+    with open(DIC_PATH, "r", encoding="utf-8") as f:
+        dicionario = json.load(f)
+except FileNotFoundError:
+    dicionario = {}
+
 # === WEBHOOKS ===
 @app.route(f"/{TOKEN}", methods=["POST"])
 def receber_update():
@@ -358,6 +382,18 @@ def responder(msg):
     texto = msg.text.lower()
     nome = ""  # não queremos exibir nome
     username = f"@{msg.from_user.username}" if msg.from_user.username else ""
+
+        # ---------- MODO DICIONÁRIO ----------
+    pergunta = re.match(
+        r"^\s*@?apollo[, ]*\s*(?:o que é|o que significa|define|explica|explique)\s+(.+?)[\?\.!]?$", 
+        msg.text, 
+        flags=re.IGNORECASE
+    )
+
+    if pergunta:
+        termo = pergunta.group(1).strip()
+        responder_dicionario(msg, termo)
+        return
 
     if any(saud in texto for saud in ["bom dia", "boa tarde", "boa noite", "boa madrugada"]):
         saudacao = "bom dia 😎" if "bom dia" in texto else \
