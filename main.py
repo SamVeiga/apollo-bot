@@ -389,6 +389,22 @@ def responder(msg):
     nome = ""  # não queremos exibir nome
     username = f"@{msg.from_user.username}" if msg.from_user.username else ""
 
+        # ------------------------------------------------------------------
+    #  ⚠️  NOVO FILTRO: só prossegue se o bot foi mencionado
+    # ------------------------------------------------------------------
+    username_bot = f"@{bot.get_me().username.lower()}"
+
+    foi_mencionado = (
+        username_bot in texto                    # menção com @
+        or "apollo" in texto                     # nome escrito
+        or (msg.reply_to_message                 # reply a mensagem do bot
+            and msg.reply_to_message.from_user.id == bot.get_me().id)
+    )
+
+    if not foi_mencionado:
+        salvar_mensagem_recebida(msg)  # ← se quiser continuar salvando mídia
+        return                         # ← ENCERROU, NÃO RESPONDE NADA
+    
         # ---------- MODO DICIONÁRIO ----------
     pergunta = re.match(
         r"^\s*@?apollo[, ]*\s*(?:o que é|o que significa|define|explica|explique)\s+(.+?)[\?\.!]?$", 
