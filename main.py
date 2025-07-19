@@ -8,6 +8,12 @@ import requests
 import datetime
 import json
 
+from datetime import datetime
+
+def apolo_ativo():
+    agora = datetime.now().hour
+    return 6 <= agora < 24
+
 TOKEN = os.getenv("TELEGRAM_TOKEN")
 RENDER_URL = os.getenv("RENDER_EXTERNAL_URL")
 
@@ -516,6 +522,10 @@ def mandar_conteudo_aleatorio():
     enviados_recentemente = []             # evita repeteco muito rápido
 
     while True:
+        if not apolo_ativo():
+            time.sleep(300)  # Dorme 5 minutos e tenta de novo
+            continue
+
         try:
             candidatas = [m for m in mensagens_salvas
                           if m not in enviados_recentemente]
