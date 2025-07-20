@@ -575,8 +575,8 @@ def responder(msg):
         termo = pergunta.group(1).strip()
         responder_dicionario(msg, termo)
         return
-
- def salvar_novo_termo(termo, explicacao):
+        
+def salvar_novo_termo(termo, explicacao):
     termo = termo.lower().strip()
 
     if termo in dicionario:
