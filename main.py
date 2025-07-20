@@ -382,46 +382,33 @@ def configurar_webhook():
         return "✅ Webhook configurado!", 200
     return "✅ Webhook já estava ok.", 200
 
+# --- Comando para ensinar novas palavras ao dicionário ---
 @bot.message_handler(commands=["ensinar"])
-def ensinar_termo(msg):
+def ensinar_dicionario(msg):
     try:
-        chat_id = msg.chat.id
-        user_id = msg.from_user.id
-
-        # Dono sempre pode
-        if user_id == DONO_ID:
-            autorizado = True
-        else:
-            # Verifica se é admin do grupo
-            try:
-                membro = bot.get_chat_member(chat_id, user_id)
-                autorizado = membro.status in ("administrator", "creator")
-            except:
-                autorizado = False
-
-        if not autorizado:
-            bot.reply_to(msg, "Só o dono ou os administradores podem me ensinar coisas novas. 😅")
+        # Garante que só administradores ou o dono podem ensinar
+        autorizados = [adm.user.id for adm in bot.get_chat_administrators(msg.chat.id)]
+        if msg.from_user.id != DONO_ID and msg.from_user.id not in autorizados:
+            bot.reply_to(msg, "Somente administradores podem ensinar novas palavras.")
             return
 
+        # Extrai e separa o termo da explicação
         texto = msg.text.replace("/ensinar", "", 1).strip()
         if "=" not in texto:
-            bot.reply_to(msg, "Formato errado! Use: /ensinar palavra = definição")
-            return
+            raise Exception("Use o formato: /ensinar termo = explicação")
 
         termo, explicacao = texto.split("=", 1)
-        termo = termo.strip()
+        termo = termo.strip().lower()
         explicacao = explicacao.strip()
 
         if not termo or not explicacao:
-            bot.reply_to(msg, "Preciso de um termo e uma explicação!")
-            return
+            raise Exception("Termo ou explicação estão vazios.")
 
         salvar_novo_termo(termo, explicacao)
-        bot.reply_to(msg, f"Aprendi que *{termo}* é:\n_{explicacao}_ ✅", parse_mode="Markdown")
+        bot.reply_to(msg, f"✅ Termo *{termo}* aprendido!", parse_mode="Markdown")
 
     except Exception as e:
-        print("Erro no /ensinar:", e)
-        bot.reply_to(msg, "Deu ruim aqui. Tenta de novo com calma!")
+        bot.reply_to(msg, f"Deu ruim aqui. Tenta assim: `/ensinar flor = algo bonito que cheira bem 🌹`", parse_mode="Markdown")
 
 @bot.message_handler(commands=["esquecer"])
 def esquecer_termo(msg):
