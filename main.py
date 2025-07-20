@@ -578,12 +578,13 @@ def responder(msg):
 
  def salvar_novo_termo(termo, explicacao):
     termo = termo.lower().strip()
+
     if termo in dicionario:
         if explicacao not in dicionario[termo]:
             dicionario[termo].append(explicacao)
     else:
         dicionario[termo] = [explicacao]
-    
+
     with open(DIC_PATH, "w", encoding="utf-8") as f:
         json.dump(dicionario, f, ensure_ascii=False, indent=2)
         
