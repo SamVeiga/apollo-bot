@@ -383,150 +383,64 @@ def configurar_webhook():
     return "✅ Webhook já estava ok.", 200
 
 # --- Comando para ensinar novas palavras ao dicionário ---
-@bot.message_handler(commands=["ensinar"])
-def ensinar_dicionario(msg):
-    try:
-        admins = [adm.user.id for adm in bot.get_chat_administrators(msg.chat.id)]
-        if msg.from_user.id != DONO_ID and msg.from_user.id not in admins:
-            bot.reply_to(msg, "Somente administradores podem ensinar novas palavras.")
-            return
+@bot.message_handler(commands=["ensinar", "editar", "esquecer", "listar_termos"])
+def gerenciar_dicionario(msg):
+    user_id = msg.from_user.id
+    chat_id = msg.chat.id
 
-        texto = msg.text.partition(" ")[2].strip()
-        if "=" not in texto:
-            raise ValueError("Use o formato: /ensinar palavra = explicação")
+    # Verifica se é admin ou dono
+    if user_id != DONO_ID:
+        try:
+            membro = bot.get_chat_member(chat_id, user_id)
+            if not membro.status in ("administrator", "creator"):
+                return bot.reply_to(msg, "❌ Só administradores podem mexer no dicionário.")
+        except:
+            return bot.reply_to(msg, "❌ Não consegui verificar seu status. Tenta de novo.")
 
-        termo, explicacao = map(str.strip, texto.split("=", 1))
+    texto = msg.text.strip()
 
-        if not termo or not explicacao:
-            raise ValueError("Termo ou explicação vazios.")
+    if texto.startswith("/ensinar"):
+        partes = texto[8:].split("=", 1)
+        if len(partes) == 2:
+            termo = partes[0].strip().lower()
+            explicacao = partes[1].strip()
+            if termo and explicacao:
+                dicionario[termo] = [explicacao]
+                with open(DIC_PATH, "w", encoding="utf-8") as f:
+                    json.dump(dicionario, f, ensure_ascii=False, indent=2)
+                return bot.reply_to(msg, f"✅ Termo *{termo}* aprendido com sucesso!", parse_mode="Markdown")
+        return bot.reply_to(msg, "⚠️ Usa o formato:\n/ensinar flor = algo bonito que cheira bem 🌹")
 
-        salvar_novo_termo(termo.lower(), explicacao)
-        bot.reply_to(msg, f"✅ Termo *{termo}* aprendido com sucesso!", parse_mode="Markdown")
+    if texto.startswith("/editar"):
+        partes = texto[7:].split("=", 1)
+        if len(partes) == 2:
+            termo = partes[0].strip().lower()
+            nova = partes[1].strip()
+            if termo in dicionario:
+                dicionario[termo] = [nova]
+                with open(DIC_PATH, "w", encoding="utf-8") as f:
+                    json.dump(dicionario, f, ensure_ascii=False, indent=2)
+                return bot.reply_to(msg, f"✏️ Termo *{termo}* atualizado!", parse_mode="Markdown")
+            else:
+                return bot.reply_to(msg, f"❌ O termo *{termo}* ainda não foi ensinado.", parse_mode="Markdown")
+        return bot.reply_to(msg, "⚠️ Usa o formato:\n/editar flor = nova explicação")
 
-    except Exception as e:
-        bot.reply_to(
-            msg,
-            "Deu ruim aqui. Usa o formato:\n`/ensinar flor = algo bonito que cheira bem 🌹`",
-            parse_mode="Markdown"
-        )
-
-@bot.message_handler(commands=["esquecer"])
-def esquecer_termo(msg):
-    try:
-        chat_id = msg.chat.id
-        user_id = msg.from_user.id
-
-        # Verifica se é o dono ou admin
-        if user_id == DONO_ID:
-            autorizado = True
-        else:
-            try:
-                membro = bot.get_chat_member(chat_id, user_id)
-                autorizado = membro.status in ("administrator", "creator")
-            except:
-                autorizado = False
-
-        if not autorizado:
-            bot.reply_to(msg, "Só o dono ou um admin pode fazer isso, chefia.")
-            return
-
-        termo = msg.text.replace("/esquecer", "", 1).strip().lower()
-
-        if not termo:
-            bot.reply_to(msg, "Me diga o termo que quer apagar. Exemplo: /esquecer flor")
-            return
-
+    if texto.startswith("/esquecer"):
+        termo = texto[9:].strip().lower()
         if termo in dicionario:
             del dicionario[termo]
             with open(DIC_PATH, "w", encoding="utf-8") as f:
                 json.dump(dicionario, f, ensure_ascii=False, indent=2)
-            bot.reply_to(msg, f"Apaguei *{termo}* do meu dicionário. 📚❌", parse_mode="Markdown")
+            return bot.reply_to(msg, f"🗑️ Esqueci o termo *{termo}*.", parse_mode="Markdown")
         else:
-            bot.reply_to(msg, f"Não achei nenhum significado salvo pra *{termo}*. 🤷", parse_mode="Markdown")
+            return bot.reply_to(msg, f"❌ O termo *{termo}* não existe.", parse_mode="Markdown")
 
-    except Exception as e:
-        print("Erro no /esquecer:", e)
-        bot.reply_to(msg, "Tive um bug tentando esquecer isso. 😵")
-
-@bot.message_handler(commands=["listar_termos"])
-def listar_termos(msg):
-    try:
-        chat_id = msg.chat.id
-        user_id = msg.from_user.id
-
-        # Verifica se é o dono ou admin
-        if user_id == DONO_ID:
-            autorizado = True
-        else:
-            try:
-                membro = bot.get_chat_member(chat_id, user_id)
-                autorizado = membro.status in ("administrator", "creator")
-            except:
-                autorizado = False
-
-        if not autorizado:
-            bot.reply_to(msg, "Só o dono ou um admin pode ver o dicionário. 🕵️")
-            return
-
-        if not dicionario:
-            bot.reply_to(msg, "Ainda não aprendi nada 😢")
-            return
-
-        # Cria um texto com todos os termos
-        termos = list(dicionario.keys())
-        termos.sort()
-        texto = "*Termos salvos no meu dicionário:*\n" + "\n".join(f"• {t}" for t in termos)
-
-        # Divide a resposta se for muito longa
-        partes = [texto[i:i+3900] for i in range(0, len(texto), 3900)]
-        for parte in partes:
-            bot.reply_to(msg, parte, parse_mode="Markdown")
-
-    except Exception as e:
-        print("Erro no /listar_termos:", e)
-        bot.reply_to(msg, "Deu erro tentando listar os termos. 😬")
-
-@bot.message_handler(commands=["editar"])
-def editar_termo(msg):
-    try:
-        chat_id = msg.chat.id
-        user_id = msg.from_user.id
-
-        # Verifica se é dono ou admin
-        if user_id == DONO_ID:
-            autorizado = True
-        else:
-            try:
-                membro = bot.get_chat_member(chat_id, user_id)
-                autorizado = membro.status in ("administrator", "creator")
-            except:
-                autorizado = False
-
-        if not autorizado:
-            bot.reply_to(msg, "Só o dono ou um admin pode editar o dicionário. 🔒")
-            return
-
-        # Extrai o conteúdo após o comando
-        texto = msg.text.replace("/editar", "", 1).strip()
-        if "=" not in texto:
-            bot.reply_to(msg, "Formato errado. Use assim:\n`/editar termo = novo significado`", parse_mode="Markdown")
-            return
-
-        termo, novo_significado = map(str.strip, texto.split("=", 1))
-
-        if termo not in dicionario:
-            bot.reply_to(msg, f"Eu não conheço o termo *{termo}* ainda. Use /ensinar primeiro.", parse_mode="Markdown")
-            return
-
-        dicionario[termo] = [novo_significado]
-        with open(DIC_PATH, "w", encoding="utf-8") as f:
-            json.dump(dicionario, f, ensure_ascii=False, indent=2)
-
-        bot.reply_to(msg, f"Atualizado: *{termo}* agora significa:\n_{novo_significado}_", parse_mode="Markdown")
-
-    except Exception as e:
-        print("Erro no /editar:", e)
-        bot.reply_to(msg, "Deu erro tentando editar esse termo. 😬")
+    if texto.startswith("/listar_termos"):
+        termos = sorted(dicionario.keys())
+        if not termos:
+            return bot.reply_to(msg, "📭 Ainda não aprendi nenhum termo.")
+        lista = ", ".join(termos)
+        return bot.reply_to(msg, f"📚 Termos salvos:\n{lista}")
 
 # === FUNÇÃO PRINCIPAL ===
 @bot.message_handler(func=lambda msg: True)
