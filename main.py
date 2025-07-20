@@ -382,6 +382,165 @@ def configurar_webhook():
         return "✅ Webhook configurado!", 200
     return "✅ Webhook já estava ok.", 200
 
+@bot.message_handler(commands=["ensinar"])
+def ensinar_termo(msg):
+    try:
+        chat_id = msg.chat.id
+        user_id = msg.from_user.id
+
+        # Dono sempre pode
+        if user_id == DONO_ID:
+            autorizado = True
+        else:
+            # Verifica se é admin do grupo
+            try:
+                membro = bot.get_chat_member(chat_id, user_id)
+                autorizado = membro.status in ("administrator", "creator")
+            except:
+                autorizado = False
+
+        if not autorizado:
+            bot.reply_to(msg, "Só o dono ou os administradores podem me ensinar coisas novas. 😅")
+            return
+
+        texto = msg.text.replace("/ensinar", "", 1).strip()
+        if "=" not in texto:
+            bot.reply_to(msg, "Formato errado! Use: /ensinar palavra = definição")
+            return
+
+        termo, explicacao = texto.split("=", 1)
+        termo = termo.strip()
+        explicacao = explicacao.strip()
+
+        if not termo or not explicacao:
+            bot.reply_to(msg, "Preciso de um termo e uma explicação!")
+            return
+
+        salvar_novo_termo(termo, explicacao)
+        bot.reply_to(msg, f"Aprendi que *{termo}* é:\n_{explicacao}_ ✅", parse_mode="Markdown")
+
+    except Exception as e:
+        print("Erro no /ensinar:", e)
+        bot.reply_to(msg, "Deu ruim aqui. Tenta de novo com calma!")
+
+@bot.message_handler(commands=["esquecer"])
+def esquecer_termo(msg):
+    try:
+        chat_id = msg.chat.id
+        user_id = msg.from_user.id
+
+        # Verifica se é o dono ou admin
+        if user_id == DONO_ID:
+            autorizado = True
+        else:
+            try:
+                membro = bot.get_chat_member(chat_id, user_id)
+                autorizado = membro.status in ("administrator", "creator")
+            except:
+                autorizado = False
+
+        if not autorizado:
+            bot.reply_to(msg, "Só o dono ou um admin pode fazer isso, chefia.")
+            return
+
+        termo = msg.text.replace("/esquecer", "", 1).strip().lower()
+
+        if not termo:
+            bot.reply_to(msg, "Me diga o termo que quer apagar. Exemplo: /esquecer flor")
+            return
+
+        if termo in dicionario:
+            del dicionario[termo]
+            with open(DIC_PATH, "w", encoding="utf-8") as f:
+                json.dump(dicionario, f, ensure_ascii=False, indent=2)
+            bot.reply_to(msg, f"Apaguei *{termo}* do meu dicionário. 📚❌", parse_mode="Markdown")
+        else:
+            bot.reply_to(msg, f"Não achei nenhum significado salvo pra *{termo}*. 🤷", parse_mode="Markdown")
+
+    except Exception as e:
+        print("Erro no /esquecer:", e)
+        bot.reply_to(msg, "Tive um bug tentando esquecer isso. 😵")
+
+@bot.message_handler(commands=["listar_termos"])
+def listar_termos(msg):
+    try:
+        chat_id = msg.chat.id
+        user_id = msg.from_user.id
+
+        # Verifica se é o dono ou admin
+        if user_id == DONO_ID:
+            autorizado = True
+        else:
+            try:
+                membro = bot.get_chat_member(chat_id, user_id)
+                autorizado = membro.status in ("administrator", "creator")
+            except:
+                autorizado = False
+
+        if not autorizado:
+            bot.reply_to(msg, "Só o dono ou um admin pode ver o dicionário. 🕵️")
+            return
+
+        if not dicionario:
+            bot.reply_to(msg, "Ainda não aprendi nada 😢")
+            return
+
+        # Cria um texto com todos os termos
+        termos = list(dicionario.keys())
+        termos.sort()
+        texto = "*Termos salvos no meu dicionário:*\n" + "\n".join(f"• {t}" for t in termos)
+
+        # Divide a resposta se for muito longa
+        partes = [texto[i:i+3900] for i in range(0, len(texto), 3900)]
+        for parte in partes:
+            bot.reply_to(msg, parte, parse_mode="Markdown")
+
+    except Exception as e:
+        print("Erro no /listar_termos:", e)
+        bot.reply_to(msg, "Deu erro tentando listar os termos. 😬")
+
+@bot.message_handler(commands=["editar"])
+def editar_termo(msg):
+    try:
+        chat_id = msg.chat.id
+        user_id = msg.from_user.id
+
+        # Verifica se é dono ou admin
+        if user_id == DONO_ID:
+            autorizado = True
+        else:
+            try:
+                membro = bot.get_chat_member(chat_id, user_id)
+                autorizado = membro.status in ("administrator", "creator")
+            except:
+                autorizado = False
+
+        if not autorizado:
+            bot.reply_to(msg, "Só o dono ou um admin pode editar o dicionário. 🔒")
+            return
+
+        # Extrai o conteúdo após o comando
+        texto = msg.text.replace("/editar", "", 1).strip()
+        if "=" not in texto:
+            bot.reply_to(msg, "Formato errado. Use assim:\n`/editar termo = novo significado`", parse_mode="Markdown")
+            return
+
+        termo, novo_significado = map(str.strip, texto.split("=", 1))
+
+        if termo not in dicionario:
+            bot.reply_to(msg, f"Eu não conheço o termo *{termo}* ainda. Use /ensinar primeiro.", parse_mode="Markdown")
+            return
+
+        dicionario[termo] = [novo_significado]
+        with open(DIC_PATH, "w", encoding="utf-8") as f:
+            json.dump(dicionario, f, ensure_ascii=False, indent=2)
+
+        bot.reply_to(msg, f"Atualizado: *{termo}* agora significa:\n_{novo_significado}_", parse_mode="Markdown")
+
+    except Exception as e:
+        print("Erro no /editar:", e)
+        bot.reply_to(msg, "Deu erro tentando editar esse termo. 😬")
+
 # === FUNÇÃO PRINCIPAL ===
 @bot.message_handler(func=lambda msg: True)
 def responder(msg):
@@ -417,6 +576,17 @@ def responder(msg):
         responder_dicionario(msg, termo)
         return
 
+ def salvar_novo_termo(termo, explicacao):
+    termo = termo.lower().strip()
+    if termo in dicionario:
+        if explicacao not in dicionario[termo]:
+            dicionario[termo].append(explicacao)
+    else:
+        dicionario[termo] = [explicacao]
+    
+    with open(DIC_PATH, "w", encoding="utf-8") as f:
+        json.dump(dicionario, f, ensure_ascii=False, indent=2)
+        
     if SAUDACOES_ATIVADAS and any(saud in texto for saud in ["bom dia", "boa tarde", "boa noite", "boa madrugada"]):
         saudacao = "bom dia 😎" if "bom dia" in texto else \
                    "boa tarde 😎" if "boa tarde" in texto else \
