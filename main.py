@@ -386,27 +386,20 @@ def configurar_webhook():
 @bot.message_handler(commands=["ensinar"])
 def ensinar_dicionario(msg):
     try:
-        # Verifica se é o dono ou um admin
         admins = [adm.user.id for adm in bot.get_chat_administrators(msg.chat.id)]
         if msg.from_user.id != DONO_ID and msg.from_user.id not in admins:
             bot.reply_to(msg, "Somente administradores podem ensinar novas palavras.")
             return
 
-        # Captura o conteúdo depois do comando
         texto = msg.text.partition(" ")[2].strip()
-
-        # Verifica se contém o sinal de igual
         if "=" not in texto:
             raise ValueError("Use o formato: /ensinar palavra = explicação")
 
-        # Separa termo e explicação
         termo, explicacao = map(str.strip, texto.split("=", 1))
 
-        # Garante que ambos existam
         if not termo or not explicacao:
             raise ValueError("Termo ou explicação vazios.")
 
-        # Salva o novo termo no dicionário
         salvar_novo_termo(termo.lower(), explicacao)
         bot.reply_to(msg, f"✅ Termo *{termo}* aprendido com sucesso!", parse_mode="Markdown")
 
