@@ -449,7 +449,7 @@ def responder(msg):
     username = f"@{msg.from_user.username}" if msg.from_user.username else ""
 
  # --- BOAS-VINDAS ---
-    if msg.new_chat_members:
+ if msg.new_chat_members:
     for m in msg.new_chat_members:
         novo = f"[{m.first_name}](tg://user?id={m.id})"
         time.sleep(20)
