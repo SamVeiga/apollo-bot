@@ -461,18 +461,17 @@ def responder(msg):
         responder_dicionario(msg, termo)
         return
 
-username_bot = f"@{bot.get_me().username.lower()}"
+    username_bot = f"@{bot.get_me().username.lower()}"
 
     foi_mencionado = (
-        username_bot in texto                    # menção com @
-        or "apollo" in texto                     # nome escrito
-        or (msg.reply_to_message                 # reply a mensagem do bot
-            and msg.reply_to_message.from_user.id == bot.get_me().id)
+        username_bot in texto  # menção com @
+        or "apollo" in texto   # nome escrito
+        or (msg.reply_to_message and msg.reply_to_message.from_user.id == bot.get_me().id)  # reply
     )
 
     if not foi_mencionado:
-        salvar_mensagem_recebida(msg)  # ← se quiser continuar salvando mídia
-        return          
+        salvar_mensagem_recebida(msg)
+        return        
         
 def salvar_novo_termo(termo, explicacao):
     termo = termo.lower().strip()
