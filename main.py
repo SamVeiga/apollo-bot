@@ -448,13 +448,13 @@ def responder(msg):
     texto = msg.text.lower()
     username = f"@{msg.from_user.username}" if msg.from_user.username else ""
 
- # --- BOAS-VINDAS ---
- if msg.new_chat_members:
-    for m in msg.new_chat_members:
-        novo = f"[{m.first_name}](tg://user?id={m.id})"
-        time.sleep(20)
-        bot.reply_to(msg, f"{novo}, entra direito e respeita o caos. 😏", parse_mode="Markdown")
-    return
+    # --- BOAS-VINDAS ---
+    if msg.new_chat_members:
+        for m in msg.new_chat_members:
+            novo = f"[{m.first_name}](tg://user?id={m.id})"
+            time.sleep(20)
+            bot.reply_to(msg, f"{novo}, entra direito e respeita o caos. 😏", parse_mode="Markdown")
+        return
 
     # --- MODO DICIONÁRIO ---
     pergunta = re.match(
