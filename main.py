@@ -449,27 +449,26 @@ def responder(msg):
     texto = msg.text.lower()
     username = f"@{msg.from_user.username}" if msg.from_user.username else ""
 
-        # --- BOAS-VINDAS ---
+    # --- BOAS-VINDAS ---
     if msg.new_chat_members:
         mensagens_boas_vindas = [
-    "Bem-vindo! O Apolo te viu chegando... já tá julgando em silêncio. 👀🧃",
-    "Pode entrar, mas quem avisa é o Apolo: até o silêncio aqui tem opinião. 🤐🗣️",
-    "Chegou agora? Tira o chinelo, o ego e vem leve — o Apolo agradece. 🧘‍♂️",
-    "Seja bem-vindo ao grupo. O caos é velho conhecido, e o Apolo já te adicionou à lista. 🔥📋",
-    "Entrar é fácil. Sair ileso, nem tanto. Mergulha fundo — o Apolo tá contigo. 🧠🌊",
-    "O Apolo te dá boas-vindas e um lembrete: a paz dura até o próximo meme. 🧘‍♂️😂",
-    "Fica à vontade, mas fica esperto. Aqui tua entrada vem antes do 'bom dia'. 😴📲",
-    "Seja bem-vindo! O grupo é intenso, mas o Apolo tá aqui guiando. 🧭🥵",
-    "Chegou achando que era só mais um grupo? Relaxa... o Apolo vai te mostrar o contrário. 🔮🌀",
-    "O Apolo te saúda! Lê as regras, sente o clima, e tenta não ser o primeiro printado. 🔖😅"
-    ]
-       
-    for m in msg.new_chat_members:   # ✔️ alinhado corretamente com 'mensagens_boas_vindas'
-        novo = f"[{m.first_name}](tg://user?id={m.id})"
-        frase = random.choice(mensagens_boas_vindas)
-        time.sleep(20)
-        bot.reply_to(msg, f"{novo}, {frase}", parse_mode="Markdown")
-    return
+            "Bem-vindo! O Apolo te viu chegando... já tá julgando em silêncio. 👀🧃",
+            "Pode entrar, mas quem avisa é o Apolo: até o silêncio aqui tem opinião. 🤐🗣️",
+            "Chegou agora? Tira o chinelo, o ego e vem leve — o Apolo agradece. 🧘‍♂️",
+            "Seja bem-vindo ao grupo. O caos é velho conhecido, e o Apolo já te adicionou à lista. 🔥📋",
+            "Entrar é fácil. Sair ileso, nem tanto. Mergulha fundo — o Apolo tá contigo. 🧠🌊",
+            "O Apolo te dá boas-vindas e um lembrete: a paz dura até o próximo meme. 🧘‍♂️😂",
+            "Fica à vontade, mas fica esperto. Aqui tua entrada vem antes do 'bom dia'. 😴📲",
+            "Seja bem-vindo! O grupo é intenso, mas o Apolo tá aqui guiando. 🧭🥵",
+            "Chegou achando que era só mais um grupo? Relaxa... o Apolo vai te mostrar o contrário. 🔮🌀",
+            "O Apolo te saúda! Lê as regras, sente o clima, e tenta não ser o primeiro printado. 🔖😅"
+        ]
+        for m in msg.new_chat_members:
+            novo = f"[{m.first_name}](tg://user?id={m.id})"
+            frase = random.choice(mensagens_boas_vindas)
+            time.sleep(10)
+            bot.reply_to(msg, f"{novo}, {frase}", parse_mode="Markdown")
+        return
 
     # --- MODO DICIONÁRIO ---
     pergunta = re.match(
@@ -490,13 +489,13 @@ def responder(msg):
         or (msg.reply_to_message and msg.reply_to_message.from_user.id == bot.get_me().id)
     )
 
-    # --- MODO DONO ---
+    # --- DONO ---
     if msg.from_user.id == DONO_ID and foi_mencionado:
         time.sleep(10)
         bot.reply_to(msg, random.choice(respostas_submisso_dono), parse_mode="Markdown")
         return
 
-    # --- BLOCO MULHERES ---
+    # --- MULHERES ---
     if username in MULHERES and foi_mencionado:
         hoje = datetime.today().date().isoformat()
 
@@ -524,7 +523,7 @@ def responder(msg):
         bot.reply_to(msg, frase, parse_mode="Markdown")
         return
 
-    # --- BLOCO HOMENS ---
+    # --- HOMENS ---
     if username in HOMENS and foi_mencionado:
         hoje = datetime.today().date().isoformat()
 
@@ -555,18 +554,18 @@ def responder(msg):
             salvar_historico()
         return
 
-    # --- SE NÃO FOI MENCIONADO, NÃO RESPONDE ---
-            if SAUDACOES_ATIVADAS and any(saud in texto for saud in ["bom dia", "boa tarde", "boa noite", "boa madrugada"]):
+    # --- SAUDAÇÕES ---
+    if SAUDACOES_ATIVADAS and any(saud in texto for saud in ["bom dia", "boa tarde", "boa noite", "boa madrugada"]):
         saudacao = "bom dia 😎" if "bom dia" in texto else \
                    "boa tarde 😎" if "boa tarde" in texto else \
                    "boa noite 😎" if "boa noite" in texto else \
                    "boa madrugada 😎"
-        time.sleep(20)
+        time.sleep(10)
         bot.reply_to(msg, saudacao, parse_mode="Markdown")
         return
 
-        salvar_mensagem_recebida(msg)
-        return
+    # --- ARMAZENAR TODA MENSAGEM ---
+    salvar_mensagem_recebida(msg)
         
 def salvar_novo_termo(termo, explicacao):
     termo = termo.lower().strip()
