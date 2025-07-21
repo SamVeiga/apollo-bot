@@ -463,12 +463,13 @@ def responder(msg):
     "Chegou achando que era só mais um grupo? Relaxa... o Apolo vai te mostrar o contrário. 🔮🌀",
     "O Apolo te saúda! Lê as regras, sente o clima, e tenta não ser o primeiro printado. 🔖😅"
     ]
-          for m in msg.new_chat_members:
-            novo = f"[{m.first_name}](tg://user?id={m.id})"
-            frase = random.choice(mensagens_boas_vindas)
-            time.sleep(20)
-            bot.reply_to(msg, f"{novo}, {frase}", parse_mode="Markdown")
-        return
+       
+    for m in msg.new_chat_members:   # ✔️ alinhado corretamente com 'mensagens_boas_vindas'
+        novo = f"[{m.first_name}](tg://user?id={m.id})"
+        frase = random.choice(mensagens_boas_vindas)
+        time.sleep(20)
+        bot.reply_to(msg, f"{novo}, {frase}", parse_mode="Markdown")
+    return
 
     # --- MODO DICIONÁRIO ---
     pergunta = re.match(
