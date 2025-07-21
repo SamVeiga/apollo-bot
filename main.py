@@ -452,12 +452,18 @@ def responder(msg):
         # --- BOAS-VINDAS ---
     if msg.new_chat_members:
         mensagens_boas_vindas = [
-            "entra direito e respeita o caos. 😏",
-            "a casa é tua, mas tira o chinelo. 🩴",
-            "só não pisa na jaca antes de pisar no grupo. 🥴",
-            "o grupo te observando... 👀 seja bem-vindo.",
-            "depois que entra, não tem como sair ileso. 😈",
-            "entra devagar que o caos já tá solto. 🚪🔥"
+            const apolloBoasVindas = [
+  "Bem-vindo! O Apollo te viu chegando... e já tá julgando em silêncio. 🤖🧐",
+  "Pode entrar, mas quem avisa é o Apollo: até o silêncio aqui tem opinião. 🗯️👀",
+  "Chegou agora? Tira o chinelo, o ego e vem leve — o Apollo agradece. 🩴🤖",
+  "Seja bem-vindo ao grupo. O caos é velho conhecido, e o Apollo já te adicionou à lista. 🔥📋",
+  "Entrar é fácil. Sair ileso, nem tanto. Mas respira fundo — o Apollo tá contigo. 🌀😈",
+  "O Apollo te dá boas-vindas e um lembrete: a paz dura até o próximo meme. 🧠📲",
+  "Fica à vontade, mas fica esperto. Aqui a treta vem antes do 'bom dia'. ☕🤖",
+  "Seja bem-vindo! O grupo é intenso, mas o Apollo tá aqui pra fingir que tem ordem. 🛰️😅",
+  "Chegou achando que era só mais um grupo? Relaxa... o Apollo vai te mostrar o contrário. ⚡👁️",
+  "O Apollo te saúda! Lê as regras, sente o clima, e tenta não ser o primeiro printado. 🤳😏"
+];
         ]
         for m in msg.new_chat_members:
             novo = f"[{m.first_name}](tg://user?id={m.id})"
