@@ -556,8 +556,7 @@ def responder(msg):
         return
 
     # --- SE NÃO FOI MENCIONADO, NÃO RESPONDE ---
-    if not foi_mencionado:
-        if SAUDACOES_ATIVADAS and any(saud in texto for saud in ["bom dia", "boa tarde", "boa noite", "boa madrugada"]):
+            if SAUDACOES_ATIVADAS and any(saud in texto for saud in ["bom dia", "boa tarde", "boa noite", "boa madrugada"]):
         saudacao = "bom dia 😎" if "bom dia" in texto else \
                    "boa tarde 😎" if "boa tarde" in texto else \
                    "boa noite 😎" if "boa noite" in texto else \
