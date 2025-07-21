@@ -446,32 +446,96 @@ def gerenciar_dicionario(msg):
 @bot.message_handler(func=lambda msg: True)
 def responder(msg):
     texto = msg.text.lower()
-    nome = ""  # não queremos exibir nome
     username = f"@{msg.from_user.username}" if msg.from_user.username else ""
 
-              # ---------- MODO DICIONÁRIO ----------
+    # --- MODO DICIONÁRIO ---
     pergunta = re.match(
-        r"^\s*@?apollo[, ]*\s*(?:o que é|o que significa|define|explica|explique)\s+(.+?)[\?\.!]?$", 
-        msg.text, 
+        r"^\s*@?apollo[, ]*\s*(?:o que é|o que significa|define|explica|explique)\s+(.+?)[\?\.!]?$",
+        msg.text,
         flags=re.IGNORECASE
     )
-
     if pergunta:
         termo = pergunta.group(1).strip()
         responder_dicionario(msg, termo)
         return
 
+    # --- VERIFICAR MENÇÃO ---
     username_bot = f"@{bot.get_me().username.lower()}"
-
     foi_mencionado = (
-        username_bot in texto  # menção com @
-        or "apollo" in texto   # nome escrito
-        or (msg.reply_to_message and msg.reply_to_message.from_user.id == bot.get_me().id)  # reply
+        username_bot in texto
+        or "apollo" in texto
+        or (msg.reply_to_message and msg.reply_to_message.from_user.id == bot.get_me().id)
     )
 
+    # --- MODO DONO ---
+    if msg.from_user.id == DONO_ID and foi_mencionado:
+        time.sleep(10)
+        bot.reply_to(msg, random.choice(respostas_submisso_dono), parse_mode="Markdown")
+        return
+
+    # --- BLOCO MULHERES ---
+    if username in MULHERES and foi_mencionado:
+        hoje = datetime.today().date().isoformat()
+
+        if username not in historico["frases_mulheres"]:
+            historico["frases_mulheres"][username] = []
+
+        historico["frases_mulheres"][username] = [
+            item for item in historico["frases_mulheres"][username]
+            if item.get("data") and datetime.fromisoformat(item["data"]).date() >= datetime.today().date() - timedelta(days=3)
+        ]
+
+        usadas = [item["frase"] for item in historico["frases_mulheres"][username]]
+
+        frase = random.choice(
+            [f for f in xavecos_para_mulheres if f not in usadas] or xavecos_para_mulheres
+        )
+
+        historico["frases_mulheres"][username].append({
+            "frase": frase,
+            "data": hoje
+        })
+
+        salvar_historico()
+        time.sleep(10)
+        bot.reply_to(msg, frase, parse_mode="Markdown")
+        return
+
+    # --- BLOCO HOMENS ---
+    if username in HOMENS and foi_mencionado:
+        hoje = datetime.today().date().isoformat()
+
+        if "insultos_homens" not in historico:
+            historico["insultos_homens"] = {}
+
+        if username not in historico["insultos_homens"]:
+            historico["insultos_homens"][username] = []
+
+        historico["insultos_homens"][username] = [
+            data for data in historico["insultos_homens"][username]
+            if data == hoje
+        ]
+
+        if len(historico["insultos_homens"][username]) < 1:
+            frase = random.choice([
+                i for i in insultos_gerais
+                if i not in historico.get("insultos_usados", [])
+            ] or insultos_gerais)
+
+            if "insultos_usados" not in historico:
+                historico["insultos_usados"] = []
+            historico["insultos_usados"].append(frase)
+            historico["insultos_usados"] = historico["insultos_usados"][-20:]
+
+            bot.reply_to(msg, frase, parse_mode="Markdown")
+            historico["insultos_homens"][username].append(hoje)
+            salvar_historico()
+        return
+
+    # --- SE NÃO FOI MENCIONADO, NÃO RESPONDE ---
     if not foi_mencionado:
         salvar_mensagem_recebida(msg)
-        return        
+        return 
         
 def salvar_novo_termo(termo, explicacao):
     termo = termo.lower().strip()
