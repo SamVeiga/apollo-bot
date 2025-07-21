@@ -579,28 +579,6 @@ def salvar_novo_termo(termo, explicacao):
     with open(DIC_PATH, "w", encoding="utf-8") as f:
         json.dump(dicionario, f, ensure_ascii=False, indent=2)
         
-      if msg.from_user.id == DONO_ID:
-        username_bot = f"@{bot.get_me().username.lower()}"
-        mencionou_bot = False
-
-        # Verifica se houve menção com @
-        if msg.entities:
-            for entity in msg.entities:
-                if entity.type == "mention":
-                    texto_entidade = msg.text[entity.offset:entity.offset + entity.length]
-                    if texto_entidade.lower() == username_bot:
-                        mencionou_bot = True
-                        break
-
-        # Ou se escreveu o nome "apollo" (sem @), em qualquer lugar do texto
-        if not mencionou_bot and "apollo" in msg.text.lower():
-            mencionou_bot = True
-
-        if mencionou_bot:
-            time.sleep(20)
-            bot.reply_to(msg, random.choice(respostas_submisso_dono), parse_mode="Markdown")
-        return
-
     from datetime import datetime, timedelta
 
     if username in MULHERES:
