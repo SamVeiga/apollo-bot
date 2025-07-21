@@ -448,6 +448,14 @@ def responder(msg):
     texto = msg.text.lower()
     username = f"@{msg.from_user.username}" if msg.from_user.username else ""
 
+ # --- BOAS-VINDAS ---
+    if msg.new_chat_members:
+    for m in msg.new_chat_members:
+        novo = f"[{m.first_name}](tg://user?id={m.id})"
+        time.sleep(20)
+        bot.reply_to(msg, f"{novo}, entra direito e respeita o caos. 😏", parse_mode="Markdown")
+    return
+
     # --- MODO DICIONÁRIO ---
     pergunta = re.match(
         r"^\s*@?apollo[, ]*\s*(?:o que é|o que significa|define|explica|explique)\s+(.+?)[\?\.!]?$",
@@ -557,14 +565,7 @@ def salvar_novo_termo(termo, explicacao):
         time.sleep(20)
         bot.reply_to(msg, saudacao, parse_mode="Markdown")
         return
-
-    if msg.new_chat_members:
-        for m in msg.new_chat_members:
-            novo = f"[{m.first_name}](tg://user?id={m.id})"
-            time.sleep(20)
-            bot.reply_to(msg, f"{novo}, entra direito e respeita o caos. 😏", parse_mode="Markdown")
-        return
-
+    
     if msg.from_user.id == DONO_ID:
         username_bot = f"@{bot.get_me().username.lower()}"
         mencionou_bot = False
