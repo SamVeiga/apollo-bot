@@ -449,28 +449,22 @@ def responder(msg):
     texto = msg.text.lower()
     username = f"@{msg.from_user.username}" if msg.from_user.username else ""
 
-    # --- BOAS-VINDAS ---
+        # --- BOAS-VINDAS ---
     if msg.new_chat_members:
-    mensagens_boas_vindas = [
-        "E aí, ser místico do teclado! 🧙‍♂️\nChegou no grupo mais lindo, louco e levemente tóxico do Telegram. 💥\nAqui o papo é livre, a zoeira é liberada e você já pode chegar interagindo do seu jeito.\nFica à vontade — a casa é bagunçada, mas é de coração. 🛋️💬❤️",
-
-        "Chegou, sentou e já pode meter o louco. 😎\nAqui é zoeira com afeto, conversa sem roteiro e liberdade garantida.\nSinta‑se em casa... ou pelo menos no grupo certo. 💬🔥",
-
-        "Seja muitx bem‑vindx ao nosso caos organizado! 🌀\nFica à vontade, comenta, manda figurinha, desabafa ou só espia — o rolê é seu também. 💁‍♂️👀",
-
-        "Avisa que chegou! 🚨\nAqui o povo fala de tudo, ri de tudo e aceita todo mundo.\nChega junto, sem medo — o grupo é aberto, o coração também. 💗🤝",
-
-        "Novo(a) no pedaço? Relaxa, ninguém aqui morde (muito). 😏\nInterage como quiser, ou só senta e observa — a vibe é leve e sem pressão. 🛋️✨",
-
-        "Entrou no grupo? Agora é família, com direito a zoeira, conselhos ruins e memes de qualidade duvidosa.\nFica à vontade, mete o papo, ou só curte o show. 🎭📲🎉"
-    ]
-
-    for m in msg.new_chat_members:
-        mention = f"[{m.first_name}](tg://user?id={m.id})"
-        texto = random.choice(mensagens_boas_vindas)
-        time.sleep(15)
-        bot.reply_to(msg, f"{mention}\n{texto}", parse_mode="Markdown")
-    return
+        mensagens_boas_vindas = [
+            "entra direito e respeita o caos. 😏",
+            "a casa é tua, mas tira o chinelo. 🩴",
+            "só não pisa na jaca antes de pisar no grupo. 🥴",
+            "o grupo te observando... 👀 seja bem-vindo.",
+            "depois que entra, não tem como sair ileso. 😈",
+            "entra devagar que o caos já tá solto. 🚪🔥"
+        ]
+        for m in msg.new_chat_members:
+            novo = f"[{m.first_name}](tg://user?id={m.id})"
+            frase = random.choice(mensagens_boas_vindas)
+            time.sleep(20)
+            bot.reply_to(msg, f"{novo}, {frase}", parse_mode="Markdown")
+        return
 
     # --- MODO DICIONÁRIO ---
     pergunta = re.match(
