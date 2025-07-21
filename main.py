@@ -556,10 +556,10 @@ def responder(msg):
 
     # --- SAUDAÇÕES ---
     if SAUDACOES_ATIVADAS and any(saud in texto for saud in ["bom dia", "boa tarde", "boa noite", "boa madrugada"]):
-        saudacao = "bom dia 😎" if "bom dia" in texto else \
-                   "boa tarde 😎" if "boa tarde" in texto else \
-                   "boa noite 😎" if "boa noite" in texto else \
-                   "boa madrugada 😎"
+        saudacao = "bom dia 🌞 que seu dia comece leve e termine com orgulho do que fez." if "bom dia" in texto else \
+                   "boa tarde 🌤️ que sua tarde renda frutos e sossego." if "boa tarde" in texto else \
+                   "boa noite 🌙 que o descanso hoje te reconecte com o que realmente importa." if "boa noite" in texto else \
+                   "boa madrugada 🌌 mesmo no silêncio da noite, há força em seguir firme."
         time.sleep(10)
         bot.reply_to(msg, saudacao, parse_mode="Markdown")
         return
