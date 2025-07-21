@@ -557,8 +557,17 @@ def responder(msg):
 
     # --- SE NÃO FOI MENCIONADO, NÃO RESPONDE ---
     if not foi_mencionado:
+                if SAUDACOES_ATIVADAS and any(saud in texto for saud in ["bom dia", "boa tarde", "boa noite", "boa madrugada"]):
+            saudacao = "bom dia 😎" if "bom dia" in texto else \
+                       "boa tarde 😎" if "boa tarde" in texto else \
+                       "boa noite 😎" if "boa noite" in texto else \
+                       "boa madrugada 😎"
+            time.sleep(20)
+            bot.reply_to(msg, saudacao, parse_mode="Markdown")
+            return
+
         salvar_mensagem_recebida(msg)
-        return 
+        return
         
 def salvar_novo_termo(termo, explicacao):
     termo = termo.lower().strip()
@@ -572,16 +581,7 @@ def salvar_novo_termo(termo, explicacao):
     with open(DIC_PATH, "w", encoding="utf-8") as f:
         json.dump(dicionario, f, ensure_ascii=False, indent=2)
         
-    if SAUDACOES_ATIVADAS and any(saud in texto for saud in ["bom dia", "boa tarde", "boa noite", "boa madrugada"]):
-        saudacao = "bom dia 😎" if "bom dia" in texto else \
-                   "boa tarde 😎" if "boa tarde" in texto else \
-                   "boa noite 😎" if "boa noite" in texto else \
-                   "boa madrugada 😎"
-        time.sleep(20)
-        bot.reply_to(msg, saudacao, parse_mode="Markdown")
-        return
-    
-    if msg.from_user.id == DONO_ID:
+      if msg.from_user.id == DONO_ID:
         username_bot = f"@{bot.get_me().username.lower()}"
         mencionou_bot = False
 
