@@ -33,7 +33,8 @@ except:
 # === CONFIGURAVEIS ===
 DONO_ID = 1481389775
 ID_GRUPO = -1002363575666
-MULHERES = ["@KarolinneDiass", "@FernandaCarvalho16", "@tainaranordi", "@Adriannaleal", "@aqueladama", "@Thayna1", "@EmillyMacedoBl2", "@ddhxia",
+MULHERES = ["@KarolinneDiass", "@FernandaCarvalho16", "@tainaranordi", "@Adriannaleal", "@aqueladama", "@Thayna1", 
+            "@EmillyMacedoBl2", "@ddhxia", "@naoenchaosaco", "@Bsby6969",
             "@vanessapraado", "@gabrielyandrad", "@sj_photographia", "@liliancandido25", "@Nortista_Encaralhada"]  # Substitua pelos @ reais das mulheres
 HOMENS = ["@Rafaael80", "@Diegomota0", "@Tomazitc", "@MaThEuS1o"]  # Substitua pelos @ reais dos homens
 
