@@ -9,7 +9,7 @@ import datetime
 import json
 import re                    # para capturar “o que é?”
 
-SAUDACOES_ATIVADAS = False      # deixe False para não responder saudações
+SAUDACOES_ATIVADAS = True      # deixe False para não responder saudações
 
 from datetime import datetime
 
