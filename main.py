@@ -28,7 +28,7 @@ dicionario = carregar_json(DIC_PATH)
 try:
     historico = carregar_json(HISTORICO_PATH)
 except:
-    historico = {"frases_mulheres": {}, "insultos_homens": {}}
+    historico = {"frases_mulheres": [], "insultos_homens": []}
 
 # === MEMBROS ===
 HOMENS = carregar_json("data/membros/homens.json")
@@ -90,15 +90,29 @@ def saudacao_do_dia(genero):
     frases = carregar_json(saudacoes_paths[tipo][genero])
     return random.choice(frases)
 
-def pode_responder(usuario, tipo):
+def filtrar_frases(frases, tipo):
+    agora = agora_brasilia()
+    limite = agora - timedelta(days=3)
+    usadas_recentemente = [item["frase"] for item in historico.get(tipo, []) if datetime.fromisoformat(item["data"]) >= limite]
+    candidatas = [f for f in frases if f not in usadas_recentemente]
+    return random.choice(candidatas if candidatas else frases)
+
+def registrar_frase(tipo, frase):
+    historico.setdefault(tipo, [])
+    historico[tipo].append({"frase": frase, "data": agora_brasilia().isoformat()})
+    historico[tipo] = historico[tipo][-200:]  # limita histórico
+    salvar_historico()
+
+def pode_responder(usuario, tipo_controle):
     agora = agora_brasilia()
     hoje = agora.date().isoformat()
-    historico.setdefault(tipo, {})
-    historico[tipo].setdefault(usuario, [])
-    historico[tipo][usuario] = [t for t in historico[tipo][usuario] if t.startswith(hoje)]
-    if len(historico[tipo][usuario]) < 3:
-        if not historico[tipo][usuario] or (agora - datetime.fromisoformat(historico[tipo][usuario][-1])).total_seconds() > 3600:
-            historico[tipo][usuario].append(agora.isoformat())
+    historico.setdefault("controle", {})
+    historico["controle"].setdefault(tipo_controle, {})
+    historico["controle"][tipo_controle].setdefault(usuario, [])
+    historico["controle"][tipo_controle][usuario] = [t for t in historico["controle"][tipo_controle][usuario] if t.startswith(hoje)]
+    if len(historico["controle"][tipo_controle][usuario]) < 3:
+        if not historico["controle"][tipo_controle][usuario] or (agora - datetime.fromisoformat(historico["controle"][tipo_controle][usuario][-1])).total_seconds() > 3600:
+            historico["controle"][tipo_controle][usuario].append(agora.isoformat())
             salvar_historico()
             return True
     return False
@@ -134,18 +148,22 @@ def responder(msg):
         return
 
     if msg.from_user.id == int(os.getenv("DONO_ID", 0)) and mencionado:
-        bot.reply_to(msg, random.choice(respostas_submisso_dono), parse_mode="Markdown")
+        frase = filtrar_frases(respostas_submisso_dono, "respostas_submisso_dono")
+        registrar_frase("respostas_submisso_dono", frase)
+        bot.reply_to(msg, frase, parse_mode="Markdown")
         return
 
     if username in MULHERES:
         if mencionado or pode_responder(username, "frases_mulheres"):
-            frase = random.choice(xavecos_para_mulheres)
+            frase = filtrar_frases(xavecos_para_mulheres, "frases_mulheres")
+            registrar_frase("frases_mulheres", frase)
             bot.reply_to(msg, frase, parse_mode="Markdown")
             return
 
     if username in HOMENS:
         if mencionado or pode_responder(username, "insultos_homens"):
-            frase = random.choice(insultos_para_homens)
+            frase = filtrar_frases(insultos_para_homens, "insultos_homens")
+            registrar_frase("insultos_homens", frase)
             bot.reply_to(msg, frase, parse_mode="Markdown")
             return
 
