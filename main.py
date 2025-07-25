@@ -140,6 +140,14 @@ def responder(msg):
     genero = identificar_genero(username)
     mencionado = any(tag in texto for tag in ["apollo", f"@{bot.get_me().username.lower()}"])
 
+    # 🔽 Adicione estas linhas de debug logo abaixo
+    print("==== MENSAGEM RECEBIDA ====")
+    print(f"Texto: {texto}")
+    print(f"Username: {username}")
+    print(f"Gênero detectado: {genero}")
+    print(f"Mencionado: {mencionado}")
+    print(f"From ID: {msg.from_user.id}")
+
     pergunta = re.match(r"^@?apollo[, ]*(o que é|significa|define|explica|explique)\s+(.+?)[\?\.!]?$", texto)
     if pergunta:
         termo = pergunta.group(2).strip()
