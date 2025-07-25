@@ -10,7 +10,7 @@ import re
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
-from utils.carregadores import carregar_json
+from utils.helpers import load_phrases as carregar_json
 
 # === CONFIGURAÇÕES ===
 SAUDACOES_ATIVADAS = True
