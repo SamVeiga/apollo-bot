@@ -61,11 +61,6 @@ def e_mulher(user):
 # ✅ Controle de xaveco/insulto por horário
 ultimos_envios = {}
 
-# ✅ Checa se é mulher (com base no nome)
-def e_mulher(user):
-    nome = (user.first_name or "").lower()
-    return nome[-1] in ["a", "e"]  # Heurística simples para distinguir mulher
-
 # ✅ Handler de mensagens recebidas no grupo
 @bot.message_handler(func=lambda msg: True)
 def responder(msg):
