@@ -1,4 +1,4 @@
-# ✅ BOT APOLO REFORMULADO - main.py
+# ✅ BOT APOLLO REFORMULADO - main.py
 # Desenvolvido conforme pedido: tudo em raiz, respostas com menção, frases separadas em .json, submissão ao dono, diferenciado por gênero
 
 from flask import Flask, request
@@ -72,13 +72,13 @@ def responder(msg):
     nome = msg.from_user.first_name or msg.from_user.username or "Amor"
     mulher = e_mulher(msg.from_user)
 
-    # 🔰 Submissão ao DONO (somente se mencionar o Apolo)
+    # 🔰 Submissão ao DONO (somente se mencionar o Apollo)
 if user_id == DONO_ID and frases_dono and ("apollo" in texto or f"@{bot.get_me().username.lower()}" in texto):
     bot.send_message(GRUPO_ID, random.choice(frases_dono), reply_to_message_id=msg.message_id)
     return
 
-    # 🔰 Mencionaram o Apolo
-    if "apolo" in texto or f"@{bot.get_me().username.lower()}" in texto:
+    # 🔰 Mencionaram o Apollo
+    if "apollo" in texto or f"@{bot.get_me().username.lower()}" in texto:
         if mulher and men_m:
             bot.send_message(GRUPO_ID, f"{random.choice(men_m)}", reply_to_message_id=msg.message_id)
         elif not mulher and men_h:
@@ -129,7 +129,7 @@ def home():
     if bot.get_webhook_info().url != url:
         bot.remove_webhook()
         bot.set_webhook(url=url)
-    return "Apolo online!", 200
+    return "Apollo online!", 200
 
 # 🔄 Mantém o bot ativo no Render
 
