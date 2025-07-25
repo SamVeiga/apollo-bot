@@ -73,9 +73,9 @@ def responder(msg):
     mulher = e_mulher(msg.from_user)
 
     # 🔰 Submissão ao DONO (somente se mencionar o Apollo)
-if user_id == DONO_ID and frases_dono and ("apollo" in texto or f"@{bot.get_me().username.lower()}" in texto):
-    bot.send_message(GRUPO_ID, random.choice(frases_dono), reply_to_message_id=msg.message_id)
-    return
+    if user_id == DONO_ID and frases_dono and ("apollo" in texto or f"@{bot.get_me().username.lower()}" in texto):
+        bot.send_message(GRUPO_ID, random.choice(frases_dono), reply_to_message_id=msg.message_id)
+        return
 
     # 🔰 Mencionaram o Apollo
     if "apollo" in texto or f"@{bot.get_me().username.lower()}" in texto:
