@@ -400,7 +400,7 @@ frases_saudacoes = {
     "Boa noite, meu amor. Só de pensar em você, já me sinto em paz.",
     "Que a calmaria da noite te envolva assim como você envolve meu coração. Boa noite!",
     "Boa noite, minha flor rara. Espero ser o motivo do seu sorriso amanhã.",
-    "Oi, minha linda.
+    "Oi, minha linda."
 ],
     "boa_noite_saida_mulheres": [
     "Boa noite, minha linda. Durma bem e saiba que vou ficar pensando em você até amanhecer. 🌙❤️",
