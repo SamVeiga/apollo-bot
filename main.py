@@ -43,6 +43,21 @@ men_m = carregar_lista("menções_mulher.json")
 men_h = carregar_lista("menções_homem.json")
 frases_dono = carregar_lista("frases_dono.json")
 
+# ✅ IDENTIFICAÇÃO DE GÊNERO POR USERNAME
+usuarios_mulheres = carregar_lista("usuarios_mulheres.json")
+usuarios_homens = carregar_lista("usuarios_homens.json")
+
+def e_mulher(user):
+    username = (user.username or "").lower()
+    if username in [u.lower() for u in usuarios_mulheres]:
+        return True
+    elif username in [u.lower() for u in usuarios_homens]:
+        return False
+    else:
+        # fallback caso não esteja nas listas
+        nome = (user.first_name or "").lower()
+        return nome[-1] in ["a", "e"]
+
 # ✅ Controle de xaveco/insulto por horário
 ultimos_envios = {}
 
