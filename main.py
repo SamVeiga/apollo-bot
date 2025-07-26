@@ -110,13 +110,15 @@ def responder(msg):
         return
 
     # 💬 Mensagens comuns (sem saudação ou menção)
-    chave = f"{user_id}_{'mulher' if mulher else 'homem'}"
-    if chave not in ultimos_envios or (agora - ultimos_envios[chave]) > timedelta(hours=1):
-        ultimos_envios[chave] = agora
-        if mulher and xavecos:
-            bot.send_message(GRUPO_ID, f"{random.choice(xavecos)}", reply_to_message_id=msg.message_id)
-        elif not mulher and insultos:
-            bot.send_message(GRUPO_ID, f"{random.choice(insultos)}", reply_to_message_id=msg.message_id)
+    # 👉 Ignora o dono para evitar insultos ou xavecos automáticos
+    if user_id != DONO_ID:
+        chave = f"{user_id}_{'mulher' if mulher else 'homem'}"
+        if chave not in ultimos_envios or (agora - ultimos_envios[chave]) > timedelta(hours=1):
+            ultimos_envios[chave] = agora
+            if mulher and xavecos:
+                bot.send_message(GRUPO_ID, f"{random.choice(xavecos)}", reply_to_message_id=msg.message_id)
+            elif not mulher and insultos:
+                bot.send_message(GRUPO_ID, f"{random.choice(insultos)}", reply_to_message_id=msg.message_id)
 
 # 🔁 FLASK API PARA RENDER
 @app.route(f"/{TOKEN}", methods=["POST"])
