@@ -68,8 +68,10 @@ def responder_com_delay(segundos, func):
 # ✅ Handler de mensagens recebidas no grupo
 @bot.message_handler(func=lambda msg: True)
 def responder(msg):
-    if msg.chat.id != GRUPO_ID:
-        return
+# ✅ Se quiser restringir o bot para um grupo específico novamente:
+# ➤ Apague os jogos da velha abaixo e certifique-se de que GRUPO_ID está definido corretamente.
+    #if msg.chat.id != GRUPO_ID:
+    #    return
 
     texto = msg.text.lower()
     user_id = msg.from_user.id
