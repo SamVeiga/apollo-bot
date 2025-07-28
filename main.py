@@ -86,10 +86,10 @@ def responder(msg):
 
     # 🔰 Mencionaram o Apollo
     if "apollo" in texto or f"@{bot.get_me().username.lower()}" in texto:
-    if mulher and men_m:
-        responder_com_delay(1800, lambda: bot.send_message(
-            GRUPO_ID, random.choice(men_m), reply_to_message_id=msg.message_id
-        ))
+        if mulher and men_m:
+            responder_com_delay(1800, lambda: bot.send_message(
+                GRUPO_ID, random.choice(men_m), reply_to_message_id=msg.message_id
+            ))
     elif not mulher and men_h:
         responder_com_delay(1800, lambda: bot.send_message(
             GRUPO_ID, random.choice(men_h), reply_to_message_id=msg.message_id
