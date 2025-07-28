@@ -100,41 +100,41 @@ def responder(msg):
 
     # 🌞 BOM DIA - 60 SEGUNDOS
     if "bom dia" in texto:
-    frase = random.choice(bom_dia_mulher if mulher else bom_dia_homem)
-    responder_com_delay(60, lambda: bot.send_message(
-        GRUPO_ID, frase, reply_to_message_id=msg.message_id
-    ))
+        frase = random.choice(bom_dia_mulher if mulher else bom_dia_homem)
+        responder_com_delay(60, lambda: bot.send_message(
+            GRUPO_ID, frase, reply_to_message_id=msg.message_id
+        ))
     return
 
     # ☀️ BOA TARDE - 60 SEGUNDOS
     if "boa tarde" in texto:
-    frase = random.choice(boa_tarde_mulher if mulher else boa_tarde_homem)
-    responder_com_delay(60, lambda: bot.send_message(
-        GRUPO_ID, frase, reply_to_message_id=msg.message_id
-    ))
+        frase = random.choice(boa_tarde_mulher if mulher else boa_tarde_homem)
+        responder_com_delay(60, lambda: bot.send_message(
+            GRUPO_ID, frase, reply_to_message_id=msg.message_id
+        ))
     return
 
     # 🌙 BOA NOITE - 60 SEGUNDOS (entrada antes das 21h / despedida após 21h)
     if "boa noite" in texto or "boa madrugada" in texto:
-    if agora.hour < 21:
-        frase = random.choice(boa_noite_entrada_mulher if mulher else boa_noite_entrada_homem)
-    else:
-        frase = random.choice(boa_noite_dormir_mulher if mulher else boa_noite_dormir_homem)
-    responder_com_delay(60, lambda: bot.send_message(
-        GRUPO_ID, frase, reply_to_message_id=msg.message_id
-    ))
+        if agora.hour < 21:
+            frase = random.choice(boa_noite_entrada_mulher if mulher else boa_noite_entrada_homem)
+        else:
+            frase = random.choice(boa_noite_dormir_mulher if mulher else boa_noite_dormir_homem)
+        responder_com_delay(60, lambda: bot.send_message(
+            GRUPO_ID, frase, reply_to_message_id=msg.message_id
+        ))
     return
 
     # 💬 Mensagens comuns (sem saudação ou menção)
     # 👉 Ignora o dono para evitar insultos ou xavecos automáticos
     if user_id != DONO_ID:
-    chave = f"{user_id}_{'mulher' if mulher else 'homem'}"
-    if chave not in ultimos_envios or (agora - ultimos_envios[chave]) > timedelta(minutes=30):
-        ultimos_envios[chave] = agora
-        if mulher and xavecos:
-            responder_com_delay(1800, lambda: bot.send_message(
-                GRUPO_ID, random.choice(xavecos), reply_to_message_id=msg.message_id
-            ))
+        chave = f"{user_id}_{'mulher' if mulher else 'homem'}"
+        if chave not in ultimos_envios or (agora - ultimos_envios[chave]) > timedelta(minutes=30):
+            ultimos_envios[chave] = agora
+            if mulher and xavecos:
+                responder_com_delay(1800, lambda: bot.send_message(
+                    GRUPO_ID, random.choice(xavecos), reply_to_message_id=msg.message_id
+                ))
         elif not mulher and insultos:
             responder_com_delay(1800, lambda: bot.send_message(
                 GRUPO_ID, random.choice(insultos), reply_to_message_id=msg.message_id
