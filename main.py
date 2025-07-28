@@ -78,11 +78,11 @@ def responder(msg):
 
     # 🔰 Submissão ao DONO (só se mencionar "apollo" ou "@apolo_8bp_bot")
     if user_id == DONO_ID and frases_dono:
-    if "apollo" in texto or "@apolo_8bp_bot" in texto:
-        responder_com_delay(60, lambda: bot.send_message(
-            GRUPO_ID, random.choice(frases_dono), reply_to_message_id=msg.message_id
-        ))
-        return
+        if "apollo" in texto or "@apolo_8bp_bot" in texto:
+            responder_com_delay(60, lambda: bot.send_message(
+                GRUPO_ID, random.choice(frases_dono), reply_to_message_id=msg.message_id
+            ))
+            return
 
     # 🔰 Mencionaram o Apollo
     if "apollo" in texto or f"@{bot.get_me().username.lower()}" in texto:
