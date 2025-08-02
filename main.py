@@ -42,6 +42,8 @@ insultos = carregar_lista("insultos.json")
 men_m = carregar_lista("menções_mulher.json")
 men_h = carregar_lista("menções_homem.json")
 frases_dono = carregar_lista("frases_dono.json")
+defesa_madonna_homem = carregar_lista("defesa_madonna_homem.json")
+defesa_madonna_mulher = carregar_lista("defesa_madonna_mulher.json")
 
 # ✅ IDENTIFICAÇÃO DE GÊNERO POR USERNAME
 usuarios_mulheres = carregar_lista("usuarios_mulheres.json")
@@ -96,6 +98,18 @@ def responder(msg):
         elif not mulher and men_h:
             responder_com_delay(1800, lambda: bot.send_message(
                 msg.chat.id, random.choice(men_h), reply_to_message_id=msg.message_id
+            ))
+        return
+
+        # 🔥 Mencionaram a Madonna
+    if "madonna" in texto or "@madonna" in texto:
+        if mulher and defesa_madonna_mulher:
+            responder_com_delay(3, lambda: bot.send_message(
+                msg.chat.id, random.choice(defesa_madonna_mulher), reply_to_message_id=msg.message_id
+            ))
+        elif not mulher and defesa_madonna_homem:
+            responder_com_delay(3, lambda: bot.send_message(
+                msg.chat.id, random.choice(defesa_madonna_homem), reply_to_message_id=msg.message_id
             ))
         return
 
