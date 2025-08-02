@@ -101,8 +101,8 @@ def responder(msg):
             ))
         return
 
-            # 🔥 Mencionaram a Madonna
-    if "madonna" in texto or "@madonna" in texto:
+    # 🔥 Mencionaram a Madonna
+    if (user_id != DONO_ID) and ("madonna" in texto or "@madonna" in texto):
         if mulher and defesa_madonna_mulher:
             responder_com_delay(15, lambda: bot.send_message(
                 msg.chat.id, random.choice(defesa_madonna_mulher), reply_to_message_id=msg.message_id
@@ -141,19 +141,19 @@ def responder(msg):
         return
 
     # 💬 Xaveco ou insulto após 30 minutos (exceto para o dono)
-    if user_id != DONO_ID:
-        chave = f"{user_id}_{'mulher' if mulher else 'homem'}"
-        if chave not in ultimos_envios or (agora - ultimos_envios[chave]) > timedelta(minutes=30):
-            ultimos_envios[chave] = agora
-            if mulher and xavecos:
-                responder_com_delay(1800, lambda: bot.send_message(
-                    msg.chat.id, random.choice(xavecos), reply_to_message_id=msg.message_id
-                ))
-            elif not mulher and insultos:
-                responder_com_delay(1800, lambda: bot.send_message(
-                    msg.chat.id, random.choice(insultos), reply_to_message_id=msg.message_id
-                ))
-            
+    # 💬 Elogios automáticos para mulheres - uma vez por dia, horário aleatório
+    if mulher and user_id != DONO_ID:
+        hoje = datetime.now().date()
+        chave = f"{user_id}_elogio"
+
+        if ultimos_envios.get(chave) != hoje:
+            ultimos_envios[chave] = hoje
+            delay_aleatorio = random.randint(60, 7200)  # entre 1 minuto e 2 horas
+
+            responder_com_delay(delay_aleatorio, lambda: bot.send_message(
+                msg.chat.id, random.choice(xavecos), reply_to_message_id=msg.message_id
+            ))
+
 # 🔁 FLASK API PARA RENDER
 @app.route(f"/{TOKEN}", methods=["POST"])
 def webhook():
