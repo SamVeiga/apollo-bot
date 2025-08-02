@@ -101,14 +101,14 @@ def responder(msg):
             ))
         return
 
-        # 🔥 Mencionaram a Madonna
+            # 🔥 Mencionaram a Madonna
     if "madonna" in texto or "@madonna" in texto:
         if mulher and defesa_madonna_mulher:
-            responder_com_delay(3, lambda: bot.send_message(
+            responder_com_delay(15, lambda: bot.send_message(
                 msg.chat.id, random.choice(defesa_madonna_mulher), reply_to_message_id=msg.message_id
             ))
         elif not mulher and defesa_madonna_homem:
-            responder_com_delay(3, lambda: bot.send_message(
+            responder_com_delay(15, lambda: bot.send_message(
                 msg.chat.id, random.choice(defesa_madonna_homem), reply_to_message_id=msg.message_id
             ))
         return
