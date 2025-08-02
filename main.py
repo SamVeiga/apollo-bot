@@ -44,10 +44,15 @@ men_h = carregar_lista("menções_homem.json")
 frases_dono = carregar_lista("frases_dono.json")
 defesa_madonna_homem = carregar_lista("defesa_madonna_homem.json")
 defesa_madonna_mulher = carregar_lista("defesa_madonna_mulher.json")
+stickers = carregar_lista("stickers.json")
 
 # ✅ IDENTIFICAÇÃO DE GÊNERO POR USERNAME
 usuarios_mulheres = carregar_lista("usuarios_mulheres.json")
 usuarios_homens = carregar_lista("usuarios_homens.json")
+
+def salvar_lista(nome_arquivo, dados):
+    with open(nome_arquivo, "w", encoding="utf-8") as f:
+        json.dump(dados, f, ensure_ascii=False, indent=2)
 
 def e_mulher(user):
     username = (user.username or "").lower()
@@ -62,6 +67,7 @@ def e_mulher(user):
 
 # ✅ Controle de xaveco/insulto por horário
 ultimos_envios = {}
+ultima_atividade_grupo = {}
 
 # ✅ Função auxiliar para responder com delay
 def responder_com_delay(segundos, func):
@@ -74,8 +80,16 @@ def responder(msg):
     # ➤ Apague os jogos da velha abaixo e certifique-se de que GRUPO_ID está definido corretamente.
     # if msg.chat.id != GRUPO_ID:
     #     return
+    # Atualiza última atividade do grupo
+    ultima_atividade_grupo[msg.chat.id] = datetime.now()
+    # 🧷 Captura e armazena stickers recebidos
+    if msg.sticker and msg.sticker.file_id not in stickers:
+        stickers.append(msg.sticker.file_id)
+        if len(stickers) > 100:
+            stickers.pop(0)  # remove o mais antigo
+        salvar_lista("stickers.json", stickers)
 
-    texto = msg.text.lower()
+    texto = (msg.text or "").lower()
     user_id = msg.from_user.id
     nome = msg.from_user.first_name or msg.from_user.username or "Amor"
     mulher = e_mulher(msg.from_user)
@@ -153,6 +167,7 @@ def responder(msg):
             responder_com_delay(delay_aleatorio, lambda: bot.send_message(
                 msg.chat.id, random.choice(xavecos), reply_to_message_id=msg.message_id
             ))
+        return
 
 # 🔁 FLASK API PARA RENDER
 @app.route(f"/{TOKEN}", methods=["POST"])
@@ -178,9 +193,19 @@ def manter_vivo():
         except:
             pass
         time.sleep(600)
+def replicar_stickers_periodicamente():
+    while True:
+        delay = random.randint(60, 7200)  # entre 1min e 2h
+        time.sleep(delay)
+
+        for chat_id, ultimo_momento in ultima_atividade_grupo.items():
+            if (datetime.now() - ultimo_momento).seconds < 300:  # se teve conversa nos últimos 5 min
+                if stickers:
+                    bot.send_sticker(chat_id, random.choice(stickers))
 
 # 🚀 INICIAR TUDO
 if __name__ == "__main__":
     threading.Thread(target=manter_vivo).start()
+    threading.Thread(target=replicar_stickers_periodicamente).start()
     port = int(os.getenv("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
