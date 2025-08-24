@@ -140,29 +140,32 @@ def responder(msg):
 
     # 🌞 BOM DIA - 60 segundos
     if "bom dia" in texto:
-        frase = random.choice(bom_dia_mulher if mulher else bom_dia_homem)
-        responder_com_delay(60, lambda: bot.send_message(
-            msg.chat.id, frase, reply_to_message_id=msg.message_id
-        ))
+        if random.random() < 0.3:  # 30% de chance
+            frase = random.choice(bom_dia_mulher if mulher else bom_dia_homem)
+            responder_com_delay(60, lambda: bot.send_message(
+                msg.chat.id, frase, reply_to_message_id=msg.message_id
+            ))
         return
 
     # ☀️ BOA TARDE - 60 segundos
     if "boa tarde" in texto:
-        frase = random.choice(boa_tarde_mulher if mulher else boa_tarde_homem)
-        responder_com_delay(60, lambda: bot.send_message(
-            msg.chat.id, frase, reply_to_message_id=msg.message_id
-        ))
+        if random.random() < 0.3:  # 30% de chance
+            frase = random.choice(boa_tarde_mulher if mulher else boa_tarde_homem)
+            responder_com_delay(60, lambda: bot.send_message(
+                msg.chat.id, frase, reply_to_message_id=msg.message_id
+            ))
         return
 
     # 🌙 BOA NOITE - 60 segundos
     if "boa noite" in texto or "boa madrugada" in texto:
-        if agora.hour < 21:
-            frase = random.choice(boa_noite_entrada_mulher if mulher else boa_noite_entrada_homem)
-        else:
-            frase = random.choice(boa_noite_dormir_mulher if mulher else boa_noite_dormir_homem)
-        responder_com_delay(60, lambda: bot.send_message(
-            msg.chat.id, frase, reply_to_message_id=msg.message_id
-        ))
+        if random.random() < 0.3:  # 30% de chance
+            if agora.hour < 21:
+                frase = random.choice(boa_noite_entrada_mulher if mulher else boa_noite_entrada_homem)
+            else:
+                frase = random.choice(boa_noite_dormir_mulher if mulher else boa_noite_dormir_homem)
+            responder_com_delay(60, lambda: bot.send_message(
+                msg.chat.id, frase, reply_to_message_id=msg.message_id
+            ))
         return
 
     # 💬 Xaveco ou insulto após 30 minutos (exceto para o dono)
