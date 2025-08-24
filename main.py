@@ -15,6 +15,7 @@ GRUPO_ID = -1002363575666  # Altere para o ID do seu grupo
 DONO_ID = 1481389775       # ID do dono (para submissão)
 TOKEN = os.getenv("TELEGRAM_TOKEN")
 RENDER_URL = os.getenv("RENDER_EXTERNAL_URL")
+FERNANDA_USERNAME = "fernandacarvalho16"  # username sem @, tudo minúsculo
 
 bot = telebot.TeleBot(TOKEN)
 app = Flask(__name__)
@@ -42,6 +43,7 @@ insultos = carregar_lista("insultos.json")
 men_m = carregar_lista("menções_mulher.json")
 men_h = carregar_lista("menções_homem.json")
 frases_dono = carregar_lista("frases_dono.json")
+frases_fernanda = carregar_lista("frases_fernanda.json")
 defesa_madonna_homem = carregar_lista("defesa_madonna_homem.json")
 defesa_madonna_mulher = carregar_lista("defesa_madonna_mulher.json")
 stickers = carregar_lista("stickers.json")
@@ -100,6 +102,15 @@ def responder(msg):
         if "apollo" in texto or "@apolo_8bp_bot" in texto:
             responder_com_delay(60, lambda: bot.send_message(
                 msg.chat.id, random.choice(frases_dono), reply_to_message_id=msg.message_id
+            ))
+            return
+
+    # 🔰 Submissão à FERNANDA (resposta após 45s)
+    if (msg.from_user.username or "").lower() == FERNANDA_USERNAME and frases_fernanda:
+        # reage quando ela mencionar "apollo" ou marcar o bot
+        if "apollo" in texto or f"@{bot.get_me().username.lower()}" in texto:
+            responder_com_delay(45, lambda: bot.send_message(
+                msg.chat.id, random.choice(frases_fernanda), reply_to_message_id=msg.message_id
             ))
             return
 
