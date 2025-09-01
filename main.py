@@ -46,6 +46,7 @@ frases_dono = carregar_lista("frases_dono.json")
 frases_fernanda = carregar_lista("frases_fernanda.json")
 defesa_madonna_homem = carregar_lista("defesa_madonna_homem.json")
 defesa_madonna_mulher = carregar_lista("defesa_madonna_mulher.json")
+culpa_matheus = carregar_lista("culpa_matheus.json")
 stickers = carregar_lista("stickers.json")
 
 # ✅ IDENTIFICAÇÃO DE GÊNERO POR USERNAME
@@ -135,6 +136,21 @@ def responder(msg):
         elif not mulher and defesa_madonna_homem:
             responder_com_delay(15, lambda: bot.send_message(
                 msg.chat.id, random.choice(defesa_madonna_homem), reply_to_message_id=msg.message_id
+            ))
+        return
+
+        # ⚖️ Perguntaram de quem é a culpa (sempre culpa do Matheus)
+    if any(padrao in texto for padrao in [
+        "de quem é a culpa", 
+        "quem é o culpado", 
+        "a culpa é de quem", 
+        "quem foi o culpado", 
+        "culpa de quem", 
+        "quem tem culpa"
+    ]):
+        if culpa_matheus:
+            responder_com_delay(10, lambda: bot.send_message(
+                msg.chat.id, random.choice(culpa_matheus), reply_to_message_id=msg.message_id
             ))
         return
 
