@@ -100,7 +100,7 @@ def responder(msg):
 
     # 🔰 Submissão ao DONO (resposta após 60s)
     if user_id == DONO_ID and frases_dono:
-        if "apollo" in texto or "@apolo_8bp_bot" in texto:
+        if "damon" in texto or "@apolo_8bp_bot" in texto:
             responder_com_delay(60, lambda: bot.send_message(
                 msg.chat.id, random.choice(frases_dono), reply_to_message_id=msg.message_id
             ))
@@ -109,14 +109,14 @@ def responder(msg):
     # 🔰 Submissão à FERNANDA (resposta após 45s)
     if (msg.from_user.username or "").lower() == FERNANDA_USERNAME and frases_fernanda:
         # reage quando ela mencionar "apollo" ou marcar o bot
-        if "apollo" in texto or f"@{bot.get_me().username.lower()}" in texto:
+        if "damon" in texto or f"@{bot.get_me().username.lower()}" in texto:
             responder_com_delay(45, lambda: bot.send_message(
                 msg.chat.id, random.choice(frases_fernanda), reply_to_message_id=msg.message_id
             ))
             return
 
     # 🔰 Mencionaram o Apollo (resposta após 30 min)
-    if "apollo" in texto or f"@{bot.get_me().username.lower()}" in texto:
+    if "damon" in texto or f"@{bot.get_me().username.lower()}" in texto:
         if mulher and men_m:
             responder_com_delay(1800, lambda: bot.send_message(
                 msg.chat.id, random.choice(men_m), reply_to_message_id=msg.message_id
