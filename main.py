@@ -11,7 +11,7 @@ import threading
 from datetime import datetime, timedelta
 
 # ✅ CONFIGURAÇÕES DO GRUPO
-GRUPO_ID = -1002363575666  # Altere para o ID do seu grupo
+GRUPO_ID = -1002606951329  # Altere para o ID do seu grupo
 DONO_ID = 1481389775       # ID do dono (para submissão)
 TOKEN = os.getenv("TELEGRAM_TOKEN")
 RENDER_URL = os.getenv("RENDER_EXTERNAL_URL")
