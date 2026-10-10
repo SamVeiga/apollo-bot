@@ -58,15 +58,31 @@ def salvar_lista(nome_arquivo, dados):
         json.dump(dados, f, ensure_ascii=False, indent=2)
 
 def e_mulher(user):
-    username = (user.username or "").lower()
-    if username in [u.lower() for u in usuarios_mulheres]:
+    # Pega o username do Telegram e remove o '@' se houver
+    username = (user.username or "").lower().replace("@", "")
+    
+    # Limpa a lista de mulheres e homens do JSON (removendo o '@' caso tenha sido salvo com ele)
+    mulheres_limpo = [str(u).lower().replace("@", "") for u in usuarios_mulheres]
+    homens_limpo = [str(u).lower().replace("@", "") for u in usuarios_homens]
+    
+    # 1. Verifica se o username limpo está na lista de mulheres
+    if username and username in mulheres_limpo:
         return True
-    elif username in [u.lower() for u in usuarios_homens]:
+        
+    # 2. Verifica se o username limpo está na lista de homens
+    if username and username in homens_limpo:
         return False
-    else:
-        # fallback caso não esteja nas listas
-        nome = (user.first_name or "").lower()
-        return nome[-1] in ["a", "e"]
+        
+    # 3. Fallback (caso não tenha username ou não esteja cadastrado)
+    primeiro_nome = (user.first_name or "").lower()
+    if not primeiro_nome:
+        return False
+        
+    nomes_homens_terminados_em_e = ["felipe", "josue", "eliezer", "kaue", "frederico", "vicente"]
+    if primeiro_nome in nomes_homens_terminados_em_e:
+        return False
+        
+    return primeiro_nome.endswith(('a', 'e', 'i', 'y'))
 
 # ✅ Controle de xaveco/insulto por horário
 ultimos_envios = {}
