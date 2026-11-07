@@ -49,31 +49,38 @@ defesa_madonna_mulher = carregar_lista("defesa_madonna_mulher.json")
 culpa_matheus = carregar_lista("culpa_matheus.json")
 stickers = carregar_lista("stickers.json")
 
-# ✅ IDENTIFICAÇÃO DE GÊNERO POR USERNAME
+# ✅ IDENTIFICAÇÃO DE GÊNERO POR USERNAME E ID
 usuarios_mulheres = carregar_lista("usuarios_mulheres.json")
 usuarios_homens = carregar_lista("usuarios_homens.json")
+usuarios_ids_mulheres = carregar_lista("usuarios_ids_mulheres.json")
+usuarios_ids_homens = carregar_lista("usuarios_ids_homens.json")
 
 def salvar_lista(nome_arquivo, dados):
     with open(nome_arquivo, "w", encoding="utf-8") as f:
         json.dump(dados, f, ensure_ascii=False, indent=2)
 
 def e_mulher(user):
-    # Pega o username do Telegram e remove o '@' se houver
+    user_id = user.id
+    
+    # 1. Verifica primariamente pelo ID numérico exato (se cadastrado)
+    if user_id in usuarios_ids_mulheres:
+        return True
+    if user_id in usuarios_ids_homens:
+        return False
+
+    # 2. Verifica pelo username (removendo '@' e convertendo para minúsculo)
     username = (user.username or "").lower().replace("@", "")
     
-    # Limpa a lista de mulheres e homens do JSON (removendo o '@' caso tenha sido salvo com ele)
     mulheres_limpo = [str(u).lower().replace("@", "") for u in usuarios_mulheres]
     homens_limpo = [str(u).lower().replace("@", "") for u in usuarios_homens]
     
-    # 1. Verifica se o username limpo está na lista de mulheres
     if username and username in mulheres_limpo:
         return True
         
-    # 2. Verifica se o username limpo está na lista de homens
     if username and username in homens_limpo:
         return False
         
-    # 3. Fallback (caso não tenha username ou não esteja cadastrado)
+    # 3. Fallback (caso não tenha username ou ID cadastrado)
     primeiro_nome = (user.first_name or "").lower()
     if not primeiro_nome:
         return False
@@ -99,8 +106,10 @@ def responder(msg):
     # ➤ Apague os jogos da velha abaixo e certifique-se de que GRUPO_ID está definido corretamente.
     # if msg.chat.id != GRUPO_ID:
     #     return
+    
     # Atualiza última atividade do grupo
     ultima_atividade_grupo[msg.chat.id] = datetime.now()
+    
     # 🧷 Captura e armazena stickers recebidos
     if msg.sticker and msg.sticker.file_id not in stickers:
         stickers.append(msg.sticker.file_id)
@@ -155,7 +164,7 @@ def responder(msg):
             ))
         return
 
-        # ⚖️ Perguntaram de quem é a culpa (sempre culpa do Matheus)
+    # ⚖️ Perguntaram de quem é a culpa (sempre culpa do Matheus)
     if any(padrao in texto for padrao in [
         "de quem é a culpa", 
         "quem é o culpado", 
@@ -200,7 +209,6 @@ def responder(msg):
             ))
         return
 
-    # 💬 Xaveco ou insulto após 30 minutos (exceto para o dono)
     # 💬 Elogios automáticos para mulheres - uma vez por dia, horário aleatório
     if mulher and user_id != DONO_ID:
         hoje = datetime.now().date()
@@ -230,7 +238,6 @@ def home():
     return "Apollo online!", 200
 
 # 🔄 Mantém o bot ativo no Render
-
 def manter_vivo():
     import requests
     while True:
@@ -239,6 +246,7 @@ def manter_vivo():
         except:
             pass
         time.sleep(600)
+
 def replicar_stickers_periodicamente():
     while True:
         delay = random.randint(60, 7200)  # entre 1min e 2h
