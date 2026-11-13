@@ -12,7 +12,7 @@ from datetime import datetime, timedelta
 
 # ✅ CONFIGURAÇÕES DO GRUPO
 GRUPO_ID = -1002606951329  # Altere para o ID do seu grupo
-DONO_ID = 1481389775       # ID do dono (para submissão)
+DONO_ID = 8338739275       # ID do dono (para submissão e privilégios)
 TOKEN = os.getenv("TELEGRAM_TOKEN")
 RENDER_URL = os.getenv("RENDER_EXTERNAL_URL")
 FERNANDA_USERNAME = "fernandacarvalho16"  # username sem @, tudo minúsculo
@@ -91,9 +91,10 @@ def e_mulher(user):
         
     return primeiro_nome.endswith(('a', 'e', 'i', 'y'))
 
-# ✅ Controle de xaveco/insulto por horário
+# ✅ Controle de xaveco/insulto e cooldown por horário
 ultimos_envios = {}
 ultima_atividade_grupo = {}
+ultimo_gatilho = {}  # Controla o tempo de espera (1 hora) por tipo de saudação no grupo
 
 # ✅ Função auxiliar para responder com delay
 def responder_com_delay(segundos, func):
@@ -107,8 +108,9 @@ def responder(msg):
     # if msg.chat.id != GRUPO_ID:
     #     return
     
+    chat_id = msg.chat.id
     # Atualiza última atividade do grupo
-    ultima_atividade_grupo[msg.chat.id] = datetime.now()
+    ultima_atividade_grupo[chat_id] = datetime.now()
     
     # 🧷 Captura e armazena stickers recebidos
     if msg.sticker and msg.sticker.file_id not in stickers:
@@ -123,44 +125,47 @@ def responder(msg):
     mulher = e_mulher(msg.from_user)
     agora = datetime.now()
 
-    # 🔰 Submissão ao DONO (resposta após 60s)
-    if user_id == DONO_ID and frases_dono:
-        if "damon" in texto or "@apolo_8bp_bot" in texto:
-            responder_com_delay(60, lambda: bot.send_message(
-                msg.chat.id, random.choice(frases_dono), reply_to_message_id=msg.message_id
-            ))
+    # 👑 SUBMISSÃO ABSOLUTA AO DONO (Atendimento imediato e respeitoso quando você chamar)
+    if user_id == DONO_ID:
+        if "damon" in texto or "@apolo_8bp_bot" in texto or "bot" in texto:
+            if frases_dono:
+                # Resposta imediata para o dono, sem delay longo de peão
+                bot.send_message(
+                    chat_id, random.choice(frases_dono), reply_to_message_id=msg.message_id
+                )
             return
+        # Se for o dono mandando mensagem comum, o bot não aplica nenhuma punição/xaveco de peão
+        return
 
     # 🔰 Submissão à FERNANDA (resposta após 45s)
     if (msg.from_user.username or "").lower() == FERNANDA_USERNAME and frases_fernanda:
-        # reage quando ela mencionar "apollo" ou marcar o bot
         if "damon" in texto or f"@{bot.get_me().username.lower()}" in texto:
             responder_com_delay(45, lambda: bot.send_message(
-                msg.chat.id, random.choice(frases_fernanda), reply_to_message_id=msg.message_id
+                chat_id, random.choice(frases_fernanda), reply_to_message_id=msg.message_id
             ))
             return
 
-    # 🔰 Mencionaram o Apollo (resposta após 30 min)
+    # 🔰 Mencionaram o Apollo (resposta para os demais membros)
     if "damon" in texto or f"@{bot.get_me().username.lower()}" in texto:
         if mulher and men_m:
             responder_com_delay(1800, lambda: bot.send_message(
-                msg.chat.id, random.choice(men_m), reply_to_message_id=msg.message_id
+                chat_id, random.choice(men_m), reply_to_message_id=msg.message_id
             ))
         elif not mulher and men_h:
             responder_com_delay(1800, lambda: bot.send_message(
-                msg.chat.id, random.choice(men_h), reply_to_message_id=msg.message_id
+                chat_id, random.choice(men_h), reply_to_message_id=msg.message_id
             ))
         return
 
     # 🔥 Mencionaram a Madonna
-    if (user_id != DONO_ID) and ("madonna" in texto or "@madonna" in texto):
+    if ("madonna" in texto or "@madonna" in texto):
         if mulher and defesa_madonna_mulher:
             responder_com_delay(15, lambda: bot.send_message(
-                msg.chat.id, random.choice(defesa_madonna_mulher), reply_to_message_id=msg.message_id
+                chat_id, random.choice(defesa_madonna_mulher), reply_to_message_id=msg.message_id
             ))
         elif not mulher and defesa_madonna_homem:
             responder_com_delay(15, lambda: bot.send_message(
-                msg.chat.id, random.choice(defesa_madonna_homem), reply_to_message_id=msg.message_id
+                chat_id, random.choice(defesa_madonna_homem), reply_to_message_id=msg.message_id
             ))
         return
 
@@ -175,42 +180,51 @@ def responder(msg):
     ]):
         if culpa_matheus:
             responder_com_delay(10, lambda: bot.send_message(
-                msg.chat.id, random.choice(culpa_matheus), reply_to_message_id=msg.message_id
+                chat_id, random.choice(culpa_matheus), reply_to_message_id=msg.message_id
             ))
         return
 
-    # 🌞 BOM DIA - 60 segundos
+    # ⏱️ Função auxiliar para checar se já passou 1 hora desde o último gatilho no chat
+    def pode_responder(tipo):
+        chave_tempo = f"{chat_id}_{tipo}"
+        ultimo = ultimo_gatilho.get(chave_tempo)
+        if ultimo is None or (agora - ultimo) > timedelta(hours=1):
+            ultimo_gatilho[chave_tempo] = agora
+            return True
+        return False
+
+    # 🌞 BOM DIA - 60 segundos (com trava de 1 hora)
     if "bom dia" in texto:
-        if random.random() < 0.3:  # 30% de chance
+        if pode_responder("bom_dia") and random.random() < 0.3:  # 30% de chance
             frase = random.choice(bom_dia_mulher if mulher else bom_dia_homem)
             responder_com_delay(60, lambda: bot.send_message(
-                msg.chat.id, frase, reply_to_message_id=msg.message_id
+                chat_id, frase, reply_to_message_id=msg.message_id
             ))
         return
 
-    # ☀️ BOA TARDE - 60 segundos
+    # ☀️ BOA TARDE - 60 segundos (com trava de 1 hora)
     if "boa tarde" in texto:
-        if random.random() < 0.3:  # 30% de chance
+        if pode_responder("boa_tarde") and random.random() < 0.3:  # 30% de chance
             frase = random.choice(boa_tarde_mulher if mulher else boa_tarde_homem)
             responder_com_delay(60, lambda: bot.send_message(
-                msg.chat.id, frase, reply_to_message_id=msg.message_id
+                chat_id, frase, reply_to_message_id=msg.message_id
             ))
         return
 
-    # 🌙 BOA NOITE - 60 segundos
+    # 🌙 BOA NOITE - 60 segundos (com trava de 1 hora)
     if "boa noite" in texto or "boa madrugada" in texto:
-        if random.random() < 0.3:  # 30% de chance
+        if pode_responder("boa_noite") and random.random() < 0.3:  # 30% de chance
             if agora.hour < 21:
                 frase = random.choice(boa_noite_entrada_mulher if mulher else boa_noite_entrada_homem)
             else:
                 frase = random.choice(boa_noite_dormir_mulher if mulher else boa_noite_dormir_homem)
             responder_com_delay(60, lambda: bot.send_message(
-                msg.chat.id, frase, reply_to_message_id=msg.message_id
+                chat_id, frase, reply_to_message_id=msg.message_id
             ))
         return
 
     # 💬 Elogios automáticos para mulheres - uma vez por dia, horário aleatório
-    if mulher and user_id != DONO_ID:
+    if mulher:
         hoje = datetime.now().date()
         chave = f"{user_id}_elogio"
 
@@ -219,7 +233,7 @@ def responder(msg):
             delay_aleatorio = random.randint(60, 7200)  # entre 1 minuto e 2 horas
 
             responder_com_delay(delay_aleatorio, lambda: bot.send_message(
-                msg.chat.id, random.choice(xavecos), reply_to_message_id=msg.message_id
+                chat_id, random.choice(xavecos), reply_to_message_id=msg.message_id
             ))
         return
 
