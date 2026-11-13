@@ -91,10 +91,10 @@ def e_mulher(user):
         
     return primeiro_nome.endswith(('a', 'e', 'i', 'y'))
 
-# ✅ Controle de xaveco/insulto e cooldown por horário
+# ✅ Controle de xaveco/insulto e cooldown individual por usuário
 ultimos_envios = {}
 ultima_atividade_grupo = {}
-ultimo_gatilho = {}  # Controla o tempo de espera (1 hora) por tipo de saudação no grupo
+ultimo_gatilho_usuario = {}  # Controla o tempo de espera (1 hora) por usuário e por tipo de saudação
 
 # ✅ Função auxiliar para responder com delay
 def responder_com_delay(segundos, func):
@@ -129,12 +129,10 @@ def responder(msg):
     if user_id == DONO_ID:
         if "damon" in texto or "@apolo_8bp_bot" in texto or "bot" in texto:
             if frases_dono:
-                # Resposta imediata para o dono, sem delay longo de peão
                 bot.send_message(
                     chat_id, random.choice(frases_dono), reply_to_message_id=msg.message_id
                 )
             return
-        # Se for o dono mandando mensagem comum, o bot não aplica nenhuma punição/xaveco de peão
         return
 
     # 🔰 Submissão à FERNANDA (resposta após 45s)
@@ -184,36 +182,36 @@ def responder(msg):
             ))
         return
 
-    # ⏱️ Função auxiliar para checar se já passou 1 hora desde o último gatilho no chat
-    def pode_responder(tipo):
-        chave_tempo = f"{chat_id}_{tipo}"
-        ultimo = ultimo_gatilho.get(chave_tempo)
+    # ⏱️ Função auxiliar para checar se já passou 1 hora desde a última resposta para ESTE usuário específico
+    def pode_responder_usuario(tipo):
+        chave_tempo = f"{user_id}_{tipo}"
+        ultimo = ultimo_gatilho_usuario.get(chave_tempo)
         if ultimo is None or (agora - ultimo) > timedelta(hours=1):
-            ultimo_gatilho[chave_tempo] = agora
+            ultimo_gatilho_usuario[chave_tempo] = agora
             return True
         return False
 
-    # 🌞 BOM DIA - 60 segundos (com trava de 1 hora)
+    # 🌞 BOM DIA - 60 segundos (com trava individual de 1 hora por pessoa)
     if "bom dia" in texto:
-        if pode_responder("bom_dia") and random.random() < 0.3:  # 30% de chance
+        if pode_responder_usuario("bom_dia") and random.random() < 0.3:  # 30% de chance
             frase = random.choice(bom_dia_mulher if mulher else bom_dia_homem)
             responder_com_delay(60, lambda: bot.send_message(
                 chat_id, frase, reply_to_message_id=msg.message_id
             ))
         return
 
-    # ☀️ BOA TARDE - 60 segundos (com trava de 1 hora)
+    # ☀️ BOA TARDE - 60 segundos (com trava individual de 1 hora por pessoa)
     if "boa tarde" in texto:
-        if pode_responder("boa_tarde") and random.random() < 0.3:  # 30% de chance
+        if pode_responder_usuario("boa_tarde") and random.random() < 0.3:  # 30% de chance
             frase = random.choice(boa_tarde_mulher if mulher else boa_tarde_homem)
             responder_com_delay(60, lambda: bot.send_message(
                 chat_id, frase, reply_to_message_id=msg.message_id
             ))
         return
 
-    # 🌙 BOA NOITE - 60 segundos (com trava de 1 hora)
+    # 🌙 BOA NOITE - 60 segundos (com trava individual de 1 hora por pessoa)
     if "boa noite" in texto or "boa madrugada" in texto:
-        if pode_responder("boa_noite") and random.random() < 0.3:  # 30% de chance
+        if pode_responder_usuario("boa_noite") and random.random() < 0.3:  # 30% de chance
             if agora.hour < 21:
                 frase = random.choice(boa_noite_entrada_mulher if mulher else boa_noite_entrada_homem)
             else:
